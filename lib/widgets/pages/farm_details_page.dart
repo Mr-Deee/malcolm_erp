@@ -1,8 +1,8 @@
-import 'package:afarms/models/addedFarm.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../../color_palette.dart';
+import '../../models/addedFarm.dart';
 import 'homepage.dart';
 
 class FarmDetailsPage extends StatelessWidget {

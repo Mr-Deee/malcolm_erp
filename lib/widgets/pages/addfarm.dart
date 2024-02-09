@@ -5,9 +5,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/material.dart';
+import 'package:malcolm_erp/widgets/pages/homepage.dart';
 import 'package:path/path.dart';
 import '../../color_palette.dart';
 import '../../main.dart';
+import '../../models/addedFarm.dart';
 import '../progressDialog.dart';
 
 class addfarm extends StatefulWidget {
@@ -164,9 +166,9 @@ class _addfarmState extends State<addfarm> {
             }).then((value) {
               Navigator.of(context).pop();
               Navigator.of(context).pop();
-              showTextToast('Added Sucessfully!');
+              // displayToast('Added Sucessfully!'context);
             }).catchError((e) {
-              showTextToast('Failed!');
+              // displayToast('Failed!'context);
             });
             // Navigator.of(context).pop();
           },

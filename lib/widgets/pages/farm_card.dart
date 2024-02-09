@@ -1,7 +1,7 @@
-import 'package:afarms/models/addedFarm.dart';
 import 'package:flutter/material.dart';
 
 import '../../color_palette.dart';
+import '../../models/addedFarm.dart';
 import '../../models/farmdb.dart';
 import 'farm_details_page.dart';
 

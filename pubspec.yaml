@@ -60,6 +60,7 @@ dev_dependencies:
   permission_handler:
   firebase_database:
   cloud_firestore:
+  firebase_storage: ^11.2.2
   uuid: ^3.0.7
   intl: ^0.18.1
   firebase_auth: ^4.7.2
