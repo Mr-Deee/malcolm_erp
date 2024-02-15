@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1078017879249",
+    "project_id": "malcolmerp",
+    "storage_bucket": "malcolmerp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1078017879249:android:8de64e681f13579fcc29f0",
+        "android_client_info": {
+          "package_name": "com.example.malcolm_erp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCgdk-23DLoyA6xjS_AmbHcUATYcYQ8WUM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
