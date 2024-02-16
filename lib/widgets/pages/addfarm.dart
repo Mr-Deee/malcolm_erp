@@ -1,8 +1,6 @@
 import 'dart:io';
 import 'dart:io' as io;
 import 'dart:math';
-
-import 'package:afarms/models/addedFarm.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
@@ -10,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import '../../color_palette.dart';
 import '../../main.dart';
-import '../../toast.dart';
 import '../progressDialog.dart';
 
 class addfarm extends StatefulWidget {
@@ -87,15 +84,15 @@ class _addfarmState extends State<addfarm> {
   }
 
   String? currentSelectedValue;
-  List<String> FARMCODE = [
-    "NA-JNJ028(Nankese|Pesticide)",
-    "NA-JNJ025(Nankese|Fertilizer)",
-    "NA-JNJ026(Nankese|Transport)",
-    "WN-JNJ014(Winneba|Fuel)",
-    " WN-JNJ029()",
-    "TA-JNJ029",
-    " NA-JNJ029"
-  ];
+  // List<String> FARMCODE = [
+  //   "NA-JNJ028(Nankese|Pesticide)",
+  //   "NA-JNJ025(Nankese|Fertilizer)",
+  //   "NA-JNJ026(Nankese|Transport)",
+  //   "WN-JNJ014(Winneba|Fuel)",
+  //   " WN-JNJ029()",
+  //   "TA-JNJ029",
+  //   " NA-JNJ029"
+  // ];
   final storage = FirebaseStorage.instance;
   final storageReference = FirebaseStorage.instance.ref();
 
@@ -815,7 +812,7 @@ class _addfarmState extends State<addfarm> {
       'quantity': newProduct.quantity.toString(),
     };
 
-    Farms.child("Farm").set(userDataMap);
+    Products.child("Product").set(userDataMap);
   }
 // chooseImage() async {
 //   final pickedFile = await picker.getImage(source: ImageSource.gallery);

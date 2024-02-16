@@ -1,6 +1,7 @@
-import 'package:afarms/widgets/ExpenseGroupPage.dart';
-import 'package:afarms/widgets/pages/farm_group_page.dart';
+
 import 'package:flutter/material.dart';
+
+import 'ExpenseGroupPage.dart';
 
 
 class farmExpensesCard extends StatelessWidget {

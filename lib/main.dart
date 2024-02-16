@@ -15,18 +15,11 @@ void main() {
 final FirebaseAuth auth = FirebaseAuth.instance;
 final User? user = auth.currentUser;
 final uid = user?.uid;
-
+DatabaseReference CatClients = FirebaseDatabase.instance.ref().child("Clients");
+DatabaseReference Products = FirebaseDatabase.instance.ref().child("Products");
 DatabaseReference clientRequestRef = FirebaseDatabase.instance.ref().child(
     "ClientRequest");
-DatabaseReference WastemanagementRef = FirebaseDatabase.instance.ref().child(
-    "WMS").child(uid!).child("new WMS");
-DatabaseReference clients = FirebaseDatabase.instance.ref().child("Clients");
-DatabaseReference WMSDB = FirebaseDatabase.instance.ref().child("WMS");
-DatabaseReference WMSDBtoken = FirebaseDatabase.instance.ref()
-    .child("WMS")
-    .child(uid!);
-DatabaseReference WMSAvailable = FirebaseDatabase.instance.ref().child(
-    "availableWMS").child(uid!);
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
