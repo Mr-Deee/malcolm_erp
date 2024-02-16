@@ -2,10 +2,31 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:malcolm_erp/screens/homepage.dart';
+import 'package:malcolm_erp/screens/signin.dart';
+import 'package:malcolm_erp/widgets/pages/SignUp.dart';
+import 'package:malcolm_erp/widgets/pages/login.dart';
 void main() {
   runApp(const MyApp());
 }
 
+
+
+final FirebaseAuth auth = FirebaseAuth.instance;
+final User? user = auth.currentUser;
+final uid = user?.uid;
+
+DatabaseReference clientRequestRef = FirebaseDatabase.instance.ref().child(
+    "ClientRequest");
+DatabaseReference WastemanagementRef = FirebaseDatabase.instance.ref().child(
+    "WMS").child(uid!).child("new WMS");
+DatabaseReference clients = FirebaseDatabase.instance.ref().child("Clients");
+DatabaseReference WMSDB = FirebaseDatabase.instance.ref().child("WMS");
+DatabaseReference WMSDBtoken = FirebaseDatabase.instance.ref()
+    .child("WMS")
+    .child(uid!);
+DatabaseReference WMSAvailable = FirebaseDatabase.instance.ref().child(
+    "availableWMS").child(uid!);
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -25,7 +46,7 @@ class MyApp extends StatelessWidget {
         FirebaseAuth.instance.currentUser == null ? '/SignIn' : '/Homepage',
         routes: {
           "/SignUP": (context) => Signup(),
-          "/OnBoarding": (context) => WelcomePage(),
+          // "/OnBoarding": (context) => WelcomePage(),
           "/SignIn": (context) => LoginPage(),
           "/Homepage": (context) => homepage(),
           //    "/addproduct":(context)=>addproduct()
@@ -35,6 +56,6 @@ class MyApp extends StatelessWidget {
     );
   }
 
-    );
+
   }
-}
+

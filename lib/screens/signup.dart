@@ -1,5 +1,4 @@
-import 'package:borla_app/screens/progressdialog.dart';
-import 'package:borla_app/screens/signin.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,8 +6,10 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:malcolm_erp/screens/signin.dart';
 
 import '../main.dart';
+import '../progressDialog.dart';
 
 class signup extends StatefulWidget {
   const signup({super.key});

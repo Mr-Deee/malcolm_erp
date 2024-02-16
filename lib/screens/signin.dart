@@ -1,7 +1,7 @@
-import 'package:borla_app/Assistants/assistantMethods.dart';
-import 'package:borla_app/screens/progressdialog.dart';
-import 'package:borla_app/screens/signup.dart';
-import 'package:borla_app/screens/smscode.dart';
+import 'package:malcolm_erp/Assistant/assistantMethods.dart';
+import 'package:malcolm_erp/progressdialog.dart';
+import 'package:malcolm_erp/screens/signup.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,11 +9,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:flutter_sms/flutter_sms.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'dart:math';
 
 import '../main.dart';
@@ -27,7 +24,7 @@ class signin extends StatefulWidget {
 }
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
-final GoogleSignIn googleSignIn = GoogleSignIn();
+// final GoogleSignIn googleSignIn = GoogleSignIn();
 final DatabaseReference _userRef =
     FirebaseDatabase.instance.reference().child('users');
 TextEditingController phoneNumberController = TextEditingController();
@@ -58,44 +55,6 @@ Future<void> verifyPhoneNumber() async {
   );
 }
 
-Future<User?> _handleGoogleSignIn(BuildContext context) async {
-  try {
-    final GoogleSignInAccount? googleSignInAccount =
-        await googleSignIn.signIn();
-    final GoogleSignInAuthentication googleSignInAuthentication =
-        await googleSignInAccount!.authentication;
-    final AuthCredential credential = GoogleAuthProvider.credential(
-      accessToken: googleSignInAuthentication.accessToken,
-      idToken: googleSignInAuthentication.idToken,
-    );
-
-    final UserCredential authResult =
-        await _auth.signInWithCredential(credential);
-    final User? user = authResult.user;
-
-    if (user != null) {
-      // Check if the email already exists in the database
-      final emailExists =
-          await checkIfEmailExistsInDatabase(user.email.toString());
-
-      if (!emailExists) {
-        // If the email doesn't exist in the database, write it
-        writeEmailToDatabase(user.uid, user.email.toString());
-      } else {
-        Navigator.pushNamedAndRemoveUntil(
-            context, "/Homepage", (route) => false);
-        // Handle the case where the email already exists in the database
-        print('Email already exists in the database');
-      }
-    }
-
-    return user;
-  } catch (error) {
-    print(error);
-    return null;
-  }
-}
-
 Future<void> writeEmailToDatabase(String userId, String email) async {
   // Write the email to the database under the user's ID
   _userRef.child(userId).set({'email': email});
@@ -111,7 +70,6 @@ Future<bool> checkIfEmailExistsInDatabase(String email) async {
 
 class _signinState extends State<signin> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final GoogleSignIn googleSignIn = GoogleSignIn();
 
   @override
   void initState() {
@@ -393,7 +351,7 @@ class _signinState extends State<signin> {
               email: emailcontroller.text.trim(), password: passwordcontroller.text.trim());
 
      if (clients != null) {
-       AssistantMethods.getCurrentOnlineUserInfo(context);
+       AssistantMethod.getCurrentOnlineUserInfo(context);
 
         Navigator.of(context).pushNamed("/Homepage");
 

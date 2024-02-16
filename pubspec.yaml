@@ -47,9 +47,19 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+  fluttertoast:
+  shared_preferences:
   firebase: ^9.0.0
+  flutter_colorpicker: ^1.0.3
+  excel: ^2.0.4
+  google_fonts: ^4.0.4
+  provider: ^6.0.5
+  open_file: ^3.3.2
+  firebase_messaging:
+  firebase_core:
+  permission_handler:
   firebase_database:
-
+  cloud_firestore:
   uuid: ^3.0.7
   intl: ^0.18.1
   firebase_auth: ^4.7.2
