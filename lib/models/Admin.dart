@@ -25,7 +25,7 @@ class Admin extends ChangeNotifier
       id: data['uid'],
       phone: data["phone"],
       email: data["email"],
-      firstname: data["Username"],
+      firstname: data["CompanyName"],
       // lastname: data["LastName"],
       //   profilepicture: data["riderImageUrl"],
       // automobile_color: data["car_details"]["automobile_color"],

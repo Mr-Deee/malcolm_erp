@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:malcolm_erp/Assistant/assistantmethods.dart';
 
 import '../../components/my_button.dart';
 import '../../components/my_textfield.dart';
@@ -117,6 +118,7 @@ class LoginPage extends StatelessWidget {
                                   MyButtonAgree(
                                     text: "Continue",
                                     onTap: () {
+                                      AssistantMethod.getCurrentOnlineUserInfo(context);
                                       loginAndAuthenticateUser(context);
                                     },
                                   ),

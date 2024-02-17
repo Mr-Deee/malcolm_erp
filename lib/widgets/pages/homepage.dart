@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:malcolm_erp/Assistant/assistantmethods.dart';
 
 import '../../models/addedFarm.dart';
 import '../farm_group_card.dart';
@@ -21,7 +22,12 @@ class _homepageState extends State<homepage> {
 
   final addedFarm newfarm = addedFarm();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    AssistantMethod.getCurrentOnlineUserInfo(context);
+  }
   @override
   Widget build(BuildContext context) {
     double _sigmaX = 5; // from 0-10
@@ -63,7 +69,7 @@ class _homepageState extends State<homepage> {
                             Padding(
                               padding: const EdgeInsets.all(10.0),
                               child: const Text(
-                                "A-fARMS",
+                                "",
                                 style: TextStyle(
                                   fontFamily: "Nunito",
                                   fontWeight: FontWeight.bold,
