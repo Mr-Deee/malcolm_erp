@@ -148,7 +148,12 @@ class Signup extends StatelessWidget {
                                   //   textAlign: TextAlign.start,
                                   // ),
                                   const SizedBox(height: 30),
-
+                                  MyTextField(
+                                    controller: companyNameController,
+                                    hintText: 'CompanyName',
+                                    obscureText: false,
+                                  ),
+                                  const SizedBox(height: 10),
                                   MyTextField(
                                     controller: emailController,
                                     hintText: 'Email',
@@ -167,7 +172,7 @@ class Signup extends StatelessWidget {
                                     hintText: 'Location',
                                     obscureText: false,
                                   ),
-                                  const SizedBox(height: 30),
+                                  const SizedBox(height: 10),
 
                                   Column(
                                     mainAxisSize: MainAxisSize.min,
@@ -175,29 +180,8 @@ class Signup extends StatelessWidget {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.stretch,
                                     children: [
-                                      // RichText(
-                                      //   text: const TextSpan(
-                                      //     text: '',
-                                      //     children: <TextSpan>[
-                                      //       TextSpan(
-                                      //         text:
-                                      //         'By selecting Agree & Continue below, I agree to our ',
-                                      //         style: TextStyle(
-                                      //             color: Colors.white,
-                                      //             fontSize: 20),
-                                      //       ),
-                                      //       TextSpan(
-                                      //           text:
-                                      //           'Terms of Service and Privacy Policy',
-                                      //           style: TextStyle(
-                                      //               color: Color.fromARGB(
-                                      //                   255, 71, 233, 133),
-                                      //               fontWeight: FontWeight.bold,
-                                      //               fontSize: 20)),
-                                      //     ],
-                                      //   ),
-                                      // ),
-                                      const SizedBox(height: 10),
+
+
                                       MyButtonAgree(
                                         text: "Sign Up",
                                         onTap: () {
