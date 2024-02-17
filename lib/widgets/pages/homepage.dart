@@ -222,12 +222,12 @@ class _homepageState extends State<homepage> {
                                                                       .start,
                                                               children: [
                                                                 const Text(
-                                                                  "Add A FARM",
+                                                                  "Add a Product Category",
                                                                   style: TextStyle(
                                                                       fontFamily:
                                                                           "Nunito",
                                                                       fontSize:
-                                                                          35,
+                                                                          25,
                                                                       fontWeight:
                                                                           FontWeight
                                                                               .bold),
@@ -284,7 +284,7 @@ class _homepageState extends State<homepage> {
                                                                           border:
                                                                               InputBorder.none,
                                                                           hintText:
-                                                                              "Product Group Name",
+                                                                              "Product Category Name",
                                                                           filled:
                                                                               true,
                                                                           fillColor:
@@ -478,49 +478,49 @@ class _homepageState extends State<homepage> {
                       SizedBox(
                         height: 39,
                       ),
-                      // Expanded(
-                      //   child: StreamBuilder(
-                      //     stream: _firestore.collection("utils").snapshots(),
-                      //     builder: (
-                      //       BuildContext context,
-                      //       AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
-                      //           snapshot,
-                      //     ) {
-                      //       if (snapshot.hasData) {
-                      //         final List<dynamic> _productGroups =
-                      //             snapshot.data!.docs[0].data()['list']
-                      //                 as List<dynamic>;
-                      //         _productGroups.sort();
-                      //         return GridView.builder(
-                      //           gridDelegate:
-                      //               const SliverGridDelegateWithFixedCrossAxisCount(
-                      //             crossAxisCount: 2,
-                      //             childAspectRatio: 2,
-                      //             crossAxisSpacing: 20,
-                      //             mainAxisSpacing: 20,
-                      //           ),
-                      //           itemCount: _productGroups.length,
-                      //           itemBuilder: (context, index) {
-                      //             return farmGroupCard(
-                      //               name: _productGroups[index] as String,
-                      //               key: UniqueKey(),
-                      //             );
-                      //           },
-                      //         );
-                      //       } else {
-                      //         return const Center(
-                      //           child: SizedBox(
-                      //             height: 40,
-                      //             width: 40,
-                      //             child: CircularProgressIndicator(
-                      //               color: Colors.blue,
-                      //             ),
-                      //           ),
-                      //         );
-                      //       }
-                      //     },
-                      //   ),
-                      // ),
+                      Expanded(
+                        child: StreamBuilder(
+                          stream: _firestore.collection("utils").snapshots(),
+                          builder: (
+                            BuildContext context,
+                            AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
+                                snapshot,
+                          ) {
+                            if (snapshot.hasData) {
+                              final List<dynamic> _productGroups =
+                                  snapshot.data!.docs[0].data()['list']
+                                      as List<dynamic>;
+                              _productGroups.sort();
+                              return GridView.builder(
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  childAspectRatio: 2,
+                                  crossAxisSpacing: 20,
+                                  mainAxisSpacing: 20,
+                                ),
+                                itemCount: _productGroups.length,
+                                itemBuilder: (context, index) {
+                                  return farmGroupCard(
+                                    name: _productGroups[index] as String,
+                                    key: UniqueKey(),
+                                  );
+                                },
+                              );
+                            } else {
+                              return const Center(
+                                child: SizedBox(
+                                  height: 40,
+                                  width: 40,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.blue,
+                                  ),
+                                ),
+                              );
+                            }
+                          },
+                        ),
+                      ),
                     ],
                   ),
                 ),
