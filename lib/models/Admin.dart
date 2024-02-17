@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 
 class Admin extends ChangeNotifier
 {
-  String?firstname;
+  String?CompanyName;
   String?lastname;
   String?phone;
   String?email;
@@ -15,7 +15,7 @@ class Admin extends ChangeNotifier
   String?plate_number;
   String?profilepicture;
 
-  Admin({this.firstname, this.lastname,this.phone, this.email, this.id, this.automobile_color, this.automobile_model, this.plate_number, this.profilepicture,});
+  Admin({this.CompanyName, this.lastname,this.phone, this.email, this.id, this.automobile_color, this.automobile_model, this.plate_number, this.profilepicture,});
 
   static Admin fromMap(Map<String, dynamic> data)
 
@@ -25,7 +25,7 @@ class Admin extends ChangeNotifier
       id: data['uid'],
       phone: data["phone"],
       email: data["email"],
-      firstname: data["CompanyName"],
+      CompanyName: data["CompanyName"],
       // lastname: data["LastName"],
       //   profilepicture: data["riderImageUrl"],
       // automobile_color: data["car_details"]["automobile_color"],
@@ -38,7 +38,7 @@ class Admin extends ChangeNotifier
 
   Admin? get admininfo => _adminInfo;
 
-  void setRider(Admin admin) {
+  void setAdmin(Admin admin) {
     _adminInfo = admin;
     notifyListeners();
   }

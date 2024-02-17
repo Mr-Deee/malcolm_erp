@@ -1,10 +1,12 @@
 import 'dart:ui';
+import 'package:provider/provider.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:malcolm_erp/Assistant/assistantmethods.dart';
+import 'package:malcolm_erp/models/Admin.dart';
 
 import '../../models/addedFarm.dart';
 import '../farm_group_card.dart';
@@ -28,8 +30,10 @@ class _homepageState extends State<homepage> {
     super.initState();
     AssistantMethod.getCurrentOnlineUserInfo(context);
   }
+
   @override
   Widget build(BuildContext context) {
+    String CompanyName = Provider.of<Admin>(context).admininfo?.CompanyName ?? "getting name...";
     double _sigmaX = 5; // from 0-10
     double _sigmaY = 5; // from 0-10
     double _opacity = 0.2;
@@ -67,9 +71,9 @@ class _homepageState extends State<homepage> {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: const Text(
-                                "",
+                              padding:  EdgeInsets.all(10.0),
+                              child:  Text(
+                                CompanyName,
                                 style: TextStyle(
                                   fontFamily: "Nunito",
                                   fontWeight: FontWeight.bold,
@@ -474,49 +478,49 @@ class _homepageState extends State<homepage> {
                       SizedBox(
                         height: 39,
                       ),
-                      Expanded(
-                        child: StreamBuilder(
-                          stream: _firestore.collection("utils").snapshots(),
-                          builder: (
-                            BuildContext context,
-                            AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
-                                snapshot,
-                          ) {
-                            if (snapshot.hasData) {
-                              final List<dynamic> _productGroups =
-                                  snapshot.data!.docs[0].data()['list']
-                                      as List<dynamic>;
-                              _productGroups.sort();
-                              return GridView.builder(
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  childAspectRatio: 2,
-                                  crossAxisSpacing: 20,
-                                  mainAxisSpacing: 20,
-                                ),
-                                itemCount: _productGroups.length,
-                                itemBuilder: (context, index) {
-                                  return farmGroupCard(
-                                    name: _productGroups[index] as String,
-                                    key: UniqueKey(),
-                                  );
-                                },
-                              );
-                            } else {
-                              return const Center(
-                                child: SizedBox(
-                                  height: 40,
-                                  width: 40,
-                                  child: CircularProgressIndicator(
-                                    color: Colors.blue,
-                                  ),
-                                ),
-                              );
-                            }
-                          },
-                        ),
-                      ),
+                      // Expanded(
+                      //   child: StreamBuilder(
+                      //     stream: _firestore.collection("utils").snapshots(),
+                      //     builder: (
+                      //       BuildContext context,
+                      //       AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
+                      //           snapshot,
+                      //     ) {
+                      //       if (snapshot.hasData) {
+                      //         final List<dynamic> _productGroups =
+                      //             snapshot.data!.docs[0].data()['list']
+                      //                 as List<dynamic>;
+                      //         _productGroups.sort();
+                      //         return GridView.builder(
+                      //           gridDelegate:
+                      //               const SliverGridDelegateWithFixedCrossAxisCount(
+                      //             crossAxisCount: 2,
+                      //             childAspectRatio: 2,
+                      //             crossAxisSpacing: 20,
+                      //             mainAxisSpacing: 20,
+                      //           ),
+                      //           itemCount: _productGroups.length,
+                      //           itemBuilder: (context, index) {
+                      //             return farmGroupCard(
+                      //               name: _productGroups[index] as String,
+                      //               key: UniqueKey(),
+                      //             );
+                      //           },
+                      //         );
+                      //       } else {
+                      //         return const Center(
+                      //           child: SizedBox(
+                      //             height: 40,
+                      //             width: 40,
+                      //             child: CircularProgressIndicator(
+                      //               color: Colors.blue,
+                      //             ),
+                      //           ),
+                      //         );
+                      //       }
+                      //     },
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),

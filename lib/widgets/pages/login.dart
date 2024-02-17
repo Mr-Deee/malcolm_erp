@@ -118,7 +118,7 @@ class LoginPage extends StatelessWidget {
                                   MyButtonAgree(
                                     text: "Continue",
                                     onTap: () {
-                                      AssistantMethod.getCurrentOnlineUserInfo(context);
+
                                       loginAndAuthenticateUser(context);
                                     },
                                   ),
@@ -206,7 +206,7 @@ class LoginPage extends StatelessWidget {
             message: "Logging you ,Please wait.",
           );
         });
-
+    AssistantMethod.getCurrentOnlineUserInfo(context);
     final User? firebaseUser = (await _firebaseAuth
         .signInWithEmailAndPassword(
       email: emailController.text.toString().trim(),
