@@ -8,10 +8,18 @@ import 'package:malcolm_erp/widgets/pages/SignUp.dart';
 import 'package:malcolm_erp/widgets/pages/homepage.dart';
 import 'package:malcolm_erp/widgets/pages/login.dart';
 
+import 'firebase_options.dart';
 import 'models/Admin.dart';
 import 'models/Users.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  await Future.delayed(Duration(seconds: 2)); // Adjust the duration as needed
+  // FlutterNativeSplash.remove();
   runApp((MultiProvider(providers: [
     ChangeNotifierProvider<Users>(
       create: (context) => Users(),
@@ -44,7 +52,7 @@ class MyApp extends StatelessWidget {
         // home: const MyHomePage(title: 'Flutter Demo Home Page'),
 
         initialRoute:
-            FirebaseAuth.instance.currentUser == null ? '/SignIn' : '/Homepage',
+            FirebaseAuth.instance.currentUser == null ? '/SignUP' : '/Homepage',
         routes: {
           "/SignUP": (context) => Signup(),
           // "/OnBoarding": (context) => WelcomePage(),

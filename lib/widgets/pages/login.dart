@@ -148,7 +148,7 @@ class LoginPage extends StatelessWidget {
                                               'Sign Up',
                                               style: TextStyle(
                                                   color: Color.fromARGB(
-                                                      255, 71, 233, 133),
+                                                      242, 0, 0, 0),
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 20),
                                             ),

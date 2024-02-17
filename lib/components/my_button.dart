@@ -40,10 +40,10 @@ class MyButtonAgree extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.all(25),
+        padding: const EdgeInsets.all(15),
         decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 71, 233, 133),
-          borderRadius: BorderRadius.circular(8),
+          color: const Color.fromARGB(242, 0, 0, 0),
+          borderRadius: BorderRadius.circular(16),
         ),
         child:  Center(
           child: Text(
