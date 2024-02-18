@@ -208,20 +208,7 @@ class _addfarmState extends State<addfarm> {
                                           ),
                                           child: Column(
                                             children: [
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                  left: 8,
-                                                  bottom: 12,
-                                                ),
-                                                child: Text(
-                                                  "Farm : $farm",
-                                                  style: const TextStyle(
-                                                    fontFamily: "Nunito",
-                                                    fontSize: 17,
-                                                    color: Colors.black,
-                                                  ),
-                                                ),
-                                              ),
+
                                             ],
                                           ),
                                         ),
@@ -236,8 +223,7 @@ class _addfarmState extends State<addfarm> {
                                               child: new Row(
                                                 children: <Widget>[
                                                   new Icon(
-                                                    Icons
-                                                        .home_repair_service_rounded,
+                                                    Icons.category,
                                                     color: Colors.green,
                                                   ),
                                                   new Text(value)
