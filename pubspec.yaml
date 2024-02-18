@@ -51,6 +51,7 @@ dev_dependencies:
   shared_preferences:
   firebase: ^9.0.0
   flutter_colorpicker: ^1.0.3
+  expansion_tile_card:
   excel: ^2.0.4
   google_fonts: ^4.0.4
   provider: ^6.0.5

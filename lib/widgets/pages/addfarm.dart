@@ -27,7 +27,7 @@ class _addfarmState extends State<addfarm> {
   @override
   void initState() {
     super.initState();
-    generateCode();
+
     FinalCode;
   }
 
@@ -62,39 +62,8 @@ class _addfarmState extends State<addfarm> {
 
   String generatedCode = '';
 
-  String generateCode() {
-    // Retrieve farm type and group type from Firestore
-    String? farmType = group; // Replace with Firestore document instance
-    String? groupType = farm; // Replace with Firestore document instance
-
-    // Extract first and third letters of farm type
-    String firstLetter = farmType!.substring(0, 1);
-    String thirdLetter = farmType.substring(2, 3).toUpperCase();
-    String firsttwo = groupType!.substring(0, 2).toUpperCase();
-
-    // Generate random code
-    Random random = Random();
-    String randomCode = '';
-    for (int i = 0; i < 4; i++) {
-      randomCode += random.nextInt(10).toString();
-    }
-
-    // Concatenate farm type letters, random code, and group type
-    String finalCode = firsttwo + "-" + firstLetter + thirdLetter + randomCode;
-
-    return finalCode;
-  }
-
   String? currentSelectedValue;
-  // List<String> FARMCODE = [
-  //   "NA-JNJ028(Nankese|Pesticide)",
-  //   "NA-JNJ025(Nankese|Fertilizer)",
-  //   "NA-JNJ026(Nankese|Transport)",
-  //   "WN-JNJ014(Winneba|Fuel)",
-  //   " WN-JNJ029()",
-  //   "TA-JNJ029",
-  //   " NA-JNJ029"
-  // ];
+
   final storage = FirebaseStorage.instance;
   final storageReference = FirebaseStorage.instance.ref();
 
@@ -109,6 +78,8 @@ class _addfarmState extends State<addfarm> {
     //     ?.id!;
     var newprojectname = newProduct.name;
 
+    String? currentSelectedValue;
+    List<String> Category = ["Soap", "WashingPowder", "Diapers"];
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: true,
@@ -117,7 +88,7 @@ class _addfarmState extends State<addfarm> {
         title: Row(
           children: [
             const Text(
-              "New Expense",
+              "New Product",
               style: TextStyle(
                 fontFamily: "Nunito",
                 fontSize: 28,
@@ -147,20 +118,17 @@ class _addfarmState extends State<addfarm> {
             //uploadImage(selectedImagePath!);
             Occupationdb();
             newProduct.group = group;
-            _firestore.collection("Expenses").add({
+            _firestore.collection("Product").add({
               //
               // 'image': url,
-              'ExpenseType': group,
-              //'FarmCodep': currentSelectedValue.toString(),
+              'Category': group,
               'FarmCodes': FinalCode,
-
-              //newProduct.name.toString(),
-              'description': newProduct.description.toString(),
-              'Farm': farm,
+              'Description': newProduct.description.toString(),
+              'Product': farm,
               'name': group,
               'Company': newProduct.company.toString(),
               'Cost': newProduct.cost,
-              'location': farm,
+              // 'location': farm,
               'quantity': newProduct.quantity,
               //newProduct.toMap()
             }).then((value) {
@@ -243,30 +211,6 @@ class _addfarmState extends State<addfarm> {
                                               Padding(
                                                 padding: const EdgeInsets.only(
                                                   left: 8,
-                                                  bottom: 1,
-                                                ),
-                                                child: Text(
-                                                  "Expense : $group",
-                                                  style: const TextStyle(
-                                                    fontFamily: "Nunito",
-                                                    fontSize: 17,
-                                                    color: Colors.black,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                            left: 8,
-                                            bottom: 12,
-                                          ),
-                                          child: Column(
-                                            children: [
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                  left: 8,
                                                   bottom: 12,
                                                 ),
                                                 child: Text(
@@ -281,44 +225,36 @@ class _addfarmState extends State<addfarm> {
                                             ],
                                           ),
                                         ),
-
-                                        // DropdownButton<String>(
-                                        //   value: currentSelectedValue,
-                                        //   hint:
-                                        //       new Text("Choose From this List"),
-                                        //   items: FARMCODE
-                                        //       .map<DropdownMenuItem<String>>(
-                                        //           (String value) {
-                                        //     return DropdownMenuItem<String>(
-                                        //       value: value,
-                                        //       child: new Row(
-                                        //         children: <Widget>[
-                                        //           new Icon(
-                                        //             Icons
-                                        //                 .home_repair_service_rounded,
-                                        //             color: Colors.green,
-                                        //           ),
-                                        //           new Text(value)
-                                        //         ],
-                                        //       ),
-                                        //     );
-                                        //   }).toList(),
-                                        //   onChanged: (newvalue) {
-                                        //     setState(() {
-                                        //       currentSelectedValue = newvalue;
-                                        //       newvalue == newProduct.farmcode;
-                                        //     });
-                                        //   },
-                                        // ),
-
-                                        // Padding(
-                                        //   padding: const EdgeInsets.all(21.0),
-                                        //   child: Text(
-                                        //     "Or type your custom code (NA-3455|(Expense))",
-                                        //     style: TextStyle(fontSize: 11),
-                                        //   ),
-                                        // ),
-
+                                        DropdownButton<String>(
+                                          value: currentSelectedValue,
+                                          hint: new Text("Choose Category"),
+                                          items: Category.map<
+                                                  DropdownMenuItem<String>>(
+                                              (String value) {
+                                            return DropdownMenuItem<String>(
+                                              value: value,
+                                              child: new Row(
+                                                children: <Widget>[
+                                                  new Icon(
+                                                    Icons
+                                                        .home_repair_service_rounded,
+                                                    color: Colors.green,
+                                                  ),
+                                                  new Text(value)
+                                                ],
+                                              ),
+                                            );
+                                          }).toList(),
+                                          onChanged: (newvalue) {
+                                            setState(() {
+                                              currentSelectedValue = newvalue;
+                                              newvalue == newProduct.farmcode;
+                                            });
+                                          },
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
                                         Container(
                                           decoration: BoxDecoration(
                                             color: ColorPalette.white,
@@ -335,11 +271,10 @@ class _addfarmState extends State<addfarm> {
                                           ),
                                           height: 50,
                                           child: TextFormField(
-                                            initialValue: FinalCode ?? '',
+                                            initialValue: newProduct.name ?? '',
                                             onChanged: (value) {
-                                              FinalCode = value;
+                                              newProduct.name = value;
                                             },
-                                            readOnly: true,
                                             textInputAction:
                                                 TextInputAction.next,
                                             key: UniqueKey(),
@@ -351,64 +286,18 @@ class _addfarmState extends State<addfarm> {
                                             ),
                                             decoration: InputDecoration(
                                               border: InputBorder.none,
-                                              hintText: "${FinalCode}",
+                                              hintText: "Product Name",
                                               filled: true,
                                               fillColor: Colors.transparent,
                                               hintStyle: TextStyle(
                                                 fontFamily: "Nunito",
                                                 fontSize: 16,
-                                                color: Colors.black,
+                                                color: Colors.grey,
                                               ),
                                             ),
                                             cursorColor: Colors.black,
                                           ),
                                         ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        // Container(
-                                        //       decoration: BoxDecoration(
-                                        //         color: ColorPalette.white,
-                                        //         borderRadius:
-                                        //             BorderRadius.circular(12),
-                                        //         boxShadow: [
-                                        //           BoxShadow(
-                                        //             offset: const Offset(0, 3),
-                                        //             blurRadius: 6,
-                                        //             color: ColorPalette.nileBlue
-                                        //                 .withOpacity(0.1),
-                                        //           ),
-                                        //         ],
-                                        //       ),
-                                        //       height: 50,
-                                        //       child: TextFormField(
-                                        //         initialValue: newProduct.name ?? '',
-                                        //         onChanged: (value) {
-                                        //           newProduct.name = value;
-                                        //         },
-                                        //         textInputAction:
-                                        //             TextInputAction.next,
-                                        //         key: UniqueKey(),
-                                        //         keyboardType: TextInputType.text,
-                                        //         style: const TextStyle(
-                                        //           fontFamily: "Nunito",
-                                        //           fontSize: 16,
-                                        //           color: Colors.black,
-                                        //         ),
-                                        //         decoration: InputDecoration(
-                                        //           border: InputBorder.none,
-                                        //           hintText: "Product Name",
-                                        //           filled: true,
-                                        //           fillColor: Colors.transparent,
-                                        //           hintStyle: TextStyle(
-                                        //             fontFamily: "Nunito",
-                                        //             fontSize: 16,
-                                        //             color: Colors.grey,
-                                        //           ),
-                                        //         ),
-                                        //         cursorColor: Colors.black,
-                                        //       ),
-                                        //     ),
                                         const SizedBox(
                                           height: 20,
                                         ),
