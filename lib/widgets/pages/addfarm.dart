@@ -234,7 +234,7 @@ class _addfarmState extends State<addfarm> {
                                           onChanged: (newvalue) {
                                             setState(() {
                                               currentSelectedValue = newvalue;
-                                              newvalue == newProduct.farmcode;
+                                              // newvalue == newProduct.farmcode;
                                             });
                                           },
                                         ),
