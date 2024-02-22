@@ -1,14 +1,12 @@
 import 'dart:ui';
-import 'package:malcolm_erp/widgets/pages/addfarm.dart';
+import 'package:malcolm_erp/widgets/pages/addproduct.dart';
 import 'package:provider/provider.dart';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:malcolm_erp/Assistant/assistantmethods.dart';
 import 'package:malcolm_erp/models/Admin.dart';
-
 import '../../color_palette.dart';
 import '../../models/addedFarm.dart';
 import '../../progressDialog.dart';
@@ -28,7 +26,7 @@ class _homepageState extends State<homepage> {
 
   final addedFarm newfarm = addedFarm();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-@override
+  @override
   void initState() {
     // TODO: implement initState
     super.initState();
@@ -37,7 +35,8 @@ class _homepageState extends State<homepage> {
 
   @override
   Widget build(BuildContext context) {
-    String CompanyName = Provider.of<Admin>(context).admininfo?.CompanyName ?? "getting name...";
+    String CompanyName =
+        Provider.of<Admin>(context).admininfo?.CompanyName ?? "getting name...";
     double _sigmaX = 5; // from 0-10
     double _sigmaY = 5; // from 0-10
     double _opacity = 0.2;
@@ -59,19 +58,8 @@ class _homepageState extends State<homepage> {
                     message: "Adding New Product,Please wait.....",
                   );
                 });
-            //   String? url = await  uploadImage(selectedImagePath!);
-            //    uploadsFile();
-            //uploadImage(selectedImagePath!);
-            // Occupationdb();
-            // newProduct.group = group;
-            _firestore.collection("Expenses").add({
-              //
-              // 'image': url,
-              // 'ExpenseType': group,
-              //'FarmCodep': currentSelectedValue.toString(),
-              // 'FarmCodes': FinalCode,
 
-              //newProduct.name.toString(),
+            _firestore.collection("Expenses").add({
               'description': newProduct.description.toString(),
               // 'Farm': farm,
               // 'name': group,
@@ -113,8 +101,9 @@ class _homepageState extends State<homepage> {
             width: double.infinity,
             child: Column(
               children: [
-                SizedBox(height: 45,),
-
+                SizedBox(
+                  height: 45,
+                ),
                 Padding(
                   padding: const EdgeInsets.all(18.0),
                   child: Container(
@@ -127,7 +116,7 @@ class _homepageState extends State<homepage> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.all(10.0),
-                          child:  Text(
+                          child: Text(
                             CompanyName,
                             style: TextStyle(
                               fontFamily: "Nunito",
@@ -144,7 +133,7 @@ class _homepageState extends State<homepage> {
                               showDialog<void>(
                                 context: context,
                                 barrierDismissible:
-                                false, // user must tap button!
+                                    false, // user must tap button!
                                 builder: (BuildContext context) {
                                   return AlertDialog(
                                     title: Text('Sign Out'),
@@ -161,8 +150,7 @@ class _homepageState extends State<homepage> {
                                       TextButton(
                                         child: Text(
                                           'Yes',
-                                          style: TextStyle(
-                                              color: Colors.black),
+                                          style: TextStyle(color: Colors.black),
                                         ),
                                         onPressed: () {
                                           print('yes');
@@ -170,15 +158,14 @@ class _homepageState extends State<homepage> {
                                           Navigator.pushNamedAndRemoveUntil(
                                               context,
                                               "/SignIn",
-                                                  (route) => false);
+                                              (route) => false);
                                           // Navigator.of(context).pop();
                                         },
                                       ),
                                       TextButton(
                                         child: Text(
                                           'Cancel',
-                                          style:
-                                          TextStyle(color: Colors.red),
+                                          style: TextStyle(color: Colors.red),
                                         ),
                                         onPressed: () {
                                           Navigator.of(context).pop();
@@ -199,8 +186,9 @@ class _homepageState extends State<homepage> {
                     ),
                   ),
                 ),
-
-                SizedBox(height: 45,),
+                SizedBox(
+                  height: 45,
+                ),
                 Row(
                   children: [
                     Padding(
@@ -209,27 +197,25 @@ class _homepageState extends State<homepage> {
                         height: 130,
                         width: 130,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          color: Colors.white54                 ),
-                        child: IconButton(onPressed: (){
-                          Navigator.of(context).push(
-                              MaterialPageRoute(builder: (context) => addfarm())
-                          );
-                                  //(Route<dynamic> route) => false);
-                        }, icon: Icon(Icons.add_circle)),
+                            borderRadius: BorderRadius.circular(12),
+                            color: Colors.white54),
+                        child: IconButton(
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => addproduct()));
+                              //(Route<dynamic> route) => false);
+                            },
+                            icon: Icon(Icons.add_circle)),
                       ),
                     ),
                   ],
                 ),
                 Container()
-
               ],
             ),
           ),
         ),
       ),
-
-
     );
     ;
   }

@@ -12,18 +12,18 @@ import '../../main.dart';
 import '../../models/addedFarm.dart';
 import '../progressDialog.dart';
 
-class addfarm extends StatefulWidget {
-  const addfarm({Key? key, this.group, this.Farm, this.FinalCode})
+class addproduct extends StatefulWidget {
+  const addproduct({Key? key, this.group, this.Farm, this.FinalCode})
       : super(key: key);
   final String? group;
   final String? FinalCode;
   final String? Farm;
 
   @override
-  State<addfarm> createState() => _addfarmState(group, Farm, FinalCode);
+  State<addproduct> createState() => _addproductState(group, Farm, FinalCode);
 }
 
-class _addfarmState extends State<addfarm> {
+class _addproductState extends State<addproduct> {
   @override
   void initState() {
     super.initState();
@@ -38,7 +38,7 @@ class _addfarmState extends State<addfarm> {
   String? group;
   String? farm;
 
-  _addfarmState(this.group, this.farm, this.FinalCode);
+  _addproductState(this.group, this.farm, this.FinalCode);
 
   // final picker = ImagePicker();
   double val = 0;
@@ -207,9 +207,7 @@ class _addfarmState extends State<addfarm> {
                                             bottom: 12,
                                           ),
                                           child: Column(
-                                            children: [
-
-                                            ],
+                                            children: [],
                                           ),
                                         ),
                                         DropdownButton<String>(
