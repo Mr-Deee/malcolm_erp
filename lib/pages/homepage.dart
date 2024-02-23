@@ -9,8 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:malcolm_erp/Assistant/assistantmethods.dart';
 import 'package:malcolm_erp/models/Admin.dart';
+import '../models/Item.dart';
 import '../models/addedProduct.dart';
-import '../models/iitem.dart';
 import 'Transactionpage.dart';
 import 'addproduct.dart';
 
