@@ -1,6 +1,7 @@
 import 'dart:ui';
-import 'package:malcolm_erp/widgets/pages/addproduct.dart';
+import 'package:malcolm_erp/pages/Inventory.dart';
 import 'package:provider/provider.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,7 @@ import 'package:malcolm_erp/models/Admin.dart';
 import '../../color_palette.dart';
 import '../../models/addedFarm.dart';
 import '../../progressDialog.dart';
-import '../farm_group_card.dart';
+import 'addproduct.dart';
 import 'allexpenses.dart';
 import 'farm_group_page.dart';
 
@@ -26,7 +27,7 @@ class _homepageState extends State<homepage> {
 
   final addedFarm newfarm = addedFarm();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  @override
+@override
   void initState() {
     // TODO: implement initState
     super.initState();
@@ -35,65 +36,23 @@ class _homepageState extends State<homepage> {
 
   @override
   Widget build(BuildContext context) {
-    String CompanyName =
-        Provider.of<Admin>(context).admininfo?.CompanyName ?? "getting name...";
+    String CompanyName = Provider.of<Admin>(context).admininfo?.CompanyName ?? "getting name...";
     double _sigmaX = 5; // from 0-10
     double _sigmaY = 5; // from 0-10
     double _opacity = 0.2;
     double _width = 350;
     double _height = 300;
     return Scaffold(
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.only(
-          bottom: 10,
-          right: 10,
-        ),
-        child: FloatingActionButton(
-          onPressed: () async {
-            showDialog(
-                context: context,
-                barrierDismissible: false,
-                builder: (BuildContext context) {
-                  return ProgressDialog(
-                    message: "Adding New Product,Please wait.....",
-                  );
-                });
 
-            _firestore.collection("Expenses").add({
-              'description': newProduct.description.toString(),
-              // 'Farm': farm,
-              // 'name': group,
-              'Company': newProduct.company.toString(),
-              'Cost': newProduct.cost,
-              // 'location': farm,
-              'quantity': newProduct.quantity,
-              //newProduct.toMap()
-            }).then((value) {
-              Navigator.of(context).pop();
-              Navigator.of(context).pop();
-              // displayToast('Added Sucessfully!'context);
-            }).catchError((e) {
-              // displayToast('Failed!'context);
-            });
-            // Navigator.of(context).pop();
-          },
-          splashColor: Colors.blue,
-          backgroundColor: Colors.white54,
-          child: const Icon(
-            Icons.done,
-            color: Colors.black,
-          ),
-        ),
-      ),
       body: Container(
         height: double.infinity,
         width: double.infinity,
         decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage(
-                'assets/images/backdrop.png'), // Replace with your image path
-            fit: BoxFit.cover,
-          ),
+          // image: DecorationImage(
+          //   image: AssetImage(
+          //       'assets/images/backdrop.png'), // Replace with your image path
+          //   fit: BoxFit.cover,
+          // ),
         ),
         child: SafeArea(
           child: Container(
@@ -101,9 +60,8 @@ class _homepageState extends State<homepage> {
             width: double.infinity,
             child: Column(
               children: [
-                SizedBox(
-                  height: 45,
-                ),
+                SizedBox(height: 45,),
+
                 Padding(
                   padding: const EdgeInsets.all(18.0),
                   child: Container(
@@ -116,7 +74,7 @@ class _homepageState extends State<homepage> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.all(10.0),
-                          child: Text(
+                          child:  Text(
                             CompanyName,
                             style: TextStyle(
                               fontFamily: "Nunito",
@@ -133,7 +91,7 @@ class _homepageState extends State<homepage> {
                               showDialog<void>(
                                 context: context,
                                 barrierDismissible:
-                                    false, // user must tap button!
+                                false, // user must tap button!
                                 builder: (BuildContext context) {
                                   return AlertDialog(
                                     title: Text('Sign Out'),
@@ -150,7 +108,8 @@ class _homepageState extends State<homepage> {
                                       TextButton(
                                         child: Text(
                                           'Yes',
-                                          style: TextStyle(color: Colors.black),
+                                          style: TextStyle(
+                                              color: Colors.black),
                                         ),
                                         onPressed: () {
                                           print('yes');
@@ -158,14 +117,15 @@ class _homepageState extends State<homepage> {
                                           Navigator.pushNamedAndRemoveUntil(
                                               context,
                                               "/SignIn",
-                                              (route) => false);
+                                                  (route) => false);
                                           // Navigator.of(context).pop();
                                         },
                                       ),
                                       TextButton(
                                         child: Text(
                                           'Cancel',
-                                          style: TextStyle(color: Colors.red),
+                                          style:
+                                          TextStyle(color: Colors.red),
                                         ),
                                         onPressed: () {
                                           Navigator.of(context).pop();
@@ -186,36 +146,81 @@ class _homepageState extends State<homepage> {
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: 45,
-                ),
+
+                SizedBox(height: 45,),
                 Row(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.all(28.0),
-                      child: Container(
-                        height: 130,
-                        width: 130,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            color: Colors.white54),
-                        child: IconButton(
-                            onPressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => addproduct()));
-                              //(Route<dynamic> route) => false);
-                            },
-                            icon: Icon(Icons.add_circle)),
-                      ),
+                    Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(28.0),
+                          child: Container(
+                            height: 130,
+                            width: 130,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              color: Colors.blue                 ),
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 18.0),
+                                  child: IconButton(onPressed: (){
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(builder: (context) => addproduct())
+                                    );
+                                            //(Route<dynamic> route) => false);
+                                  }, icon: Icon(Icons.add_circle)),
+                                ),
+                                Text("Add New\n Product",style: TextStyle(fontWeight: FontWeight.bold),)
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
+
+                    SizedBox(height: 45,),
+                    Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(28.0),
+                          child: Container(
+                            height: 130,
+                            width: 130,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                color: Colors.black87                 ),
+                            child: Column(
+                              children: [
+
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 18.0),
+                                  child: IconButton(onPressed: (){
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(builder: (context) => Inventory())
+                                    );
+                                    //(Route<dynamic> route) => false);
+                                  }, icon: Icon(Icons.inventory)),
+                                ),
+                                Text("View\nInventory",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),)
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+
                   ],
                 ),
-                Container()
+
+
               ],
             ),
           ),
         ),
       ),
+
+
     );
     ;
   }

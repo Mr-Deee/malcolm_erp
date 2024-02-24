@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:malcolm_erp/widgets/pages/farm_group_page.dart';
+import 'package:malcolm_erp/pages/farm_group_page.dart';
 
 
 class farmGroupCard extends StatelessWidget {

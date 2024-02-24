@@ -5,7 +5,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/material.dart';
-import 'package:malcolm_erp/widgets/pages/homepage.dart';
 import 'package:path/path.dart';
 import '../../color_palette.dart';
 import '../../main.dart';
@@ -121,16 +120,14 @@ class _addproductState extends State<addproduct> {
             _firestore.collection("Product").add({
               //
               // 'image': url,
-              'Category': group,
-              'FarmCodes': FinalCode,
+              'Category': currentSelectedValue,
               'Description': newProduct.description.toString(),
               'Product': farm,
-              'name': group,
               'Company': newProduct.company.toString(),
               'Cost': newProduct.cost,
-              // 'location': farm,
+               'location': newProduct.location,
               'quantity': newProduct.quantity,
-              //newProduct.toMap()
+
             }).then((value) {
               Navigator.of(context).pop();
               Navigator.of(context).pop();
@@ -152,11 +149,11 @@ class _addproductState extends State<addproduct> {
         height: double.infinity,
         width: double.infinity,
         decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage(
-                'assets/images/backdrop.png'), // Replace with your image path
-            fit: BoxFit.cover,
-          ),
+          // image: DecorationImage(
+          //   image: AssetImage(
+          //       'assets/images/backdrop.png'), // Replace with your image path
+          //   fit: BoxFit.cover,
+          // ),
         ),
         child: SafeArea(
           child: Container(
@@ -207,7 +204,9 @@ class _addproductState extends State<addproduct> {
                                             bottom: 12,
                                           ),
                                           child: Column(
-                                            children: [],
+                                            children: [
+
+                                            ],
                                           ),
                                         ),
                                         DropdownButton<String>(
@@ -502,56 +501,102 @@ class _addproductState extends State<addproduct> {
                                                 ColorPalette.timberGreen,
                                           ),
                                         ),
-                                        const SizedBox(height: 20),
+                                        const SizedBox(height: 10),
+
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            color: Colors.white70,
+                                            borderRadius:
+                                            BorderRadius.circular(12),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                offset: const Offset(0, 3),
+                                                blurRadius: 6,
+                                                color: ColorPalette.nileBlue
+                                                    .withOpacity(0.1),
+                                              ),
+                                            ],
+                                          ),
+                                          height: 50,
+                                          child: TextFormField(
+                                            initialValue:
+                                            newProduct.location ?? '',
+                                            onChanged: (value) {
+                                              newProduct.location = value;
+                                            },
+                                            textInputAction:
+                                            TextInputAction.next,
+                                            key: UniqueKey(),
+                                            keyboardType: TextInputType.text,
+                                            style: const TextStyle(
+                                              fontFamily: "Nunito",
+                                              fontSize: 16,
+                                              color: Colors.black,
+                                            ),
+                                            decoration: InputDecoration(
+                                              border: InputBorder.none,
+                                              hintText: "Location",
+                                              filled: true,
+                                              fillColor: Colors.transparent,
+                                              hintStyle: TextStyle(
+                                                fontFamily: "Nunito",
+                                                fontSize: 16,
+                                                color: Colors.grey,
+                                              ),
+                                            ),
+                                            cursorColor:
+                                            ColorPalette.timberGreen,
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ),
                                 ),
-                                if (selectedImagePath != null)
-                                  Align(
-                                    alignment: Alignment.topCenter,
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(top: 10),
-                                      child: SizedBox(
-                                        height: 100,
-                                        width: 100,
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(11),
-                                          child: Container(
-                                            color: Colors.transparent,
-                                            child: SizedBox(
-                                              height: 250,
-                                              child: Card(
-                                                elevation: 8,
-                                                shadowColor: Colors.grey,
-                                                shape:
-                                                    const RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                          Radius.circular(20),
-                                                        ),
-                                                        side: BorderSide(
-                                                            width: 2,
-                                                            color:
-                                                                Colors.black)),
-                                                child: Container(
-                                                  padding: EdgeInsets.all(4),
-                                                  child: CircleAvatar(
-                                                    backgroundColor:
-                                                        Colors.transparent,
-                                                    radius: 100,
-                                                    backgroundImage: AssetImage(
-                                                        selectedImagePath!),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
+                                // if (selectedImagePath != null)
+                                //   Align(
+                                //     alignment: Alignment.topCenter,
+                                //     child: Padding(
+                                //       padding: const EdgeInsets.only(top: 10),
+                                //       child: SizedBox(
+                                //         height: 100,
+                                //         width: 100,
+                                //         child: ClipRRect(
+                                //           borderRadius:
+                                //               BorderRadius.circular(11),
+                                //           child: Container(
+                                //             color: Colors.transparent,
+                                //             child: SizedBox(
+                                //               height: 250,
+                                //               child: Card(
+                                //                 elevation: 8,
+                                //                 shadowColor: Colors.grey,
+                                //                 shape:
+                                //                     const RoundedRectangleBorder(
+                                //                         borderRadius:
+                                //                             BorderRadius.all(
+                                //                           Radius.circular(20),
+                                //                         ),
+                                //                         side: BorderSide(
+                                //                             width: 2,
+                                //                             color:
+                                //                                 Colors.black)),
+                                //                 child: Container(
+                                //                   padding: EdgeInsets.all(4),
+                                //                   child: CircleAvatar(
+                                //                     backgroundColor:
+                                //                         Colors.transparent,
+                                //                     radius: 100,
+                                //                     backgroundImage: AssetImage(
+                                //                         selectedImagePath!),
+                                //                   ),
+                                //                 ),
+                                //               ),
+                                //             ),
+                                //           ),
+                                //         ),
+                                //       ),
+                                //     ),
+                                //   ),
                               ],
                             ),
                           ),

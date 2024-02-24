@@ -2,9 +2,9 @@ import 'dart:math';
 import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:malcolm_erp/widgets/pages/addfarm.dart';
-import 'package:malcolm_erp/widgets/pages/farm_card.dart';
-import 'package:malcolm_erp/widgets/pages/homepage.dart';
+import 'package:malcolm_erp/pages/addproduct.dart';
+import 'package:malcolm_erp/pages/farm_card.dart';
+import 'package:malcolm_erp/pages/homepage.dart';
 import '../../color_palette.dart';
 import '../models/addedFarm.dart';
 
@@ -145,7 +145,7 @@ class _ExpenseGroupPageState extends State<ExpenseGroupPage> {
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) {
-                  return addfarm(group: name, Farm: farm, FinalCode: finalCode);
+                  return addproduct(group: name, Farm: farm, FinalCode: finalCode);
                 },
               ),
             );
