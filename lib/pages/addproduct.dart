@@ -125,9 +125,8 @@ class _addproductState extends State<addproduct> {
               'Product': farm,
               'Company': newProduct.company.toString(),
               'Cost': newProduct.cost,
-               'location': newProduct.location,
+              'location': newProduct.location,
               'quantity': newProduct.quantity,
-
             }).then((value) {
               Navigator.of(context).pop();
               Navigator.of(context).pop();
@@ -149,12 +148,12 @@ class _addproductState extends State<addproduct> {
         height: double.infinity,
         width: double.infinity,
         decoration: BoxDecoration(
-          // image: DecorationImage(
-          //   image: AssetImage(
-          //       'assets/images/backdrop.png'), // Replace with your image path
-          //   fit: BoxFit.cover,
-          // ),
-        ),
+            // image: DecorationImage(
+            //   image: AssetImage(
+            //       'assets/images/backdrop.png'), // Replace with your image path
+            //   fit: BoxFit.cover,
+            // ),
+            ),
         child: SafeArea(
           child: Container(
             height: double.infinity,
@@ -204,9 +203,7 @@ class _addproductState extends State<addproduct> {
                                             bottom: 12,
                                           ),
                                           child: Column(
-                                            children: [
-
-                                            ],
+                                            children: [],
                                           ),
                                         ),
                                         DropdownButton<String>(
@@ -502,12 +499,11 @@ class _addproductState extends State<addproduct> {
                                           ),
                                         ),
                                         const SizedBox(height: 10),
-
                                         Container(
                                           decoration: BoxDecoration(
                                             color: Colors.white70,
                                             borderRadius:
-                                            BorderRadius.circular(12),
+                                                BorderRadius.circular(12),
                                             boxShadow: [
                                               BoxShadow(
                                                 offset: const Offset(0, 3),
@@ -520,12 +516,12 @@ class _addproductState extends State<addproduct> {
                                           height: 50,
                                           child: TextFormField(
                                             initialValue:
-                                            newProduct.location ?? '',
+                                                newProduct.location ?? '',
                                             onChanged: (value) {
                                               newProduct.location = value;
                                             },
                                             textInputAction:
-                                            TextInputAction.next,
+                                                TextInputAction.next,
                                             key: UniqueKey(),
                                             keyboardType: TextInputType.text,
                                             style: const TextStyle(
@@ -545,58 +541,13 @@ class _addproductState extends State<addproduct> {
                                               ),
                                             ),
                                             cursorColor:
-                                            ColorPalette.timberGreen,
+                                                ColorPalette.timberGreen,
                                           ),
                                         ),
                                       ],
                                     ),
                                   ),
                                 ),
-                                // if (selectedImagePath != null)
-                                //   Align(
-                                //     alignment: Alignment.topCenter,
-                                //     child: Padding(
-                                //       padding: const EdgeInsets.only(top: 10),
-                                //       child: SizedBox(
-                                //         height: 100,
-                                //         width: 100,
-                                //         child: ClipRRect(
-                                //           borderRadius:
-                                //               BorderRadius.circular(11),
-                                //           child: Container(
-                                //             color: Colors.transparent,
-                                //             child: SizedBox(
-                                //               height: 250,
-                                //               child: Card(
-                                //                 elevation: 8,
-                                //                 shadowColor: Colors.grey,
-                                //                 shape:
-                                //                     const RoundedRectangleBorder(
-                                //                         borderRadius:
-                                //                             BorderRadius.all(
-                                //                           Radius.circular(20),
-                                //                         ),
-                                //                         side: BorderSide(
-                                //                             width: 2,
-                                //                             color:
-                                //                                 Colors.black)),
-                                //                 child: Container(
-                                //                   padding: EdgeInsets.all(4),
-                                //                   child: CircleAvatar(
-                                //                     backgroundColor:
-                                //                         Colors.transparent,
-                                //                     radius: 100,
-                                //                     backgroundImage: AssetImage(
-                                //                         selectedImagePath!),
-                                //                   ),
-                                //                 ),
-                                //               ),
-                                //             ),
-                                //           ),
-                                //         ),
-                                //       ),
-                                //     ),
-                                //   ),
                               ],
                             ),
                           ),
@@ -640,25 +591,7 @@ class _addproductState extends State<addproduct> {
   io.File? image;
 
   Future<String> uploadFile(io.File image) async {
-    // showDialog(
-    //     context: context,
-    //     barrierDismissible: false,
-    //     builder: (BuildContext context)
-    //     {
-    //       //return ;
-    //     }
-    // );
-
-    //   final FirebaseAuth auth = FirebaseAuth.instance;
-    // final User? user = auth.currentUser;
-    //final myUid = user?.uid;
-
-    // final userId = currentfirebaseUser?.email;
-    // final _storage = FirebaseStorage.instance;
-
     String downloadUrl;
-
-    //upload to firebase storage
 
     Reference ref =
         FirebaseStorage.instance.ref().child("$group/${basename(image.path)}");
@@ -670,89 +603,17 @@ class _addproductState extends State<addproduct> {
     return downloadUrl;
   }
 
-  // final String _firebaseAuth = FirebaseAuth.instance.currentUser!.uid;
-  //
-  // Future<String?> uploadImage(String imagePath) async {
-  //   // Create a unique file name for the uploaded image
-  //   String fileName = DateTime.now().millisecondsSinceEpoch.toString() +
-  //       '_' +
-  //       Path.basename(selectedImagePath.toString());
-  //
-  //   // Create a storage reference
-  //   Reference storageReference = FirebaseStorage.instance
-  //       .ref()
-  //       .child('ProductImage/$_firebaseAuth/$fileName');
-  //
-  //   // TaskSnapshot uploadTask = await storageReference.putFile(
-  //   //     AssetImage(imagePath));
-  //   // Get the asset bundle to read the asset image data
-  //   final ByteData byteData = await rootBundle.load(imagePath);
-  //   final Uint8List imageData = byteData.buffer.asUint8List();
-  //   UploadTask uploadTask = storageReference.putData(imageData);
-  //
-  //
-  //   // Optional: Listen for upload progress
-  //   uploadTask.snapshotEvents.listen((TaskSnapshot snapshot) async {
-  //     final downloadUrl = await storageReference.getDownloadURL();
-  //     //
-  //     // clients.child(_firebaseAuth).update({
-  //     //   "": downloadUrl,
-  //     // });
-  //     //
-  //
-  //
-  //     double progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-  //     print('Upload progress: $progress%');
-  //   }, onError: (Object e) {
-  //     print('Upload error: $e');
-  //   });
-  //
-  //   // Wait for the upload to complete
-  //   await uploadTask.whenComplete(() {
-  //     print('Upload complete');
-  //   });
-  //   String? downloadUrl;
-  //   downloadUrl = await storageReference.getDownloadURL();
-  //
-  //   return downloadUrl;
-  //
-  // }
-
   Occupationdb() async {
-    //String? url = await  uploadImage(selectedImagePath!);
     Map userDataMap = {
       'ProductImage': url.toString(),
       'name': group,
-      //newProduct.name.toString(),
       'description': newProduct.description.toString(),
       'group': newProduct.group.toString(),
       'Company': newProduct.company.toString(),
       'Cost': newProduct.cost,
-      // 'Location': _currentAddress?.trim().toString(),
       'quantity': newProduct.quantity.toString(),
     };
 
     Products.child("Product").set(userDataMap);
   }
-// chooseImage() async {
-//   final pickedFile = await picker.getImage(source: ImageSource.gallery);
-//   setState(() {
-//     _image.add(File(pickedFile!.path));
-//   });
-//   if (pickedFile!.path == null) retrieveLostData();
-// }
-//
-// Future<void> retrieveLostData() async {
-//   final LostData response = await picker.getLostData();
-//   if (response.isEmpty) {
-//     return;
-//   }
-//   if (response.file != null) {
-//     setState(() {
-//       _image.add(File(response.file!.path));
-//     });
-//   } else {
-//     print(response.file);
-//   }
-// }
 }
