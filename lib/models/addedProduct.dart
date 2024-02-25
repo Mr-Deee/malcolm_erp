@@ -1,5 +1,5 @@
-class addedFarm{
-  addedFarm({
+class addedproduct{
+  addedproduct({
     this.name,
     this.farmcode,
     this.cost,
@@ -21,7 +21,7 @@ class addedFarm{
   String? image;
   String? description;
 
-  factory addedFarm.fromMap(Map<String, dynamic> json) => addedFarm(
+  factory addedproduct.fromMap(Map<String, dynamic> json) => addedproduct(
     name: json["ExpenseType"] as String?,
     farmcode: json["FarmCodes"] as String?,
     cost: json["Cost"] as int?,

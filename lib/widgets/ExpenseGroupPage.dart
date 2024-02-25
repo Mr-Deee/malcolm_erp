@@ -3,10 +3,10 @@ import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:malcolm_erp/pages/addproduct.dart';
-import 'package:malcolm_erp/pages/farm_card.dart';
 import 'package:malcolm_erp/pages/homepage.dart';
 import '../../color_palette.dart';
-import '../models/addedFarm.dart';
+import '../models/addedProduct.dart';
+import '../pages/product_card.dart';
 
 class ExpenseGroupPage extends StatefulWidget {
   final String? name;
@@ -16,7 +16,7 @@ class ExpenseGroupPage extends StatefulWidget {
       : super(key: key);
 
   final TextEditingController _newExpenseGroup = TextEditingController();
-  final addedFarm newProduct = addedFarm();
+  final addedproduct newProduct = addedproduct();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   String? docID;
 
@@ -357,7 +357,7 @@ class _ExpenseGroupPageState extends State<ExpenseGroupPage> {
                                       itemBuilder:
                                           (BuildContext context, int index) {
                                         return FarmCard(
-                                          Farm: addedFarm.fromMap(
+                                          Farm: addedproduct.fromMap(
                                             snapshot.data!.docs[index].data(),
                                           ),
                                           docID: snapshot.data!.docs[index].id,

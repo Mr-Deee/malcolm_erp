@@ -9,11 +9,11 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:malcolm_erp/Assistant/assistantmethods.dart';
 import 'package:malcolm_erp/models/Admin.dart';
 import '../../color_palette.dart';
-import '../../models/addedFarm.dart';
 import '../../progressDialog.dart';
+import '../models/addedProduct.dart';
+import 'Transactionpage.dart';
 import 'addproduct.dart';
 import 'allexpenses.dart';
-import 'farm_group_page.dart';
 
 class homepage extends StatefulWidget {
   const homepage({Key? key}) : super(key: key);
@@ -25,7 +25,7 @@ class homepage extends StatefulWidget {
 class _homepageState extends State<homepage> {
   final TextEditingController _newProductGroup = TextEditingController();
 
-  final addedFarm newfarm = addedFarm();
+  final addedproduct newfarm = addedproduct();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 @override
   void initState() {
@@ -194,15 +194,15 @@ class _homepageState extends State<homepage> {
                               children: [
 
                                 Padding(
-                                  padding: const EdgeInsets.only(top: 18.0),
+                                  padding:  EdgeInsets.only(top: 18.0),
                                   child: IconButton(onPressed: (){
                                     Navigator.of(context).push(
-                                        MaterialPageRoute(builder: (context) => Inventory())
+                                        MaterialPageRoute(builder: (context) => Transactionpage())
                                     );
                                     //(Route<dynamic> route) => false);
                                   }, icon: Icon(Icons.inventory)),
                                 ),
-                                Text("View\nInventory",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),)
+                                Text("Transaction",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),)
                               ],
                             ),
                           ),
@@ -213,6 +213,36 @@ class _homepageState extends State<homepage> {
                   ],
                 ),
 
+                SizedBox(height: 45,),
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(28.0),
+                      child: Container(
+                        height: 130,
+                        width: 130,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: Colors.black87                 ),
+                        child: Column(
+                          children: [
+
+                            Padding(
+                              padding: const EdgeInsets.only(top: 18.0),
+                              child: IconButton(onPressed: (){
+                                Navigator.of(context).push(
+                                    MaterialPageRoute(builder: (context) => Inventory())
+                                );
+                                //(Route<dynamic> route) => false);
+                              }, icon: Icon(Icons.inventory)),
+                            ),
+                            Text("View\nInventory",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),)
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
 
               ],
             ),

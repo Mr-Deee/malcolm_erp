@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:malcolm_erp/models/addedFarm.dart';
+import '../models/addedProduct.dart';
 import '../widgets/farm_expense_card.dart';
 import 'homepage.dart';
 
@@ -20,26 +20,9 @@ final TextEditingController _newExpenseGroup = TextEditingController();
 final TextEditingController _newFarmCode = TextEditingController();
 
 String? currentSelectedValue;
-List<String> FARMCODE = [
-  "NA-JNJ028(Nankese|Pesticide)",
-  "NA-JNJ025(Nankese|Fertilizer)",
-  "NA-JNJ026(Nankese|Transport)",
-  "NA-JNJ027(Nankese|Fuel)",
-  "WN-JNJ015(Winneba|Pesticide)",
-  "WN-JNJ016(Winneba|Transport)",
-  "WN-JNJ017(Winneba|Fertilizer)",
-  "WN-JNJ018(Winneba|Fuel)",
-  "TA-JNJ019(Tachiam|Pesticide)",
-  "TA-JNJ020(Tachiam|Transport)",
-  "TA-JNJ021(Tachiam|Fertilizer)",
-  "TA-JNJ022(Tachiam|Fuel)",
 
-  // " WN-JNJ029()",
-  // "TA-JNJ029",
-  // " NA-JNJ029"
-];
 
-final addedFarm newProduct = addedFarm();
+final addedproduct newProduct = addedproduct();
 
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -201,52 +184,8 @@ class _FarmGroupPageState extends State<FarmGroupPage> {
                                                                       borderRadius:
                                                                           BorderRadius.circular(
                                                                               30)),
-                                                                  child:
-                                                                      DropdownButtonHideUnderline(
-                                                                          child: DropdownButton<
-                                                                              String>(
-                                                                    icon: Visibility(
-                                                                        visible:
-                                                                            false,
-                                                                        child: Icon(
-                                                                            Icons
-                                                                                .arrow_downward)),
-                                                                    iconSize: 4,
-                                                                    elevation:
-                                                                        16, // game changer
-                                                                    hint: Padding(
-                                                                      padding:
-                                                                          const EdgeInsets.all(
-                                                                              8.0),
-                                                                      child: const Text(
-                                                                          "Select A Code"),
-                                                                    ),
-                                                                    value:
-                                                                        currentSelectedValue,
-                                                                    onChanged:
-                                                                        (String?
-                                                                            newValue) {
-                                                                      setState(
-                                                                          () {
-                                                                        currentSelectedValue =
-                                                                            newValue;
-                                                                        newValue =
-                                                                            newProduct
-                                                                                .farmcode;
-                                                                      });
-                                                                    },
-                                                                    items: FARMCODE.map<
-                                                                        DropdownMenuItem<
-                                                                            String>>((String
-                                                                        value) {
-                                                                      return DropdownMenuItem<
-                                                                              String>(
-                                                                          value:
-                                                                              value,
-                                                                          child: Text(
-                                                                              value));
-                                                                    }).toList(),
-                                                                  )),
+
+
                                                                 );
                                                               }),
                                                               Column(

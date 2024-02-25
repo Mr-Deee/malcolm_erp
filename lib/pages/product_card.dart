@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-
+import 'package:malcolm_erp/pages/product_details_page.dart';
 import '../../color_palette.dart';
-import '../../models/addedFarm.dart';
 import '../../models/farmdb.dart';
-import 'farm_details_page.dart';
+import '../models/addedProduct.dart';
 
 class FarmCard extends StatelessWidget {
-  final addedFarm? Farm;
+  final addedproduct? Farm;
   final String? docID;
 
   const FarmCard({Key? key, this.Farm, this.docID}) : super(key: key);

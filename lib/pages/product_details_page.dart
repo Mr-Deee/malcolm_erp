@@ -2,11 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../../color_palette.dart';
-import '../../models/addedFarm.dart';
+import '../models/addedProduct.dart';
 import 'homepage.dart';
 
 class FarmDetailsPage extends StatelessWidget {
-  final addedFarm? farm;
+  final addedproduct? farm;
   final String? docID;
 
   FarmDetailsPage({Key? key, this.farm, this.docID}) : super(key: key);

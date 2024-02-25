@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import '../../color_palette.dart';
 import '../../main.dart';
-import '../../models/addedFarm.dart';
+import '../models/addedProduct.dart';
 import '../progressDialog.dart';
 
 class addproduct extends StatefulWidget {
@@ -19,49 +19,49 @@ class addproduct extends StatefulWidget {
   final String? Farm;
 
   @override
-  State<addproduct> createState() => _addproductState(group, Farm, FinalCode);
+  State<addproduct> createState() => _addproductState(group, Farm,);
 }
 
 class _addproductState extends State<addproduct> {
+
+  List<String> dropdownOptions = [];
+
   @override
   void initState() {
     super.initState();
+    fetchDropdownOptions().then((options) {
+      setState(() {
+        dropdownOptions = options;
+      });
+    });
 
-    FinalCode;
   }
 
-  String? FinalCode;
 
-  List<File> _image = [];
+
+
   String? _selectedImage;
   String? group;
   String? farm;
 
-  _addproductState(this.group, this.farm, this.FinalCode);
+  _addproductState(this.group, this.farm, );
 
   // final picker = ImagePicker();
   double val = 0;
 
   // final ImagePicker imagePicker = ImagePicker();
   bool uploading = false;
-  final addedFarm newProduct = addedFarm();
+  final addedproduct newProduct = addedproduct();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   CollectionReference? imgRef;
   firebase_storage.Reference? ref;
-  File? selectedfile;
 
-  // void _selectImage1(String image) {
-  //   setState(() {
-  //     _selectedImage = image;
-  //     _selectedImage == selectedfile;
-  //   });
-  // }
   String code = '';
   String randomCode = '';
 
   String generatedCode = '';
+  String? setselectedval;
 
-  String? currentSelectedValue;
 
   final storage = FirebaseStorage.instance;
   final storageReference = FirebaseStorage.instance.ref();
@@ -71,14 +71,15 @@ class _addproductState extends State<addproduct> {
 
   @override
   Widget build(BuildContext context) {
+    String? currentSelectedValue;
     // var firstname = Provider
     //     .of<Users>(context)
     //     .userInfo
     //     ?.id!;
     var newprojectname = newProduct.name;
 
-    String? currentSelectedValue;
-    List<String> Category = ["Soap", "WashingPowder", "Diapers"];
+
+    // List<String> Category = ["Soap", "WashingPowder", "Diapers"];
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: true,
@@ -104,6 +105,7 @@ class _addproductState extends State<addproduct> {
         ),
         child: FloatingActionButton(
           onPressed: () async {
+            calculateTotalSum();
             showDialog(
                 context: context,
                 barrierDismissible: false,
@@ -122,11 +124,12 @@ class _addproductState extends State<addproduct> {
               // 'image': url,
               'Category': currentSelectedValue,
               'Description': newProduct.description.toString(),
-              'Product': farm,
+              'Product': newProduct.name,
               'Company': newProduct.company.toString(),
               'Cost': newProduct.cost,
               'location': newProduct.location,
               'quantity': newProduct.quantity,
+              'Sum':calculateTotalSum(),
             }).then((value) {
               Navigator.of(context).pop();
               Navigator.of(context).pop();
@@ -208,27 +211,27 @@ class _addproductState extends State<addproduct> {
                                         ),
                                         DropdownButton<String>(
                                           value: currentSelectedValue,
-                                          hint: new Text("Choose Category"),
-                                          items: Category.map<
-                                                  DropdownMenuItem<String>>(
-                                              (String value) {
+                                          hint: Text("Choose Category"),
+                                          items: dropdownOptions.map((String value) {
                                             return DropdownMenuItem<String>(
                                               value: value,
-                                              child: new Row(
+                                              child: Row(
                                                 children: <Widget>[
-                                                  new Icon(
+                                                  Icon(
                                                     Icons.category,
                                                     color: Colors.green,
                                                   ),
-                                                  new Text(value)
+                                                  SizedBox(width: 8), // Add some space between icon and text
+                                                  Text(value),
                                                 ],
                                               ),
                                             );
                                           }).toList(),
-                                          onChanged: (newvalue) {
+                                          onChanged: (String? newValue) {
                                             setState(() {
-                                              currentSelectedValue = newvalue;
-                                              // newvalue == newProduct.farmcode;
+                                              currentSelectedValue = newValue;
+                                              setselectedval==newValue;
+                                              print('Selected value: $currentSelectedValue'); // Add this line
                                             });
                                           },
                                         ),
@@ -544,6 +547,12 @@ class _addproductState extends State<addproduct> {
                                                 ColorPalette.timberGreen,
                                           ),
                                         ),
+
+                                        SizedBox(height: 20),
+                                        // Text(
+                                        //   'Total: ${calculateTotalSum()}',
+                                        //   style: TextStyle(fontSize: 16),
+                                        // ),
                                       ],
                                     ),
                                   ),
@@ -564,49 +573,10 @@ class _addproductState extends State<addproduct> {
     );
   }
 
-  Future<String?> uploadsFile() async {
-    int i = 1;
-
-    for (var img in _image) {
-      setState(() {
-        val = i / _image.length;
-      });
-      ref = firebase_storage.FirebaseStorage.instance
-          .ref()
-          .child('$group/${newProduct.description}/${basename(img.path)}');
-      await ref!.putFile(img).whenComplete(() async {
-        await ref!.getDownloadURL().then((value) {
-          imgRef?.add({'url': value});
-          i++;
-        });
-      });
-    }
-
-    String? downloadUrl;
-    downloadUrl = await ref?.getDownloadURL();
-
-    return downloadUrl;
-  }
-
-  io.File? image;
-
-  Future<String> uploadFile(io.File image) async {
-    String downloadUrl;
-
-    Reference ref =
-        FirebaseStorage.instance.ref().child("$group/${basename(image.path)}");
-
-    await ref.putFile(image);
-
-    downloadUrl = await ref.getDownloadURL();
-
-    return downloadUrl;
-  }
-
   Occupationdb() async {
     Map userDataMap = {
       'ProductImage': url.toString(),
-      'name': group,
+      'Name': group,
       'description': newProduct.description.toString(),
       'group': newProduct.group.toString(),
       'Company': newProduct.company.toString(),
@@ -615,5 +585,31 @@ class _addproductState extends State<addproduct> {
     };
 
     Products.child("Product").set(userDataMap);
+  }
+
+
+  Future<List<String>> fetchDropdownOptions() async {
+    DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance.collection('utils').doc('ProductCategory').get();
+    List<String> options = [];
+    if (documentSnapshot.exists) {
+      dynamic data = documentSnapshot.data();
+      if (data != null && data['list'] != null) {
+        List<dynamic> values = data['list'];
+        options.addAll(values.map((value) => value.toString()));
+      }
+    }
+    return options;
+  }
+
+
+
+  int calculateTotalSum() {
+    int sum = 0;
+    int? quantity = int.tryParse(newProduct.quantity.toString());
+    int? cost = int.tryParse(newProduct.cost.toString());
+    if (quantity != null && cost != null) {
+      sum = quantity * cost;
+    }
+    return sum;
   }
 }
