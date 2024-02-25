@@ -275,21 +275,31 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
         var productTotal = productCost * productQuantity;
 
         return Card(
+          color: Colors.black87,
           elevation: 4,
           margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
           child: ListTile(
-            title: Text(productName),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Cost: $productCost'),
-                Text('Quantity: $productQuantity'),
-                Text('Total: $productTotal'),
+                Text(productName,style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                Text('Cost: $productCost',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+              ],
+            ),
+            subtitle: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+
+                // Text('Quantity: $productQuantity'),
+                // Text('Total: $productTotal'),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+
                   children: [
-                    Text('Amount Being Sold: '),
+
                     SizedBox(
-                      width: 50,
+                      width: 80,
                       child: TextField(
                         controller: quantityController,
                         keyboardType: TextInputType.number,
@@ -297,11 +307,12 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
                           // You can add your logic to update quantity sold here
                         },
                         decoration: InputDecoration(
-                          hintText: 'Amount ',
+                          hintText: 'QTY ',
+                          // hintStyle: Colors.white54,
                         ),
                       ),
                     ),
-                    SizedBox(width: 8),
+                    SizedBox(width: 12),
                     ElevatedButton(
                       onPressed: () {
                         // Parse the quantity entered in TextField
@@ -375,9 +386,9 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
                               builder: (context)
                           {
                             return AlertDialog(
-                              title: Text('Amount Approved'),
+                              title: Text('Sale Approved'),
                               content: Text(
-                                  'The approved amount is $soldPrice.'),
+                                  'The approved Quantity is $soldQuantity & Total is $soldPrice.'),
                               actions: [
                                 TextButton(
                                   onPressed: () {
@@ -393,7 +404,7 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
                           // Optionally, you can update the total amount in another document or collection
                         });
                       },
-                      child: Text('Approve'),
+                      child: Text('Approve',style: TextStyle(color: Colors.black),),
                     ),
                   ],
                 ),

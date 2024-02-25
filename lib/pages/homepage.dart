@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:ui';
 import 'package:malcolm_erp/pages/Inventory.dart';
 import 'package:provider/provider.dart';
@@ -27,7 +28,8 @@ class _homepageState extends State<homepage> {
 
   final addedproduct newfarm = addedproduct();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-@override
+
+  @override
   void initState() {
     // TODO: implement initState
     super.initState();
@@ -36,32 +38,33 @@ class _homepageState extends State<homepage> {
 
   @override
   Widget build(BuildContext context) {
-    String CompanyName = Provider.of<Admin>(context).admininfo?.CompanyName ?? "getting name...";
+    String CompanyName =
+        Provider.of<Admin>(context).admininfo?.CompanyName ?? "getting name...";
     double _sigmaX = 5; // from 0-10
     double _sigmaY = 5; // from 0-10
     double _opacity = 0.2;
     double _width = 350;
     double _height = 300;
     return Scaffold(
-
       body: Container(
         height: double.infinity,
         width: double.infinity,
         decoration: BoxDecoration(
-          // image: DecorationImage(
-          //   image: AssetImage(
-          //       'assets/images/backdrop.png'), // Replace with your image path
-          //   fit: BoxFit.cover,
-          // ),
-        ),
+            // image: DecorationImage(
+            //   image: AssetImage(
+            //       'assets/images/backdrop.png'), // Replace with your image path
+            //   fit: BoxFit.cover,
+            // ),
+            ),
         child: SafeArea(
           child: Container(
             height: double.infinity,
             width: double.infinity,
             child: Column(
               children: [
-                SizedBox(height: 45,),
-
+                SizedBox(
+                  height: 45,
+                ),
                 Padding(
                   padding: const EdgeInsets.all(18.0),
                   child: Container(
@@ -74,7 +77,7 @@ class _homepageState extends State<homepage> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.all(10.0),
-                          child:  Text(
+                          child: Text(
                             CompanyName,
                             style: TextStyle(
                               fontFamily: "Nunito",
@@ -91,7 +94,7 @@ class _homepageState extends State<homepage> {
                               showDialog<void>(
                                 context: context,
                                 barrierDismissible:
-                                false, // user must tap button!
+                                    false, // user must tap button!
                                 builder: (BuildContext context) {
                                   return AlertDialog(
                                     title: Text('Sign Out'),
@@ -108,8 +111,7 @@ class _homepageState extends State<homepage> {
                                       TextButton(
                                         child: Text(
                                           'Yes',
-                                          style: TextStyle(
-                                              color: Colors.black),
+                                          style: TextStyle(color: Colors.black),
                                         ),
                                         onPressed: () {
                                           print('yes');
@@ -117,15 +119,14 @@ class _homepageState extends State<homepage> {
                                           Navigator.pushNamedAndRemoveUntil(
                                               context,
                                               "/SignIn",
-                                                  (route) => false);
+                                              (route) => false);
                                           // Navigator.of(context).pop();
                                         },
                                       ),
                                       TextButton(
                                         child: Text(
                                           'Cancel',
-                                          style:
-                                          TextStyle(color: Colors.red),
+                                          style: TextStyle(color: Colors.red),
                                         ),
                                         onPressed: () {
                                           Navigator.of(context).pop();
@@ -146,40 +147,29 @@ class _homepageState extends State<homepage> {
                     ),
                   ),
                 ),
-
-                SizedBox(height: 45,),
-                Row(
-                  children: [
-                    Row(
+                SizedBox(
+                  height: 15,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Container(
+                    height: 170,
+                    width: 340,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        color: Colors.white),
+                    child: Column(
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.all(28.0),
-                          child: Container(
-                            height: 130,
-                            width: 130,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              color: Colors.blue                 ),
-                            child: Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 18.0),
-                                  child: IconButton(onPressed: (){
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(builder: (context) => addproduct())
-                                    );
-                                            //(Route<dynamic> route) => false);
-                                  }, icon: Icon(Icons.add_circle)),
-                                ),
-                                Text("Add New\n Product",style: TextStyle(fontWeight: FontWeight.bold),)
-                              ],
-                            ),
-                          ),
-                        ),
+                        Text(
+                          "Add New\n Product",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        )
                       ],
                     ),
-
-                    SizedBox(height: 45,),
+                  ),
+                ),
+                Row(
+                  children: [
                     Row(
                       children: [
                         Padding(
@@ -189,31 +179,75 @@ class _homepageState extends State<homepage> {
                             width: 130,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(12),
-                                color: Colors.black87                 ),
+                                color: Colors.blue),
                             child: Column(
                               children: [
-
                                 Padding(
-                                  padding:  EdgeInsets.only(top: 18.0),
-                                  child: IconButton(onPressed: (){
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(builder: (context) => Transactionpage())
-                                    );
-                                    //(Route<dynamic> route) => false);
-                                  }, icon: Icon(Icons.inventory)),
+                                  padding: const EdgeInsets.only(top: 18.0),
+                                  child: IconButton(
+                                      onPressed: () {
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    addproduct()));
+                                        //(Route<dynamic> route) => false);
+                                      },
+                                      icon: Icon(Icons.add_circle)),
                                 ),
-                                Text("Transaction",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),)
+                                Text(
+                                  "Add New\n Product",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                )
                               ],
                             ),
                           ),
                         ),
                       ],
                     ),
-
+                    SizedBox(
+                      height: 45,
+                    ),
+                    Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(28.0),
+                          child: Container(
+                            height: 130,
+                            width: 130,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                color: Colors.black87),
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(top: 18.0),
+                                  child: IconButton(
+                                      onPressed: () {
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    Transactionpage()));
+                                        //(Route<dynamic> route) => false);
+                                      },
+                                      icon: Icon(Icons.monetization_on)),
+                                ),
+                                Text(
+                                  "Transaction",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
-
-                SizedBox(height: 45,),
+                SizedBox(
+                  height: 45,
+                ),
                 Row(
                   children: [
                     Padding(
@@ -223,34 +257,37 @@ class _homepageState extends State<homepage> {
                         width: 130,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12),
-                            color: Colors.black87                 ),
+                            color: Colors.black87),
                         child: Column(
                           children: [
-
                             Padding(
                               padding: const EdgeInsets.only(top: 18.0),
-                              child: IconButton(onPressed: (){
-                                Navigator.of(context).push(
-                                    MaterialPageRoute(builder: (context) => Inventory())
-                                );
-                                //(Route<dynamic> route) => false);
-                              }, icon: Icon(Icons.inventory)),
+                              child: IconButton(
+                                  onPressed: () {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) => Inventory()));
+                                    //(Route<dynamic> route) => false);
+                                  },
+                                  icon: Icon(Icons.inventory)),
                             ),
-                            Text("View\nInventory",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),)
+                            Text(
+                              "View\nInventory",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            )
                           ],
                         ),
                       ),
                     ),
                   ],
                 ),
-
               ],
             ),
           ),
         ),
       ),
-
-
     );
     ;
   }
