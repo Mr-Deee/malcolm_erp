@@ -19,13 +19,16 @@ class addproduct extends StatefulWidget {
   final String? Farm;
 
   @override
-  State<addproduct> createState() => _addproductState(group, Farm,);
+  State<addproduct> createState() => _addproductState(
+        group,
+        Farm,
+      );
 }
 
 class _addproductState extends State<addproduct> {
-
   List<String> dropdownOptions = [];
-
+  late DateTime _selectedDate;
+  late TimeOfDay _selectedTime;
   @override
   void initState() {
     super.initState();
@@ -34,17 +37,18 @@ class _addproductState extends State<addproduct> {
         dropdownOptions = options;
       });
     });
-
+    _selectedDate = DateTime.now();
+    _selectedTime = TimeOfDay.now();
   }
-
-
-
 
   String? _selectedImage;
   String? group;
   String? farm;
 
-  _addproductState(this.group, this.farm, );
+  _addproductState(
+    this.group,
+    this.farm,
+  );
 
   // final picker = ImagePicker();
   double val = 0;
@@ -62,7 +66,6 @@ class _addproductState extends State<addproduct> {
   String generatedCode = '';
   String? setselectedval;
 
-
   final storage = FirebaseStorage.instance;
   final storageReference = FirebaseStorage.instance.ref();
 
@@ -77,7 +80,6 @@ class _addproductState extends State<addproduct> {
     //     .userInfo
     //     ?.id!;
     var newprojectname = newProduct.name;
-
 
     // List<String> Category = ["Soap", "WashingPowder", "Diapers"];
     return Scaffold(
@@ -129,7 +131,7 @@ class _addproductState extends State<addproduct> {
               'Cost': newProduct.cost,
               'location': newProduct.location,
               'quantity': newProduct.quantity,
-              'Sum':calculateTotalSum(),
+              'Sum': calculateTotalSum(),
             }).then((value) {
               Navigator.of(context).pop();
               Navigator.of(context).pop();
@@ -212,7 +214,8 @@ class _addproductState extends State<addproduct> {
                                         DropdownButton<String>(
                                           value: currentSelectedValue,
                                           hint: Text("Choose Category"),
-                                          items: dropdownOptions.map((String value) {
+                                          items: dropdownOptions
+                                              .map((String value) {
                                             return DropdownMenuItem<String>(
                                               value: value,
                                               child: Row(
@@ -221,7 +224,9 @@ class _addproductState extends State<addproduct> {
                                                     Icons.category,
                                                     color: Colors.green,
                                                   ),
-                                                  SizedBox(width: 8), // Add some space between icon and text
+                                                  SizedBox(
+                                                      width:
+                                                          8), // Add some space between icon and text
                                                   Text(value),
                                                 ],
                                               ),
@@ -230,8 +235,9 @@ class _addproductState extends State<addproduct> {
                                           onChanged: (String? newValue) {
                                             setState(() {
                                               currentSelectedValue = newValue;
-                                              setselectedval==newValue;
-                                              print('Selected value: $currentSelectedValue'); // Add this line
+                                              setselectedval == newValue;
+                                              print(
+                                                  'Selected value: $currentSelectedValue'); // Add this line
                                             });
                                           },
                                         ),
@@ -587,9 +593,11 @@ class _addproductState extends State<addproduct> {
     Products.child("Product").set(userDataMap);
   }
 
-
   Future<List<String>> fetchDropdownOptions() async {
-    DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance.collection('utils').doc('ProductCategory').get();
+    DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
+        .collection('utils')
+        .doc('ProductCategory')
+        .get();
     List<String> options = [];
     if (documentSnapshot.exists) {
       dynamic data = documentSnapshot.data();
@@ -600,8 +608,6 @@ class _addproductState extends State<addproduct> {
     }
     return options;
   }
-
-
 
   int calculateTotalSum() {
     int sum = 0;
