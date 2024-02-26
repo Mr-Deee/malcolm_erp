@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'Inventorydetails.dart';
+
 class Inventory extends StatefulWidget {
   const Inventory({Key? key}) : super(key: key);
 

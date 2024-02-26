@@ -2,7 +2,6 @@ import 'dart:ffi';
 import 'dart:ui';
 import 'package:malcolm_erp/pages/Inventory.dart';
 import 'package:provider/provider.dart';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +14,7 @@ import '../models/addedProduct.dart';
 import 'Transactionpage.dart';
 import 'addproduct.dart';
 import 'allexpenses.dart';
+
 
 class homepage extends StatefulWidget {
   const homepage({Key? key}) : super(key: key);

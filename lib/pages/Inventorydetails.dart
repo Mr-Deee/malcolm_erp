@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Inventorydetails extends StatefulWidget {
-  const InventInventorydetailsory({Key? key}) : super(key: key);
+  const Inventorydetails({Key? key}) : super(key: key);
 
   @override
   State<Inventorydetails> createState() => _InventorydetailsState();

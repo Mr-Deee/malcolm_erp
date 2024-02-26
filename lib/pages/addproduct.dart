@@ -132,7 +132,7 @@ class _addproductState extends State<addproduct> {
             Occupationdb();
             newProduct.group = group;
             _firestore.collection("Product").add({
-              'Date': _selectDate,
+              'Date': _selectedDate,
               'Time': _selectedTime,
               'Category': currentSelectedValue,
               'Description': newProduct.description.toString(),
@@ -566,7 +566,7 @@ class _addproductState extends State<addproduct> {
 
                                         SizedBox(height: 20),
                                         GestureDetector(
-                                          onTap: () => _selectDate(context),
+                                          onTap: () => _selectedDate,
                                           child: Container(
                                             decoration: BoxDecoration(
                                               color: ColorPalette.white,
