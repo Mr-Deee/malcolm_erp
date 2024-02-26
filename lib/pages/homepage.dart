@@ -28,12 +28,22 @@ class _homepageState extends State<homepage> {
 
   final addedproduct newfarm = addedproduct();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
+  List<DocumentSnapshot> _productCategories = [];
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     AssistantMethod.getCurrentOnlineUserInfo(context);
+    _fetchData();
+  }
+
+  Future<void> _fetchData() async {
+    // Retrieve data from Firestore collection 'productcategory'
+    DocumentSnapshot<Map<String, dynamic>> snapshot =
+    await FirebaseFirestore.instance.collection('utils').doc(' ProductCategory ').get();
+    setState(() {
+      _productCategories = [snapshot];
+    });
   }
 
   @override
@@ -161,8 +171,8 @@ class _homepageState extends State<homepage> {
                     child: Column(
                       children: [
                         Text(
-                          "Add New\n Product",
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          "DashBoard",
+                          style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),
                         )
                       ],
                     ),
@@ -246,7 +256,7 @@ class _homepageState extends State<homepage> {
                   ],
                 ),
                 SizedBox(
-                  height: 45,
+                  height: 10,
                 ),
                 Row(
                   children: [
@@ -272,7 +282,7 @@ class _homepageState extends State<homepage> {
                                   icon: Icon(Icons.inventory)),
                             ),
                             Text(
-                              "View\nInventory",
+                              "Inventory",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white),
