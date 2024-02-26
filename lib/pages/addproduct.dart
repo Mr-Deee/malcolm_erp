@@ -49,6 +49,16 @@ class _addproductState extends State<addproduct> {
     this.group,
     this.farm,
   );
+  Future<void> _selectTime(BuildContext context) async {
+    final TimeOfDay? pickedTime = await showTimePicker(
+      context: context,
+      initialTime: _selectedTime,
+    );
+    if (pickedTime != null && pickedTime != _selectedTime)
+      setState(() {
+        _selectedTime = pickedTime;
+      });
+  }
 
   // final picker = ImagePicker();
   double val = 0;
@@ -555,10 +565,74 @@ class _addproductState extends State<addproduct> {
                                         ),
 
                                         SizedBox(height: 20),
-                                        // Text(
-                                        //   'Total: ${calculateTotalSum()}',
-                                        //   style: TextStyle(fontSize: 16),
-                                        // ),
+                                        GestureDetector(
+                                          onTap: () => _selectDate(context),
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              color: ColorPalette.white,
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  offset: const Offset(0, 3),
+                                                  blurRadius: 6,
+                                                  color: ColorPalette.nileBlue
+                                                      .withOpacity(0.1),
+                                                ),
+                                              ],
+                                            ),
+                                            height: 50,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Row(
+                                                children: [
+                                                  Icon(Icons.calendar_today),
+                                                  SizedBox(width: 10),
+                                                  Text(
+                                                    "${_selectedDate.toLocal()}"
+                                                        .split(' ')[0],
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(height: 10),
+                                        GestureDetector(
+                                          onTap: () => _selectTime(context),
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              color: ColorPalette.white,
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  offset: const Offset(0, 3),
+                                                  blurRadius: 6,
+                                                  color: ColorPalette.nileBlue
+                                                      .withOpacity(0.1),
+                                                ),
+                                              ],
+                                            ),
+                                            height: 50,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Row(
+                                                children: [
+                                                  Icon(Icons.access_time),
+                                                  SizedBox(width: 10),
+                                                  Text(
+                                                    "${_selectedTime.format(context)}",
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        // Your existing TextFormField widgets
+                                        SizedBox(height: 20),
                                       ],
                                     ),
                                   ),
