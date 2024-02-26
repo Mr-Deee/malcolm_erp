@@ -132,8 +132,8 @@ class _addproductState extends State<addproduct> {
             Occupationdb();
             newProduct.group = group;
             _firestore.collection("Product").add({
-              //
-              // 'image': url,
+              'Date': _selectDate,
+              'Time': _selectedTime,
               'Category': currentSelectedValue,
               'Description': newProduct.description.toString(),
               'Product': newProduct.name,
