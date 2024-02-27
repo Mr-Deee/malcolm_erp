@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Inventorydetails extends StatefulWidget {
-  const Inventorydetails({Key? key}) : super(key: key);
+  const Inventorydetails({Key? key, required this.categoryName})
+      : super(key: key);
 
   @override
   State<Inventorydetails> createState() => _InventorydetailsState();
@@ -17,8 +18,7 @@ class _InventorydetailsState extends State<Inventorydetails> {
       ),
       body: Container(
         padding: EdgeInsets.all(10.0),
-        child: 
-        StreamBuilder(
+        child: StreamBuilder(
           stream: FirebaseFirestore.instance
               .collection('utils')
               .doc('ProductCategory')
