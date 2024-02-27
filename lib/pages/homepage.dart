@@ -1,5 +1,6 @@
 import 'dart:ffi';
 import 'dart:ui';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:malcolm_erp/pages/Inventory.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -45,6 +46,7 @@ class _homepageState extends State<homepage> {
       _productCategories = [snapshot];
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -163,7 +165,7 @@ class _homepageState extends State<homepage> {
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0),
                   child: Container(
-                    height: 170,
+                    height: 160,
                     width: 340,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
@@ -173,7 +175,10 @@ class _homepageState extends State<homepage> {
                         Text(
                           "DashBoard",
                           style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),
-                        )
+                        ),
+
+
+
                       ],
                     ),
                   ),
@@ -183,32 +188,38 @@ class _homepageState extends State<homepage> {
                     Row(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.all(28.0),
-                          child: Container(
-                            height: 130,
-                            width: 130,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                color: Colors.blue),
-                            child: Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 18.0),
-                                  child: IconButton(
-                                      onPressed: () {
-                                        Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    addproduct()));
-                                        //(Route<dynamic> route) => false);
-                                      },
-                                      icon: Icon(Icons.add_circle)),
-                                ),
-                                Text(
-                                  "Add New\n Product",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                )
-                              ],
+                          padding:  EdgeInsets.all(28.0),
+                          child: GestureDetector(
+                            onTap: (){
+
+                              Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          addproduct()));
+                            },
+                            child: Container(
+                              height: 130,
+                              width: 130,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  color: Colors.blue),
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 18.0),
+                                    child: IconButton(
+                                        onPressed: () {
+
+                                          //(Route<dynamic> route) => false);
+                                        },
+                                        icon: Icon(Icons.add_circle)),
+                                  ),
+                                  Text(
+                                    "Add New\n Product",
+                                    style: TextStyle(fontWeight: FontWeight.bold),
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -299,10 +310,10 @@ class _homepageState extends State<homepage> {
         ),
       ),
     );
-    ;
   }
 }
 
 displayToast(String message, BuildContext context) {
   Fluttertoast.showToast(msg: message);
 }
+

@@ -10,6 +10,7 @@ import '../../color_palette.dart';
 import '../../main.dart';
 import '../models/addedProduct.dart';
 import '../progressDialog.dart';
+import 'homepage.dart';
 
 class addproduct extends StatefulWidget {
   const addproduct({Key? key, this.group, this.Farm, this.FinalCode})
@@ -75,22 +76,40 @@ class _addproductState extends State<addproduct> {
 
   String generatedCode = '';
   String? setselectedval;
+  String? currentSelectedValue;
 
   final storage = FirebaseStorage.instance;
   final storageReference = FirebaseStorage.instance.ref();
 
-  String? selectedImagePath;
-  String? uploadedImageUrl;
-
   @override
   Widget build(BuildContext context) {
-    String? currentSelectedValue;
+
     // var firstname = Provider
     //     .of<Users>(context)
     //     .userInfo
     //     ?.id!;
     var newprojectname = newProduct.name;
+    inventorydb() async {
+      _firestore.collection("Inventory").add({
+        'Date': _selectedDate.toString(),
+        'Time': _selectedTime.toString(),
+        'Category': currentSelectedValue,
+        'Product': newProduct.name,
+        'Company': newProduct.company.toString(),
+        'Cost': newProduct.cost,
+        'location': newProduct.location,
+        'quantity': newProduct.quantity,
+        'Sum': calculateTotalSum(),
+      }).then((value) {
 
+        Navigator.of(context).pop();
+        Navigator.of(context).pop();
+      }).catchError((e) {
+        // displayToast('Failed!'context);
+      });
+
+
+    }
     // List<String> Category = ["Soap", "WashingPowder", "Diapers"];
     return Scaffold(
       appBar: AppBar(
@@ -129,13 +148,13 @@ class _addproductState extends State<addproduct> {
             //   String? url = await  uploadImage(selectedImagePath!);
             //    uploadsFile();
             //uploadImage(selectedImagePath!);
+            inventorydb();
             Occupationdb();
             newProduct.group = group;
             _firestore.collection("Product").add({
-              'Date': _selectedDate,
-              'Time': _selectedTime,
+              'Date': _selectedDate.toString(),
+              'Time': _selectedTime.toString(),
               'Category': currentSelectedValue,
-              'Description': newProduct.description.toString(),
               'Product': newProduct.name,
               'Company': newProduct.company.toString(),
               'Cost': newProduct.cost,
@@ -143,8 +162,8 @@ class _addproductState extends State<addproduct> {
               'quantity': newProduct.quantity,
               'Sum': calculateTotalSum(),
             }).then((value) {
-              Navigator.of(context).pop();
-              Navigator.of(context).pop();
+              // Navigator.of(context).pop();
+              // Navigator.of(context).pop();
               // displayToast('Added Sucessfully!'context);
             }).catchError((e) {
               // displayToast('Failed!'context);
@@ -222,8 +241,8 @@ class _addproductState extends State<addproduct> {
                                           ),
                                         ),
                                         DropdownButton<String>(
-                                          value: currentSelectedValue,
-                                          hint: Text("Choose Category"),
+
+                                          hint: Text(currentSelectedValue.toString()??""),
                                           items: dropdownOptions
                                               .map((String value) {
                                             return DropdownMenuItem<String>(
@@ -472,51 +491,7 @@ class _addproductState extends State<addproduct> {
                                         const SizedBox(
                                           height: 20,
                                         ),
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            color: Colors.white70,
-                                            borderRadius:
-                                                BorderRadius.circular(12),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                offset: const Offset(0, 3),
-                                                blurRadius: 6,
-                                                color: ColorPalette.nileBlue
-                                                    .withOpacity(0.1),
-                                              ),
-                                            ],
-                                          ),
-                                          height: 50,
-                                          child: TextFormField(
-                                            initialValue:
-                                                newProduct.description ?? '',
-                                            onChanged: (value) {
-                                              newProduct.description = value;
-                                            },
-                                            textInputAction:
-                                                TextInputAction.next,
-                                            key: UniqueKey(),
-                                            keyboardType: TextInputType.text,
-                                            style: const TextStyle(
-                                              fontFamily: "Nunito",
-                                              fontSize: 16,
-                                              color: Colors.black,
-                                            ),
-                                            decoration: InputDecoration(
-                                              border: InputBorder.none,
-                                              hintText: "Description",
-                                              filled: true,
-                                              fillColor: Colors.transparent,
-                                              hintStyle: TextStyle(
-                                                fontFamily: "Nunito",
-                                                fontSize: 16,
-                                                color: Colors.grey,
-                                              ),
-                                            ),
-                                            cursorColor:
-                                                ColorPalette.timberGreen,
-                                          ),
-                                        ),
+
                                         const SizedBox(height: 10),
                                         Container(
                                           decoration: BoxDecoration(
@@ -565,72 +540,25 @@ class _addproductState extends State<addproduct> {
                                         ),
 
                                         SizedBox(height: 20),
-                                        GestureDetector(
-                                          onTap: () => _selectedDate,
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              color: ColorPalette.white,
-                                              borderRadius:
-                                                  BorderRadius.circular(12),
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  offset: const Offset(0, 3),
-                                                  blurRadius: 6,
-                                                  color: ColorPalette.nileBlue
-                                                      .withOpacity(0.1),
-                                                ),
-                                              ],
-                                            ),
-                                            height: 50,
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Row(
-                                                children: [
-                                                  Icon(Icons.calendar_today),
-                                                  SizedBox(width: 10),
-                                                  Text(
-                                                    "${_selectedDate.toLocal()}"
-                                                        .split(' ')[0],
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ),
+
                                         SizedBox(height: 10),
-                                        GestureDetector(
-                                          onTap: () => _selectTime(context),
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              color: ColorPalette.white,
-                                              borderRadius:
-                                                  BorderRadius.circular(12),
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  offset: const Offset(0, 3),
-                                                  blurRadius: 6,
-                                                  color: ColorPalette.nileBlue
-                                                      .withOpacity(0.1),
-                                                ),
-                                              ],
+                                        Row(
+                                          children: [
+                                            Icon(Icons.access_time),
+                                            SizedBox(width: 10),
+                                            Text(
+                                              "${_selectedTime.format(context)}",
                                             ),
-                                            height: 50,
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Row(
-                                                children: [
-                                                  Icon(Icons.access_time),
-                                                  SizedBox(width: 10),
-                                                  Text(
-                                                    "${_selectedTime.format(context)}",
-                                                  ),
-                                                ],
-                                              ),
+                                            SizedBox(width: 10),
+                                            Icon(Icons.calendar_today),
+                                            SizedBox(width: 10),
+                                            Text(
+                                              "${_selectedDate.toLocal()}"
+                                                  .split(' ')[0],
                                             ),
-                                          ),
+                                          ],
                                         ),
+
                                         // Your existing TextFormField widgets
                                         SizedBox(height: 20),
                                       ],
@@ -663,6 +591,8 @@ class _addproductState extends State<addproduct> {
       'Cost': newProduct.cost,
       'quantity': newProduct.quantity.toString(),
     };
+
+
 
     Products.child("Product").set(userDataMap);
   }

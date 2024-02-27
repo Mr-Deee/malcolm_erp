@@ -308,6 +308,13 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
                         },
                         decoration: InputDecoration(
                           hintText: 'QTY ',
+                          hintStyle: TextStyle(
+                            color: Colors.white, // Change color of hint text
+                            fontStyle: FontStyle.italic, // Apply italic style to hint text
+                            fontSize: 16, // Adjust font size of hint text
+                            fontWeight: FontWeight.normal, // Adjust font weight of hint text
+                            // Add more text style properties as needed
+                          ),
                           // hintStyle: Colors.white54,
                         ),
                       ),
