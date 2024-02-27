@@ -45,8 +45,9 @@ class _InventoryState extends State<Inventory> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                 Inventorydetails(categoryName: categoryName),);
+                            builder: (context) =>
+                                Inventorydetails(categoryName: categoryName),
+                          ));
                       print('Tapped on category: $categoryName');
                     },
                     child: Card(
