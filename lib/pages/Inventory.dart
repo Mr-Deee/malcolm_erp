@@ -43,9 +43,12 @@ class _InventoryState extends State<Inventory> {
                   return GestureDetector(
                     onTap: () {
                       Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Inventorydetails()));
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              Inventorydetails(categoryName: categoryName),
+                        ),
+                      );
                       print('Tapped on category: $categoryName');
                     },
                     child: Card(

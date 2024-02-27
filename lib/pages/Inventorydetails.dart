@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Inventorydetails extends StatefulWidget {
-  const Inventorydetails({Key? key}) : super(key: key);
+  const Inventorydetails({Key? key, required this.categoryName})
+      : super(key: key);
 
   @override
   State<Inventorydetails> createState() => _InventorydetailsState();
@@ -15,49 +16,52 @@ class _InventorydetailsState extends State<Inventorydetails> {
       appBar: AppBar(
         title: Text("Inventory Details"),
       ),
-      body: Container(
+      body: 
+      
+      
+   Container(
         padding: EdgeInsets.all(10.0),
-        child: 
-        StreamBuilder(
+        child: StreamBuilder(
           stream: FirebaseFirestore.instance
-              .collection('utils')
-              .doc('ProductCategory')
+              .collection('Inventory') // Assuming inventory data is stored in a collection named 'inventory'
+              .where('Category', isEqualTo: widget.categoryName) // Filter by category name
               .snapshots(),
-          builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+          builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return CircularProgressIndicator(); // Display a progress indicator while fetching data
+              return Center(
+                child: CircularProgressIndicator(),
+              );
             }
             if (snapshot.hasError) {
-              return Text('Error:${snapshot.error}');
+              return Text('Error: ${snapshot.error}');
             }
-            if (snapshot.hasData && snapshot.data!.exists) {
-              Map<String, dynamic> data =
-                  snapshot.data!.data() as Map<String, dynamic>;
-              List<dynamic> categories =
-                  data['list']; // Assuming category names are stored as a list
+            if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
               return ListView.builder(
-                itemCount: categories.length,
+                itemCount: snapshot.data!.docs.length,
                 itemBuilder: (context, index) {
-                  String categoryName = categories[index];
-                  return GestureDetector(
-                    onTap: () {
-                      print('Tapped on category: $categoryName');
-                    },
-                    child: Card(
-                      child: ListTile(
-                        title: Text(categoryName),
-                        leading: Icon(Icons
-                            .category), // Placeholder icon, replace with actual icons
+                  var document = snapshot.data!.docs[index];
+                  return Card(
+                    elevation: 3,
+                    margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                    child: ListTile(
+                      title: Text(document['Product']),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Quantity: ${document['quantity']}'),
+                          Text('Date: ${document['Date']}'),
+                        ],
                       ),
                     ),
                   );
                 },
               );
             }
-            return Text('No categories found');
+            return Center(
+              child: Text('No inventory items found for this category.'),
+            );
           },
         ),
       ),
-    );
   }
 }
