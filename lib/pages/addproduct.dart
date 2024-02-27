@@ -83,7 +83,6 @@ class _addproductState extends State<addproduct> {
 
   @override
   Widget build(BuildContext context) {
-
     // var firstname = Provider
     //     .of<Users>(context)
     //     .userInfo
@@ -101,15 +100,13 @@ class _addproductState extends State<addproduct> {
         'quantity': newProduct.quantity,
         'Sum': calculateTotalSum(),
       }).then((value) {
-
         Navigator.of(context).pop();
         Navigator.of(context).pop();
       }).catchError((e) {
         // displayToast('Failed!'context);
       });
-
-
     }
+
     // List<String> Category = ["Soap", "WashingPowder", "Diapers"];
     return Scaffold(
       appBar: AppBar(
@@ -165,10 +162,7 @@ class _addproductState extends State<addproduct> {
               // Navigator.of(context).pop();
               // Navigator.of(context).pop();
               // displayToast('Added Sucessfully!'context);
-            }).catchError((e) {
-              // displayToast('Failed!'context);
-            });
-            // Navigator.of(context).pop();
+            }).catchError((e) {});
           },
           splashColor: Colors.blue,
           backgroundColor: Colors.white54,
@@ -241,8 +235,9 @@ class _addproductState extends State<addproduct> {
                                           ),
                                         ),
                                         DropdownButton<String>(
-
-                                          hint: Text(currentSelectedValue.toString()??""),
+                                          hint: Text(
+                                              currentSelectedValue.toString() ??
+                                                  ""),
                                           items: dropdownOptions
                                               .map((String value) {
                                             return DropdownMenuItem<String>(
@@ -591,8 +586,6 @@ class _addproductState extends State<addproduct> {
       'Cost': newProduct.cost,
       'quantity': newProduct.quantity.toString(),
     };
-
-
 
     Products.child("Product").set(userDataMap);
   }
