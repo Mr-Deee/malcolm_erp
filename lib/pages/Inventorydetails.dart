@@ -2,14 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Inventorydetails extends StatefulWidget {
-  const Inventorydetails({Key? key, required this.categoryName})
-      : super(key: key);
 
+   Inventorydetails({Key? key, this.categoryName, })
+      : super(key: key);
+   final String? categoryName;
   @override
-  State<Inventorydetails> createState() => _InventorydetailsState();
+  State<Inventorydetails> createState() => _InventorydetailsState(categoryName);
 }
 
 class _InventorydetailsState extends State<Inventorydetails> {
+  _InventorydetailsState( this.categoryName);
+  final String? categoryName;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,6 +66,6 @@ class _InventorydetailsState extends State<Inventorydetails> {
             );
           },
         ),
-      ),
+      ));
   }
 }
