@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:malcolm_erp/pages/Admin.dart';
 import 'package:malcolm_erp/pages/SignUp.dart';
 import 'package:malcolm_erp/pages/homepage.dart';
 import 'package:malcolm_erp/pages/login.dart';
@@ -54,10 +55,11 @@ class MyApp extends StatelessWidget {
         // home: const MyHomePage(title: 'Flutter Demo Home Page'),
 
         initialRoute:
-            FirebaseAuth.instance.currentUser == null ? '/SignUP' : '/Homepage',
+            FirebaseAuth.instance.currentUser == null ? '/SignUP' : '/Admin',
+            //'/Homepage',
         routes: {
           "/SignUP": (context) => Signup(),
-          // "/OnBoarding": (context) => WelcomePage(),
+          "/Admin": (context) => Adminpage(),
           "/SignIn": (context) => LoginPage(),
           "/Homepage": (context) => homepage(),
           //    "/addproduct":(context)=>addproduct()

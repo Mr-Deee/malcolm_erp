@@ -585,6 +585,7 @@ class _addproductState extends State<addproduct> {
       'Company': newProduct.company.toString(),
       'Cost': newProduct.cost,
       'quantity': newProduct.quantity.toString(),
+      'Sum':calculateTotalSum(),
     };
 
     Products.child("Product").set(userDataMap);

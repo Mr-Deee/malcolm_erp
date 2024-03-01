@@ -14,6 +14,7 @@ class Adminpage extends StatefulWidget {
   @override
   State<Adminpage> createState() => _AdminpageState();
 }
+
 Map<String, int> _categoryTotals = {};
 
 class _AdminpageState extends State<Adminpage> {
@@ -28,7 +29,7 @@ class _AdminpageState extends State<Adminpage> {
   Future<void> _fetchProductCategories() async {
     try {
       QuerySnapshot snapshot =
-      await FirebaseFirestore.instance.collection('Product').get();
+          await FirebaseFirestore.instance.collection('Product').get();
 
       Map<String, int> categoryTotals = {};
 
@@ -51,176 +52,179 @@ class _AdminpageState extends State<Adminpage> {
   Widget build(BuildContext context) {
     String CompanyName =
         Provider.of<Admin>(context).admininfo?.CompanyName ?? "getting name...";
-    return Container(
-      height: double.infinity,
-      width: double.infinity,
-      decoration: BoxDecoration(
-        // image: DecorationImage(
-        //   image: AssetImage(
-        //       'assets/images/backdrop.png'), // Replace with your image path
-        //   fit: BoxFit.cover,
-        // ),
-      ),
-      child: SafeArea(
-        child: Container(
-          height: double.infinity,
-          width: double.infinity,
-          child: Column(
-            children: [
-              SizedBox(
-                height: 45,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(18.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white54,
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Text(
-                          CompanyName,
-                          style: TextStyle(
-                            fontFamily: "Nunito",
-                            fontWeight: FontWeight.bold,
-                            fontSize: 28,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 10),
-                        child: IconButton(
-                          onPressed: () {
-                            showDialog<void>(
-                              context: context,
-                              barrierDismissible:
-                              false, // user must tap button!
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: Text('Sign Out'),
-                                  backgroundColor: Colors.white,
-                                  content: SingleChildScrollView(
-                                    child: Column(
-                                      children: <Widget>[
-                                        Text(
-                                            'Are you certain you want to Sign Out?'),
-                                      ],
-                                    ),
-                                  ),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      child: Text(
-                                        'Yes',
-                                        style: TextStyle(color: Colors.black),
-                                      ),
-                                      onPressed: () {
-                                        print('yes');
-                                        FirebaseAuth.instance.signOut();
-                                        Navigator.pushNamedAndRemoveUntil(
-                                            context,
-                                            "/SignIn",
-                                                (route) => false);
-                                        // Navigator.of(context).pop();
-                                      },
-                                    ),
-                                    TextButton(
-                                      child: Text(
-                                        'Cancel',
-                                        style: TextStyle(color: Colors.red),
-                                      ),
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                          },
-                          icon: const Icon(
-                            Icons.logout,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+    return Scaffold(
+
+      body: Container(
+        height: double.infinity,
+        width: double.infinity,
+        decoration: BoxDecoration(
+            // image: DecorationImage(
+            //   image: AssetImage(
+            //       'assets/images/backdrop.png'), // Replace with your image path
+            //   fit: BoxFit.cover,
+            // ),
+            ),
+        child: SafeArea(
+          child: Container(
+            height: double.infinity,
+            width: double.infinity,
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 45,
                 ),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: Container(
-                  height: 130,
-                  width: 340,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      color: Colors.white),
-                  child: Column(
-                    children: [
-                      Text(
-                        "DashBoard",
-                        style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),
-                      ),
-
-                      Expanded(
-                        child: _categoryTotals.isNotEmpty ? _buildTotals() : CircularProgressIndicator(),
-                      ),
-
-                    ],
-                  ),
-                ),
-              ),
-
-
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(28.0),
-                    child: GestureDetector(
-                      onTap: (){
-                        Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (context) => Inventory()));
-                      },
-                      child: Container(
-                        height: 130,
-                        width: 130,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            color: Colors.black87),
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 18.0),
-                              child: IconButton(
-                                  onPressed: () {
-
-                                    //(Route<dynamic> route) => false);
-                                  },
-                                  icon: Icon(Icons.inventory,color: Colors.white,)),
+                Padding(
+                  padding: const EdgeInsets.all(18.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white54,
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Text(
+                            CompanyName,
+                            style: TextStyle(
+                              fontFamily: "Nunito",
+                              fontWeight: FontWeight.bold,
+                              fontSize: 28,
+                              color: Colors.black,
                             ),
-                            Text(
-                              "Inventory",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white),
-                            )
-                          ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 10),
+                          child: IconButton(
+                            onPressed: () {
+                              showDialog<void>(
+                                context: context,
+                                barrierDismissible:
+                                    false, // user must tap button!
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text('Sign Out'),
+                                    backgroundColor: Colors.white,
+                                    content: SingleChildScrollView(
+                                      child: Column(
+                                        children: <Widget>[
+                                          Text(
+                                              'Are you certain you want to Sign Out?'),
+                                        ],
+                                      ),
+                                    ),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        child: Text(
+                                          'Yes',
+                                          style: TextStyle(color: Colors.black),
+                                        ),
+                                        onPressed: () {
+                                          print('yes');
+                                          FirebaseAuth.instance.signOut();
+                                          Navigator.pushNamedAndRemoveUntil(
+                                              context,
+                                              "/SignIn",
+                                              (route) => false);
+                                          // Navigator.of(context).pop();
+                                        },
+                                      ),
+                                      TextButton(
+                                        child: Text(
+                                          'Cancel',
+                                          style: TextStyle(color: Colors.red),
+                                        ),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                            icon: const Icon(
+                              Icons.logout,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Container(
+                    height: 130,
+                    width: 340,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        color: Colors.white),
+                    child: Column(
+                      children: [
+                        Text(
+                          "DashBoard",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 20),
+                        ),
+                        Expanded(
+                          child: _categoryTotals.isNotEmpty
+                              ? _buildTotals()
+                              : CircularProgressIndicator(),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(28.0),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => Inventory()));
+                        },
+                        child: Container(
+                          height: 130,
+                          width: 130,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              color: Colors.black87),
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(top: 18.0),
+                                child: IconButton(
+                                    onPressed: () {
+                                      //(Route<dynamic> route) => false);
+                                    },
+                                    icon: Icon(
+                                      Icons.inventory,
+                                      color: Colors.white,
+                                    )),
+                              ),
+                              Text(
+                                "Inventory",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -235,7 +239,6 @@ Widget _buildTotals() {
       String category = entry.key;
       int total = entry.value ?? 0;
       return Column(
-
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
@@ -255,10 +258,7 @@ Widget _buildTotals() {
             ),
           ),
         ],
-
       );
     }).toList(),
-  )
-
-  ;
+  );
 }
