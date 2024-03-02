@@ -26,17 +26,27 @@ class _InventoryState extends State<Inventory> {
               .snapshots(),
           builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return CircularProgressIndicator(); // Display a progress indicator while fetching data
+              return Center(
+                child: CircularProgressIndicator(), // Display a progress indicator while fetching data
+              );
             }
             if (snapshot.hasError) {
-              return Text('Error:${snapshot.error}');
+              return Center(
+                child: Text('Error: ${snapshot.error}'),
+              );
             }
             if (snapshot.hasData && snapshot.data!.exists) {
               Map<String, dynamic> data =
-                  snapshot.data!.data() as Map<String, dynamic>;
+              snapshot.data!.data() as Map<String, dynamic>;
               List<dynamic> categories =
-                  data['list']; // Assuming category names are stored as a list
-              return ListView.builder(
+              data['list']; // Assuming category names are stored as a list
+              return GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2, // Number of columns in the grid
+                  crossAxisSpacing: 20.0, // Spacing between columns
+                  mainAxisSpacing: 20.0, // Spacing between rows
+                  childAspectRatio: 0.8, // Aspect ratio of each grid item
+                ),
                 itemCount: categories.length,
                 itemBuilder: (context, index) {
                   String categoryName = categories[index];
@@ -52,17 +62,33 @@ class _InventoryState extends State<Inventory> {
                       print('Tapped on category: $categoryName');
                     },
                     child: Card(
-                      child: ListTile(
-                        title: Text(categoryName),
-                        leading: Icon(Icons
-                            .category), // Placeholder icon, replace with actual icons
+                      elevation: 4,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.inventory, size: 50, color: Colors.blue),
+                          SizedBox(height: 10),
+                          Text(
+                            categoryName,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
                       ),
                     ),
                   );
                 },
               );
             }
-            return Text('No categories found');
+            return Center(
+              child: Text('No categories found'),
+            );
           },
         ),
       ),

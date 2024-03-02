@@ -38,17 +38,73 @@ class _homepageState extends State<homepage> {
     _fetchInventoryData();
   }
   List<InventoryItem> _inventoryItems = [];
+  // void _fetchInventoryData() async {
+  //   // Fetch inventory data from Firestore
+  //   QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('Product').get();
+  //
+  //   // Initialize a map to store totals for each category
+  //   Map<String, Map<String, dynamic>> categoryTotals = {};
+  //
+  //   setState(() {
+  //     _inventoryItems = snapshot.docs.map((doc) {
+  //       // Extract data from Firestore document
+  //       String category = doc['Category'];
+  //       String name = doc['Product'];
+  //       int quantity = doc['quantity'];
+  //       double price = doc['price'];
+  //
+  //       // Update category totals
+  //       categoryTotals.putIfAbsent(category, () => {'totalQuantity': 0, 'totalPrice': 0.0});
+  //       categoryTotals[category]?['totalQuantity'] += quantity;
+  //       categoryTotals[category]?['totalPrice'] += quantity * price;
+  //
+  //       return InventoryItem(
+  //         name: name,
+  //         category: category,
+  //         quantity: quantity,
+  //         price: price,
+  //       );
+  //     }).toList();
+  //   });
+  //
+  //   // Output category totals
+  //   categoryTotals.forEach((category, totals) {
+  //     print('Category: $category');
+  //     print('Total Quantity: ${totals['totalQuantity']}');
+  //     print('Total Price: ${totals['totalPrice']}');
+  //   });
+  // }
 
   void _fetchInventoryData() async {
     // Fetch inventory data from Firestore
     QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('Product').get();
     setState(() {
-      _inventoryItems = snapshot.docs.map((doc) => InventoryItem(
-        name: doc['Product'] ,
-        category: doc['Category'],
-        quantity: doc['quantity'],
-      )).toList();
+      _inventoryItems = snapshot.docs.map((doc) {
+        // Extract data from Firestore document
+        String name = doc['Product'];
+        String category = doc['Category'];
+        int quantity = doc['quantity'];
+
+        // Parse and fix the price if necessary
+        double price = double.tryParse(doc['price'].toString()) ?? 0.0;
+
+        return InventoryItem(
+          name: name,
+          category: category,
+          quantity: quantity,
+          price: price,
+        );
+      }).toList();
     });
+
+    // Calculate total
+    double total = 0;
+    for (var item in _inventoryItems) {
+      // total += item.quantity * item.price;
+    }
+
+    // Now you have the total
+    print('Total: $total');
   }
 
   Map<String, int> _calculateCategoryTotals() {
@@ -71,8 +127,8 @@ class _homepageState extends State<homepage> {
         alignment: BarChartAlignment.center,
         maxY: _findMaxValue(data.values.toList()), // Adjust this based on your data
         titlesData: FlTitlesData(
-          leftTitles:AxisTitles(sideTitles:SideTitles(reservedSize: 30, showTitles: true)),
-          bottomTitles: AxisTitles(sideTitles:SideTitles(reservedSize: 30, showTitles: true)),
+          leftTitles:AxisTitles(sideTitles:SideTitles(reservedSize: 10, showTitles: false)),
+          bottomTitles: AxisTitles(sideTitles:SideTitles(reservedSize: 60, showTitles: false)),
         ),
         borderData: FlBorderData(show: false),
         barGroups: _generateBarGroups(data),
@@ -231,7 +287,7 @@ class _homepageState extends State<homepage> {
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0),
                   child: Container(
-                    height: 160,
+                    height: 200,
                     width: 340,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
@@ -274,13 +330,10 @@ class _homepageState extends State<homepage> {
                               child: Column(
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsets.only(top: 18.0),
-                                    child: IconButton(
-                                        onPressed: () {
+                                    padding: const EdgeInsets.only(top: 38.0),
+                                    child: Icon(
 
-                                          //(Route<dynamic> route) => false);
-                                        },
-                                        icon: Icon(Icons.add_circle)),
+                                       Icons.add_circle),
                                   ),
                                   Text(
                                     "Add New\n Product",
@@ -300,33 +353,33 @@ class _homepageState extends State<homepage> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.all(28.0),
-                          child: Container(
-                            height: 130,
-                            width: 130,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                color: Colors.black87),
-                            child: Column(
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(top: 18.0),
-                                  child: IconButton(
-                                      onPressed: () {
-                                        Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    Transactionpage()));
-                                        //(Route<dynamic> route) => false);
-                                      },
-                                      icon: Icon(Icons.monetization_on)),
-                                ),
-                                Text(
-                                  "Transaction",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white),
-                                )
-                              ],
+                          child: GestureDetector(
+                            onTap: (){
+                              Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          Transactionpage()));
+                            },
+                            child: Container(
+                              height: 130,
+                              width: 130,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  color: Colors.black87),
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(top:28.0),
+                                    child: Icon(Icons.monetization_on,color: Colors.white,)),
+
+                                  Text(
+                                    "Transaction",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white),
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -341,32 +394,37 @@ class _homepageState extends State<homepage> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(28.0),
-                      child: Container(
-                        height: 130,
-                        width: 130,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            color: Colors.black87),
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 18.0),
-                              child: IconButton(
-                                  onPressed: () {
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) => Inventory()));
-                                    //(Route<dynamic> route) => false);
-                                  },
-                                  icon: Icon(Icons.inventory)),
-                            ),
-                            Text(
-                              "Inventory",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white),
-                            )
-                          ],
+                      child: GestureDetector(
+                        onTap: (){
+                          Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context) => Inventory()));
+                        },
+                        child: Container(
+                          height: 130,
+                          width: 130,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              color: Colors.black87),
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(top: 18.0),
+                                child: IconButton(
+                                    onPressed: () {
+
+                                      //(Route<dynamic> route) => false);
+                                    },
+                                    icon: Icon(Icons.inventory,color: Colors.white,)),
+                              ),
+                              Text(
+                                "Inventory",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),

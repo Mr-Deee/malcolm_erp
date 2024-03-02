@@ -3,5 +3,5 @@ class InventoryItem {
   final String category;
   final int quantity;
 
-  InventoryItem({required this.name, required this.category, required this.quantity});
+  InventoryItem({required this.name, required this.category, required this.quantity, required double price});
 }

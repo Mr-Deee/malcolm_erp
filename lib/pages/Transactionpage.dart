@@ -24,10 +24,14 @@ class _TransactionpageState extends State<Transactionpage> {
           stream: FirebaseFirestore.instance.collection('utils').doc('ProductCategory').snapshots(),
           builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return CircularProgressIndicator();
+              return Center(
+                child: CircularProgressIndicator(),
+              );
             }
             if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}');
+              return Center(
+                child: Text('Error: ${snapshot.error}'),
+              );
             }
             if (snapshot.hasData && snapshot.data!.exists) {
               Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
@@ -45,15 +49,25 @@ class _TransactionpageState extends State<Transactionpage> {
                     child: GestureDetector(
                       onTap:(){
                         Navigator.push(
-                            context,
-                            MaterialPageRoute(
+                          context,
+                          MaterialPageRoute(
                             builder: (context) => CategoryDetailsPage(categoryName),
-                        )
-                        );},
+                          ),
+                        );
+                      },
                       child: Card(
+                        elevation: 4,
+                        margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                         child: ListTile(
-                          title: Text(categoryName),
+                          title: Text(
+                            categoryName,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                          ),
                           leading: Icon(Icons.category),
+                          trailing: Icon(Icons.arrow_forward_ios),
                         ),
                       ),
                     ),
@@ -61,11 +75,12 @@ class _TransactionpageState extends State<Transactionpage> {
                 },
               );
             }
-            return Text('No categories found');
+            return Center(
+              child: Text('No categories found'),
+            );
           },
         ),
       ),
-
     );
   }
 }
@@ -144,199 +159,50 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
 
   final TextEditingController quantityController = TextEditingController();
 
-  // Widget _buildProductList(List<DocumentSnapshot> products) {
-  //   return ListView.builder(
-  //     itemCount: products.length,
-  //     itemBuilder: (context, index) {
-  //       var product = products[index].data() as Map<String, dynamic>;
-  //       var productName = product['Product'] as String;
-  //       var productCost = (product['Cost'] as num).toDouble();
-  //       var productQuantity = product['quantity'] as int;
-  //       var productTotal = productCost * productQuantity;
-  //
-  //       return Card(
-  //         color: Colors.black87,
-  //         elevation: 4,
-  //         margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-  //         child: ListTile(
-  //           title: Row(
-  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //             children: [
-  //               Text(productName,style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
-  //               Text('Cost: $productCost',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
-  //             ],
-  //           ),
-  //           subtitle: Row(
-  //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  //             crossAxisAlignment: CrossAxisAlignment.end,
-  //             children: [
-  //
-  //               // Text('Quantity: $productQuantity'),
-  //               // Text('Total: $productTotal'),
-  //               Row(
-  //                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  //
-  //                 children: [
-  //
-  //                   SizedBox(
-  //                     width: 80,
-  //                     child: TextField(
-  //
-  //                       controller: quantityController,
-  //                       cursorColor: Colors.white,
-  //                       keyboardType: TextInputType.number,
-  //                       onChanged: (value) {
-  //                         // You can add your logic to update quantity sold here
-  //                       },
-  //                       decoration: InputDecoration(
-  //                         hintText: 'QTY ',
-  //                         hintStyle: TextStyle(
-  //                           color: Colors.black, // Change color of hint text
-  //                           fontStyle: FontStyle.italic, // Apply italic style to hint text
-  //                           fontSize: 16, // Adjust font size of hint text
-  //                           fontWeight: FontWeight.normal, // Adjust font weight of hint text
-  //                           // Add more text style properties as needed
-  //                         ),
-  //                         fillColor: Colors.white, // Add color for the text field background
-  //                         filled: true,
-  //                       ),
-  //
-  //                     ),
-  //
-  //                   ),
-  //                   SizedBox(width: 12),
-  //                   ElevatedButton(
-  //                     onPressed: () {
-  //                       // Parse the quantity entered in TextField
-  //                       double soldQuantity = double.tryParse(quantityController.text) ?? 0;
-  //
-  //                       // Check if quantity is valid and greater than 0
-  //                       if (soldQuantity <= 0) {
-  //                         showDialog(
-  //                           context: context,
-  //                           builder: (context) {
-  //                             return AlertDialog(
-  //                               title: Text('Invalid Quantity'),
-  //                               content: Text('Please enter a valid quantity.'),
-  //                               actions: [
-  //                                 TextButton(
-  //                                   onPressed: () {
-  //                                     Navigator.of(context).pop();
-  //                                   },
-  //                                   child: Text('OK'),
-  //                                 ),
-  //                               ],
-  //                             );
-  //                           },
-  //                         );
-  //                         return; // Exit the function if quantity is invalid
-  //                       }
-  //
-  //                       double soldPrice = productCost * soldQuantity;
-  //
-  //                       FirebaseFirestore.instance.runTransaction((transaction) async {
-  //                         // Retrieve the document reference of the product
-  //                         DocumentReference productRef = FirebaseFirestore.instance.collection('Product').doc(products[index].id);
-  //
-  //                         // Get the latest data of the product
-  //                         DocumentSnapshot snapshot = await transaction.get(productRef);
-  //
-  //                         // Update the quantity and total amount
-  //                         int newQuantity = (snapshot['quantity'] as int) - soldQuantity.toInt();
-  //                         double newTotal = (snapshot['Sum'] as int) - soldPrice;
-  //
-  //                         // Check if new quantity is valid
-  //                         if (newQuantity < 0) {
-  //                           showDialog(
-  //                             context: context,
-  //                             builder: (context) {
-  //                               return AlertDialog(
-  //                                 title: Text('Invalid Quantity'),
-  //                                 content: Text('The quantity entered exceeds the available quantity.'),
-  //                                 actions: [
-  //                                   TextButton(
-  //                                     onPressed: () {
-  //                                       Navigator.of(context).pop();
-  //                                     },
-  //                                     child: Text('OK'),
-  //                                   ),
-  //                                 ],
-  //                               );
-  //                             },
-  //                           );
-  //                           return; // Exit the transaction if quantity is invalid
-  //                         }
-  //
-  //                         // Update the product data in Firestore
-  //                         transaction.update(productRef, {
-  //                           'quantity': newQuantity,
-  //                           'sum': newTotal,
-  //                         });
-  //                         // Show dialog for approved amount
-  //                         showDialog(
-  //                             context: context,
-  //                             builder: (context)
-  //                         {
-  //                           return AlertDialog(
-  //                             title: Text('Sale Approved'),
-  //                             content: Text(
-  //                                 'The approved Quantity is $soldQuantity & Total is $soldPrice.'),
-  //                             actions: [
-  //                               TextButton(
-  //                                 onPressed: () {
-  //                                   Navigator.of(context).popUntil((
-  //                                       route) => route.isFirst);
-  //                                 },
-  //                                 child: Text('Done'),
-  //                               ),
-  //                             ],
-  //                           );
-  //
-  //                     });
-  //                         // Optionally, you can update the total amount in another document or collection
-  //                       });
-  //                     },
-  //                     child: Text('Approve',style: TextStyle(color: Colors.black),),
-  //                   ),
-  //                 ],
-  //               ),
-  //             ],
-  //           ),
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
-
   Widget _buildProductList(List<DocumentSnapshot> products) {
     return ListView.builder(
       itemCount: products.length,
       itemBuilder: (context, index) {
         var product = products[index];
-        return ListTile(
-          title: Text(product['Product']),
-          subtitle: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Text('Price: \GHS${product['Cost']}'),
-              Text('Quantity: ${product['quantity']}'),
-            ],
-          ),
-          trailing: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              IconButton(
-                icon: Icon(Icons.add_shopping_cart),
+        return Card(
+          elevation: 4,
+          margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+          child: Padding(
+            padding: EdgeInsets.all(8),
+            child: ListTile(
+              title: Text(
+                product['Product'],
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+              ),
+              subtitle: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Price: \GHS${product['Cost']}',
+                    style: TextStyle(color: Colors.grey[600]),
+                  ),
+                  Text(
+                    'Quantity: ${product['quantity']}',
+                    style: TextStyle(color: Colors.grey[600]),
+                  ),
+                ],
+              ),
+              trailing: IconButton(
+                icon: Icon(Icons.add_shopping_cart, color: Colors.blue),
                 onPressed: () {
                   _showQuantityDialog(context, product);
                 },
               ),
-            ],
+            ),
           ),
         );
       },
     );
   }
+
 
   void _showQuantityDialog(BuildContext context, DocumentSnapshot product) {
     var productName = product['Product'] as String;
