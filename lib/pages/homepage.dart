@@ -12,10 +12,10 @@ import 'package:malcolm_erp/models/Admin.dart';
 import '../../color_palette.dart';
 import '../../progressDialog.dart';
 import '../models/addedProduct.dart';
+import '../models/iitem.dart';
 import 'Transactionpage.dart';
 import 'addproduct.dart';
 import 'allexpenses.dart';
-
 
 class homepage extends StatefulWidget {
   const homepage({Key? key}) : super(key: key);
@@ -35,18 +35,84 @@ class _homepageState extends State<homepage> {
     // TODO: implement initState
     super.initState();
     AssistantMethod.getCurrentOnlineUserInfo(context);
-    _fetchData();
+    _fetchInventoryData();
   }
+  List<InventoryItem> _inventoryItems = [];
 
-  Future<void> _fetchData() async {
-    // Retrieve data from Firestore collection 'productcategory'
-    DocumentSnapshot<Map<String, dynamic>> snapshot =
-    await FirebaseFirestore.instance.collection('utils').doc(' ProductCategory ').get();
+  void _fetchInventoryData() async {
+    // Fetch inventory data from Firestore
+    QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('Product').get();
     setState(() {
-      _productCategories = [snapshot];
+      _inventoryItems = snapshot.docs.map((doc) => InventoryItem(
+        name: doc['Product'] ,
+        category: doc['Category'],
+        quantity: doc['quantity'],
+      )).toList();
     });
   }
 
+  Map<String, int> _calculateCategoryTotals() {
+    Map<String, int> categoryTotals = {};
+    for (var item in _inventoryItems) {
+      if (categoryTotals.containsKey(item.category)) {
+        categoryTotals[item.category] = categoryTotals[item.category]! + item.quantity;
+      } else {
+        categoryTotals[item.category] = item.quantity;
+      }
+    }
+    return categoryTotals;
+  }
+
+
+  Widget _buildChart() {
+    var data = _calculateCategoryTotals();
+    return BarChart(
+      BarChartData(
+        alignment: BarChartAlignment.center,
+        maxY: _findMaxValue(data.values.toList()), // Adjust this based on your data
+        titlesData: FlTitlesData(
+          leftTitles:AxisTitles(sideTitles:SideTitles(reservedSize: 30, showTitles: true)),
+          bottomTitles: AxisTitles(sideTitles:SideTitles(reservedSize: 30, showTitles: true)),
+        ),
+        borderData: FlBorderData(show: false),
+        barGroups: _generateBarGroups(data),
+      ),
+    );
+  }
+
+  double _findMaxValue(List<int> values) {
+    if (values.isEmpty) return 0;
+    return values.reduce((curr, next) => curr > next ? curr : next).toDouble();
+  }
+
+  List<BarChartGroupData> _generateBarGroups(Map<String, int> data) {
+    List<BarChartGroupData> barGroups = [];
+    int index = 0;
+    for (var entry in data.entries) {
+      barGroups.add(
+        BarChartGroupData(
+          x: index++,
+          barRods: [
+            BarChartRodData(
+              toY: entry.value.toDouble(),
+            ),
+          ],
+          showingTooltipIndicators: [0],
+        ),
+      );
+    }
+    return barGroups;
+  }
+
+  Widget _buildCategoryTotals() {
+    var categoryTotals = _calculateCategoryTotals();
+    return Column(
+      children: categoryTotals.entries.map((entry) => ListTile(
+        title: Text(entry.key),
+        trailing: Text(entry.value.toString()),
+      )).toList(),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -177,7 +243,9 @@ class _homepageState extends State<homepage> {
                           style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),
                         ),
 
-
+                        Expanded(
+                          child: _inventoryItems.isNotEmpty ? _buildChart() : CircularProgressIndicator(),
+                        ),
 
                       ],
                     ),
