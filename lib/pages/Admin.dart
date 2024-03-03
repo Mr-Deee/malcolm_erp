@@ -5,17 +5,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 
+import '../models/Admin.dart';
 import 'Inventory.dart';
 
-class Admin extends StatefulWidget {
-  const Admin({super.key});
+class Adminpage extends StatefulWidget {
+  const Adminpage({super.key});
 
   @override
-  State<Admin> createState() => _AdminState();
+  State<Adminpage> createState() => _AdminpageState();
 }
 Map<String, int> _categoryTotals = {};
 
-class _AdminState extends State<Admin> {
+class _AdminpageState extends State<Adminpage> {
   @override
   void initState() {
     // TODO: implement initState
