@@ -121,39 +121,37 @@ class _homepageState extends State<homepage> {
 
 
   Widget _buildTotals() {
-    return ListView.builder(
-      itemCount: _categoryTotals.length,
-      itemBuilder: (context, index) {
-        String category = _categoryTotals.keys.elementAt(index);
-        int total = _categoryTotals[category] ?? 0;
-        return Container(
-          color: index % 2 == 0 ? Colors.grey[200] : Colors.white,
-          child: Column(
+    return ListView(
+      scrollDirection: Axis.horizontal,
+      children: _categoryTotals.entries.map((entry) {
+        String category = entry.key;
+        int total = entry.value ?? 0;
+        return Column(
+
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              ListTile(
-                title: Text(
-                  category,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
+              Text(
+                category,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
                 ),
-                subtitle: Text(
-                  'Total: $total',
+              ),
+              SizedBox(height: 5),
+              Padding(
+                padding: const EdgeInsets.all(18.0),
+                child: Text(
+                  'GHC: $total',
                   style: TextStyle(
                     fontStyle: FontStyle.italic,
                   ),
                 ),
               ),
-              Divider(
-                color: Colors.grey,
-                thickness: 1,
-                height: 0,
-              ),
             ],
-          ),
+
         );
-      },
-    );
+      }).toList(),
+    )
+
     ;
   }
   double _findMaxValue(List<int> values) {
@@ -307,7 +305,7 @@ class _homepageState extends State<homepage> {
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0),
                   child: Container(
-                    height: 200,
+                    height: 130,
                     width: 340,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
