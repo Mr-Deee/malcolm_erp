@@ -154,39 +154,11 @@ class _homepageState extends State<homepage> {
 
     ;
   }
-  double _findMaxValue(List<int> values) {
-    if (values.isEmpty) return 0;
-    return values.reduce((curr, next) => curr > next ? curr : next).toDouble();
-  }
 
-  List<BarChartGroupData> _generateBarGroups(Map<String, int> data) {
-    List<BarChartGroupData> barGroups = [];
-    int index = 0;
-    for (var entry in data.entries) {
-      barGroups.add(
-        BarChartGroupData(
-          x: index++,
-          barRods: [
-            BarChartRodData(
-              toY: entry.value.toDouble(),
-            ),
-          ],
-          showingTooltipIndicators: [0],
-        ),
-      );
-    }
-    return barGroups;
-  }
 
-  // Widget _buildCategoryTotals() {
-  //   var categoryTotals = _calculateCategoryTotals();
-  //   return Column(
-  //     children: categoryTotals.entries.map((entry) => ListTile(
-  //       title: Text(entry.key),
-  //       trailing: Text(entry.value.toString()),
-  //     )).toList(),
-  //   );
-  // }
+
+
+
 
   @override
   Widget build(BuildContext context) {
