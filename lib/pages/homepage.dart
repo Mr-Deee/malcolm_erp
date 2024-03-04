@@ -35,13 +35,14 @@ class _homepageState extends State<homepage> {
     super.initState();
     AssistantMethod.getCurrentOnlineUserInfo(context);
     _fetchInventoryData();
+    _fetchProductCategories();
   }
   List<InventoryItem> _inventoryItems = [];
-
-
+  Map<String, int> _categoryTotals = {};
   void _fetchInventoryData() async {
     // Fetch inventory data from Firestore
-    QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('Product').get();
+    QuerySnapshot snapshot =
+    await FirebaseFirestore.instance.collection('Product').get();
     Map<String, double> categoryCostMap = {}; // Map to store total cost per category
 
     setState(() {
@@ -49,33 +50,60 @@ class _homepageState extends State<homepage> {
         String name = doc['Product'];
         String category = doc['Category'];
         int quantity = (doc['quantity'] ?? 0).toInt(); // Ensure quantity is converted to int
-        double price = double.tryParse(doc['Sum'].toString()) ?? 0.0;
+        double sum = double.tryParse(doc['Sum'].toString()) ?? 0.0;
 
         // Update category cost map
         if (categoryCostMap.containsKey(category)) {
-          categoryCostMap[category] = (categoryCostMap[category] ?? 0.0) + (price * quantity); // Adjust total cost based on quantity
+          categoryCostMap[category] = sum;
         } else {
-          categoryCostMap[category] = price * quantity;
+          categoryCostMap[category] = sum;
         }
 
         int totalCost = (categoryCostMap[category] ?? 0.0).round();
+
         return InventoryItem(
           name: name,
           category: category,
           quantity: quantity,
-          price: price,
-          totalCost: totalCost, // Assign total cost for category, with null check
+          price: sum / quantity, // Calculate price per item
+          totalCost: totalCost,
         );
       }).toList();
     });
 
-    // Now you have the total cost per category
+    // Output the sum for each category
     categoryCostMap.forEach((category, totalCost) {
       print('Total cost for category $category: $totalCost');
     });
   }
 
+  Future<void> _fetchProductCategories() async {
+    try {
+      QuerySnapshot snapshot =
+      await FirebaseFirestore.instance.collection('Product').get();
 
+      Map<String, int> categoryTotals = {};
+
+      snapshot.docs.forEach((doc) {
+        String category = doc['Category'];
+        int price = doc['Sum'];
+
+        categoryTotals[category] = (categoryTotals[category] ?? 0) + price;
+      });
+
+      setState(() {
+        _categoryTotals = categoryTotals;
+      });
+    } catch (error) {
+      print('Error fetching product categories: $error');
+    }
+  }
+// Call this function after `_fetchInventoryData` to display the total cost for each category
+  void displayCategoryTotalCost(Map<String, double> categoryCostMap) {
+    categoryCostMap.forEach((category, totalCost) {
+      print('Total cost for category $category: $totalCost');
+    });
+  }
 
 
 
@@ -93,12 +121,40 @@ class _homepageState extends State<homepage> {
 
 
   Widget _buildTotals() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: _inventoryItems
-          .map((total) => Text('${total.category}: ${total.totalCost}'))
-          .toList(),
+    return ListView.builder(
+      itemCount: _categoryTotals.length,
+      itemBuilder: (context, index) {
+        String category = _categoryTotals.keys.elementAt(index);
+        int total = _categoryTotals[category] ?? 0;
+        return Container(
+          color: index % 2 == 0 ? Colors.grey[200] : Colors.white,
+          child: Column(
+            children: [
+              ListTile(
+                title: Text(
+                  category,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                subtitle: Text(
+                  'Total: $total',
+                  style: TextStyle(
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+              ),
+              Divider(
+                color: Colors.grey,
+                thickness: 1,
+                height: 0,
+              ),
+            ],
+          ),
+        );
+      },
     );
+    ;
   }
   double _findMaxValue(List<int> values) {
     if (values.isEmpty) return 0;
