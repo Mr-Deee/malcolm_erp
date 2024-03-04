@@ -9,8 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:malcolm_erp/Assistant/assistantmethods.dart';
 import 'package:malcolm_erp/models/Admin.dart';
-import '../../color_palette.dart';
-import '../../progressDialog.dart';
 import '../models/addedProduct.dart';
 import '../models/iitem.dart';
 import 'Transactionpage.dart';
@@ -30,6 +28,7 @@ class _homepageState extends State<homepage> {
   final addedproduct newfarm = addedproduct();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   List<DocumentSnapshot> _productCategories = [];
+
   @override
   void initState() {
     // TODO: implement initState
@@ -38,74 +37,47 @@ class _homepageState extends State<homepage> {
     _fetchInventoryData();
   }
   List<InventoryItem> _inventoryItems = [];
-  // void _fetchInventoryData() async {
-  //   // Fetch inventory data from Firestore
-  //   QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('Product').get();
-  //
-  //   // Initialize a map to store totals for each category
-  //   Map<String, Map<String, dynamic>> categoryTotals = {};
-  //
-  //   setState(() {
-  //     _inventoryItems = snapshot.docs.map((doc) {
-  //       // Extract data from Firestore document
-  //       String category = doc['Category'];
-  //       String name = doc['Product'];
-  //       int quantity = doc['quantity'];
-  //       double price = doc['price'];
-  //
-  //       // Update category totals
-  //       categoryTotals.putIfAbsent(category, () => {'totalQuantity': 0, 'totalPrice': 0.0});
-  //       categoryTotals[category]?['totalQuantity'] += quantity;
-  //       categoryTotals[category]?['totalPrice'] += quantity * price;
-  //
-  //       return InventoryItem(
-  //         name: name,
-  //         category: category,
-  //         quantity: quantity,
-  //         price: price,
-  //       );
-  //     }).toList();
-  //   });
-  //
-  //   // Output category totals
-  //   categoryTotals.forEach((category, totals) {
-  //     print('Category: $category');
-  //     print('Total Quantity: ${totals['totalQuantity']}');
-  //     print('Total Price: ${totals['totalPrice']}');
-  //   });
-  // }
+
 
   void _fetchInventoryData() async {
     // Fetch inventory data from Firestore
     QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('Product').get();
+    Map<String, double> categoryCostMap = {}; // Map to store total cost per category
+
     setState(() {
       _inventoryItems = snapshot.docs.map((doc) {
-        // Extract data from Firestore document
         String name = doc['Product'];
         String category = doc['Category'];
-        int quantity = doc['quantity'];
+        int quantity = (doc['quantity'] ?? 0).toInt(); // Ensure quantity is converted to int
+        double price = double.tryParse(doc['Sum'].toString()) ?? 0.0;
 
-        // Parse and fix the price if necessary
-        double price = double.tryParse(doc['price'].toString()) ?? 0.0;
+        // Update category cost map
+        if (categoryCostMap.containsKey(category)) {
+          categoryCostMap[category] = (categoryCostMap[category] ?? 0.0) + (price * quantity); // Adjust total cost based on quantity
+        } else {
+          categoryCostMap[category] = price * quantity;
+        }
 
+        int totalCost = (categoryCostMap[category] ?? 0.0).round();
         return InventoryItem(
           name: name,
           category: category,
           quantity: quantity,
           price: price,
+          totalCost: totalCost, // Assign total cost for category, with null check
         );
       }).toList();
     });
 
-    // Calculate total
-    double total = 0;
-    for (var item in _inventoryItems) {
-      // total += item.quantity * item.price;
-    }
-
-    // Now you have the total
-    print('Total: $total');
+    // Now you have the total cost per category
+    categoryCostMap.forEach((category, totalCost) {
+      print('Total cost for category $category: $totalCost');
+    });
   }
+
+
+
+
 
   Map<String, int> _calculateCategoryTotals() {
     Map<String, int> categoryTotals = {};
@@ -120,22 +92,14 @@ class _homepageState extends State<homepage> {
   }
 
 
-  Widget _buildChart() {
-    var data = _calculateCategoryTotals();
-    return BarChart(
-      BarChartData(
-        alignment: BarChartAlignment.center,
-        maxY: _findMaxValue(data.values.toList()), // Adjust this based on your data
-        titlesData: FlTitlesData(
-          leftTitles:AxisTitles(sideTitles:SideTitles(reservedSize: 10, showTitles: false)),
-          bottomTitles: AxisTitles(sideTitles:SideTitles(reservedSize: 60, showTitles: false)),
-        ),
-        borderData: FlBorderData(show: false),
-        barGroups: _generateBarGroups(data),
-      ),
+  Widget _buildTotals() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: _inventoryItems
+          .map((total) => Text('${total.category}: ${total.totalCost}'))
+          .toList(),
     );
   }
-
   double _findMaxValue(List<int> values) {
     if (values.isEmpty) return 0;
     return values.reduce((curr, next) => curr > next ? curr : next).toDouble();
@@ -160,15 +124,15 @@ class _homepageState extends State<homepage> {
     return barGroups;
   }
 
-  Widget _buildCategoryTotals() {
-    var categoryTotals = _calculateCategoryTotals();
-    return Column(
-      children: categoryTotals.entries.map((entry) => ListTile(
-        title: Text(entry.key),
-        trailing: Text(entry.value.toString()),
-      )).toList(),
-    );
-  }
+  // Widget _buildCategoryTotals() {
+  //   var categoryTotals = _calculateCategoryTotals();
+  //   return Column(
+  //     children: categoryTotals.entries.map((entry) => ListTile(
+  //       title: Text(entry.key),
+  //       trailing: Text(entry.value.toString()),
+  //     )).toList(),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -300,7 +264,7 @@ class _homepageState extends State<homepage> {
                         ),
 
                         Expanded(
-                          child: _inventoryItems.isNotEmpty ? _buildChart() : CircularProgressIndicator(),
+                          child: _inventoryItems.isNotEmpty ? _buildTotals() : CircularProgressIndicator(),
                         ),
 
                       ],
