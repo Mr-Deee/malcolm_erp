@@ -83,6 +83,27 @@ class _addproductState extends State<addproduct> {
 
   @override
   Widget build(BuildContext context) {
+    bool _validateForm() {
+      if (newProduct.name == null || newProduct.name!.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Please enter a product name'),
+          ),
+        );
+        return false;
+      }  if (newProduct.name == null || newProduct.name!.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Please enter a product name'),
+          ),
+        );
+        return false;
+      }
+
+      // Add validations for other fields if needed...
+
+      return true;
+    }
     // var firstname = Provider
     //     .of<Users>(context)
     //     .userInfo
@@ -94,9 +115,7 @@ class _addproductState extends State<addproduct> {
         'Time': _selectedTime.toString(),
         'Category': currentSelectedValue,
         'Product': newProduct.name,
-        'Company': newProduct.company.toString(),
         'Cost': newProduct.cost,
-        'location': newProduct.location,
         'quantity': newProduct.quantity,
         'Sum': calculateTotalSum(),
       }).then((value) {
@@ -446,103 +465,12 @@ class _addproductState extends State<addproduct> {
                                             ),
                                           ],
                                         ),
-                                        const SizedBox(
-                                          height: 20,
-                                        ),
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            color: ColorPalette.white,
-                                            borderRadius:
-                                                BorderRadius.circular(12),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                offset: const Offset(0, 3),
-                                                blurRadius: 6,
-                                                color: ColorPalette.nileBlue
-                                                    .withOpacity(0.1),
-                                              ),
-                                            ],
-                                          ),
-                                          height: 50,
-                                          child: TextFormField(
-                                            initialValue:
-                                                newProduct.company ?? '',
-                                            onChanged: (value) {
-                                              newProduct.company = value;
-                                            },
-                                            textInputAction:
-                                                TextInputAction.next,
-                                            key: UniqueKey(),
-                                            keyboardType: TextInputType.text,
-                                            style: const TextStyle(
-                                              fontFamily: "Nunito",
-                                              fontSize: 16,
-                                              color: ColorPalette.nileBlue,
-                                            ),
-                                            decoration: InputDecoration(
-                                              border: InputBorder.none,
-                                              hintText: "Company",
-                                              filled: true,
-                                              fillColor: Colors.transparent,
-                                              hintStyle: TextStyle(
-                                                fontFamily: "Nunito",
-                                                fontSize: 16,
-                                                color: Colors.grey,
-                                              ),
-                                            ),
-                                            cursorColor: Colors.blue,
-                                          ),
-                                        ),
+
                                         const SizedBox(
                                           height: 20,
                                         ),
 
-                                        const SizedBox(height: 10),
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            color: Colors.white70,
-                                            borderRadius:
-                                                BorderRadius.circular(12),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                offset: const Offset(0, 3),
-                                                blurRadius: 6,
-                                                color: ColorPalette.nileBlue
-                                                    .withOpacity(0.1),
-                                              ),
-                                            ],
-                                          ),
-                                          height: 50,
-                                          child: TextFormField(
-                                            initialValue:
-                                                newProduct.location ?? '',
-                                            onChanged: (value) {
-                                              newProduct.location = value;
-                                            },
-                                            textInputAction:
-                                                TextInputAction.next,
-                                            key: UniqueKey(),
-                                            keyboardType: TextInputType.text,
-                                            style: const TextStyle(
-                                              fontFamily: "Nunito",
-                                              fontSize: 16,
-                                              color: Colors.black,
-                                            ),
-                                            decoration: InputDecoration(
-                                              border: InputBorder.none,
-                                              hintText: "Location",
-                                              filled: true,
-                                              fillColor: Colors.transparent,
-                                              hintStyle: TextStyle(
-                                                fontFamily: "Nunito",
-                                                fontSize: 16,
-                                                color: Colors.grey,
-                                              ),
-                                            ),
-                                            cursorColor:
-                                                ColorPalette.timberGreen,
-                                          ),
-                                        ),
+
 
                                         SizedBox(height: 20),
 
