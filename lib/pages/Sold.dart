@@ -14,7 +14,9 @@ class _SoldpageState extends State<Soldpage> {
     return  Scaffold(
       body: Container(
         child: Column(
-          children: [],
+          children: [
+            Container()
+          ],
         ),
       ),
     );
