@@ -1,9 +1,7 @@
 import 'dart:ui';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
 import '../../components/my_button.dart';
 import '../../components/my_textfield.dart';
 import '../../main.dart';
@@ -17,7 +15,6 @@ class Signup extends StatelessWidget {
   User? firebaseUser;
   User? currentfirebaseUser;
 
-  // text editing controllers
   final emailController = TextEditingController();
   final companyNameController = TextEditingController();
   final phoneNumberController = TextEditingController();

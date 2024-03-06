@@ -236,8 +236,7 @@ class _addproductState extends State<addproduct> {
                                         ),
                                         DropdownButton<String>(
                                           hint: Text(
-                                              currentSelectedValue.toString() ??
-                                                  ""),
+                                              currentSelectedValue.toString()),
                                           items: dropdownOptions
                                               .map((String value) {
                                             return DropdownMenuItem<String>(
