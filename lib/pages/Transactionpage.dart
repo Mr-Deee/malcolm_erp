@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -170,18 +172,28 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
           child: Padding(
             padding: EdgeInsets.all(8),
             child: ListTile(
-              title: Text(
-                product['Product'],
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    product['Product'],
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                  Text(
+                    'Price: \GHS${product['Cost']}',
+                    style: TextStyle(color: Colors.grey[600]),
+                  ),
+                ],
               ),
               subtitle: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+
                   Text(
-                    'Price: \GHS${product['Cost']}',
+                    'Total: \GHS${product['Sum']}',
                     style: TextStyle(color: Colors.grey[600]),
                   ),
                   Text(
@@ -271,22 +283,21 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
 
                               double soldPrice = productCost * soldQuantity;
 
-                              FirebaseFirestore.instance.runTransaction((
-                                  transaction) async {
+                              FirebaseFirestore.instance.runTransaction((transaction) async {
                                 // Retrieve the document reference of the product
                                 DocumentReference productRef = FirebaseFirestore
-                                    .instance
-                                    .collection('Product').doc(product.id);
+                                    .instance.collection('Product').doc(product.id);
 
                                 // Get the latest data of the product
                                 DocumentSnapshot snapshot = await transaction
-                                    .get(
-                                    productRef);
+                                    .get(productRef);
+
+
 
                                 // Update the quantity and total amount
                                 int newQuantity = (snapshot['quantity'] as int) -
                                     soldQuantity;
-                                double newTotal = (snapshot['Sum'] as int) -
+                                double newTotal = (snapshot['Sum'] as double) -
                                     soldPrice;
 
                                 // Check if new quantity is valid
@@ -317,10 +328,24 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
                                 // Update the product data in Firestore
                                 transaction.update(productRef, {
                                   'quantity': newQuantity,
-                                  'sum': newTotal,
+                                  'Sum': newTotal,
+                                });
+                                _writeToSoldDatabase(product,soldQuantity,soldPrice);
+                                // Show dialog for approved amount
+
+
+                                DocumentReference inventoryRef = FirebaseFirestore
+                                    .instance.collection('Inventory').doc(product.id);
+
+                                DocumentSnapshot inventorySnapshot = await transaction.get(inventoryRef);
+
+                                int currentSold = (inventorySnapshot['sold'] as int) + soldQuantity;
+
+                                transaction.update(inventoryRef, {
+                                  'quantity': newQuantity,
+                                  'Sum': newTotal,
                                 });
 
-                                // Show dialog for approved amount
                                 showDialog(
                                     context: context,
                                     builder: (context) {
@@ -358,6 +383,44 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
           );
         }
     );
+  }
+  void _writeToSoldDatabase(DocumentSnapshot product, int soldQuantity, double soldPrice) async {
+    try {
+      // Get a reference to the Firestore database
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
+      var productName = product['Product'] as String;
+      var productCost = (product['Cost'] as num).toDouble();
+      var productQuantity = product['quantity'] as int;
+      var productTotal = productCost * productQuantity;
+      // Create a new document in the "Sold" collection
+      await firestore.collection('Sold').add({
+        'productName': product['Product'],
+        'quantity': soldQuantity,
+        'totalPrice': soldPrice,
+        'timestamp': Timestamp.now(), // You can include a timestamp for when the sale occurred
+      });
+      // Update product quantity and sum in the "Product" collection
+
+      await FirebaseFirestore.instance
+          .collection('Product')
+          .doc(product.id)
+          .update({
+        'quantity': productQuantity - soldQuantity,
+        'Sum': productTotal - soldPrice,
+      });
+      // You can add further logic here if needed, such as updating statistics or other collections
+
+      // Show a success message or perform any necessary UI updates
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Sale has been recorded successfully.'),
+      ));
+    } catch (e) {
+      // Handle any errors that occur during the process
+      print('Error: $e');
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('An error occurred while recording the sale.'),
+      ));
+    }
   }
 
 }

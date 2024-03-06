@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:malcolm_erp/pages/Sold.dart';
 import '../Assistant/assistantmethods.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -221,6 +222,45 @@ class _AdminpageState extends State<Adminpage> {
                         ),
                       ),
                     ),
+
+                    Padding(
+                      padding: const EdgeInsets.all(28.0),
+                      child: GestureDetector(
+                        onTap: (){
+                          Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      Soldpage()));
+                        },
+                        child: Container(
+                          height: 130,
+                          width: 130,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              color: Colors.black87),
+                          child: Column(
+                            children: [
+                              Padding(
+                                  padding: EdgeInsets.only(top:28.0),
+                                  child: Icon(Icons.monetization_on,color: Colors.white,)),
+
+                              Text(
+                                "SoldItems",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+
+                Row(
+                  children: [
+
                   ],
                 ),
               ],

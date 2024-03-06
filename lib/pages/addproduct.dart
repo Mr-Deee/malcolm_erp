@@ -25,7 +25,7 @@ class addproduct extends StatefulWidget {
         Farm,
       );
 }
-
+final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 class _addproductState extends State<addproduct> {
   List<String> dropdownOptions = [];
   late DateTime _selectedDate;
@@ -159,10 +159,21 @@ class _addproductState extends State<addproduct> {
               'quantity': newProduct.quantity,
               'Sum': calculateTotalSum(),
             }).then((value) {
+
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text('Product added successfully!'),
+                duration: Duration(seconds: 2),
+              ));
+
               // Navigator.of(context).pop();
               // Navigator.of(context).pop();
               // displayToast('Added Sucessfully!'context);
-            }).catchError((e) {});
+            }).catchError((e) {
+
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text('Failed to add product. Please try again.'),
+              duration: Duration(seconds: 2),));
+            });
           },
           splashColor: Colors.blue,
           backgroundColor: Colors.white54,
