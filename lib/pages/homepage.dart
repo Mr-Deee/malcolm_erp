@@ -97,7 +97,7 @@ class _homepageState extends State<homepage> {
             Padding(
               padding: const EdgeInsets.all(18.0),
               child: Text(
-                'Total Cost: GHC ${totalCost.toStringAsFixed(2)}',
+                'GHC ${totalCost.toStringAsFixed(2)}',
                 style: TextStyle(
                   fontStyle: FontStyle.italic,
                 ),
