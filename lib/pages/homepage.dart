@@ -33,14 +33,12 @@ class _homepageState extends State<homepage> {
     super.initState();
     AssistantMethod.getCurrentOnlineUserInfo(context);
     _fetchInventoryData();
-    _fetchProductCategories();
   }
   List<InventoryItem> _inventoryItems = [];
   Map<String, int> _categoryTotals = {};
   void _fetchInventoryData() async {
     // Fetch inventory data from Firestore
-    QuerySnapshot snapshot =
-    await FirebaseFirestore.instance.collection('Product').get();
+    QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('Product').get();
     Map<String, double> categoryCostMap = {}; // Map to store total cost per category
 
     setState(() {
@@ -50,21 +48,15 @@ class _homepageState extends State<homepage> {
         int quantity = (doc['quantity'] ?? 0).toInt(); // Ensure quantity is converted to int
         double sum = double.tryParse(doc['Sum'].toString()) ?? 0.0;
 
-        // Update category cost map
-        if (categoryCostMap.containsKey(category)) {
-          categoryCostMap[category] = sum;
-        } else {
-          categoryCostMap[category] = sum;
-        }
-
-        int totalCost = (categoryCostMap[category] ?? 0.0).round();
+        // Update category cost map by accumulating sum for each category
+        categoryCostMap[category] =  sum;
 
         return InventoryItem(
           name: name,
           category: category,
           quantity: quantity,
           price: sum / quantity, // Calculate price per item
-          totalCost: totalCost,
+          totalCost: categoryCostMap[category]??0.0, // Total cost for the category
         );
       }).toList();
     });
@@ -74,28 +66,50 @@ class _homepageState extends State<homepage> {
       print('Total cost for category $category: $totalCost');
     });
   }
+  Widget _buildTotals() {
+    Map<String, double> categoryCostMap = {};
 
-  Future<void> _fetchProductCategories() async {
-    try {
-      QuerySnapshot snapshot =
-      await FirebaseFirestore.instance.collection('Product').get();
+    _inventoryItems.forEach((item) {
+      if (categoryCostMap.containsKey(item.category)) {
+        categoryCostMap[item.category] =
+            categoryCostMap[item.category]! + item.totalCost;
+      } else {
+        categoryCostMap[item.category] = item.totalCost;
+      }
+    });
 
-      Map<String, int> categoryTotals = {};
-
-      snapshot.docs.forEach((doc) {
-        String category = doc['Category'];
-        int price = doc['Sum'];
-
-        categoryTotals[category] = (categoryTotals[category] ?? 0) + price;
-      });
-
-      setState(() {
-        _categoryTotals = categoryTotals;
-      });
-    } catch (error) {
-      print('Error fetching product categories: $error');
-    }
+    return ListView(
+      scrollDirection: Axis.horizontal,
+      children: categoryCostMap.entries.map((entry) {
+        String category = entry.key;
+        double totalCost = entry.value ?? 0.0;
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              category,
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 5),
+            Padding(
+              padding: const EdgeInsets.all(18.0),
+              child: Text(
+                'Total Cost: GHC ${totalCost.toStringAsFixed(2)}',
+                style: TextStyle(
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+            ),
+          ],
+        );
+      }).toList(),
+    );
   }
+
+
 // Call this function after `_fetchInventoryData` to display the total cost for each category
   void displayCategoryTotalCost(Map<String, double> categoryCostMap) {
     categoryCostMap.forEach((category, totalCost) {
@@ -116,46 +130,6 @@ class _homepageState extends State<homepage> {
     }
     return categoryTotals;
   }
-
-
-  Widget _buildTotals() {
-    return ListView(
-      scrollDirection: Axis.horizontal,
-      children: _categoryTotals.entries.map((entry) {
-        String category = entry.key;
-        int total = entry.value ?? 0;
-        return Column(
-
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                category,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(height: 5),
-              Padding(
-                padding: const EdgeInsets.all(18.0),
-                child: Text(
-                  'GHC: $total',
-                  style: TextStyle(
-                    fontStyle: FontStyle.italic,
-                  ),
-                ),
-              ),
-            ],
-
-        );
-      }).toList(),
-    )
-
-    ;
-  }
-
-
-
-
 
 
   @override
@@ -426,6 +400,7 @@ class _homepageState extends State<homepage> {
     );
   }
 }
+
 
 displayToast(String message, BuildContext context) {
   Fluttertoast.showToast(msg: message);
