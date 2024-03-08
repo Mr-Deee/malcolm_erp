@@ -251,7 +251,7 @@ class _addproductState extends State<addproduct> {
               children: [
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: SizedBox(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -259,7 +259,7 @@ class _addproductState extends State<addproduct> {
                           Row(
                             children: const [
                               SizedBox(
-                                height: 10,
+                                height: 1,
                               ),
                             ],
                           ),
@@ -267,7 +267,7 @@ class _addproductState extends State<addproduct> {
                             child: Stack(
                               children: [
                                 Container(
-                                  height: double.infinity,
+                                  height: 380,
                                   width: double.infinity,
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: 20,
@@ -279,6 +279,8 @@ class _addproductState extends State<addproduct> {
                                     borderRadius: BorderRadius.only(
                                       topLeft: Radius.circular(16),
                                       topRight: Radius.circular(16),
+                                      bottomLeft: Radius.circular(16),
+                                      bottomRight: Radius.circular(16),
                                     ),
                                   ),
                                   child: SingleChildScrollView(
@@ -524,12 +526,83 @@ class _addproductState extends State<addproduct> {
                                         ),
 
                                         // Your existing TextFormField widgets
-                                        SizedBox(height: 20),
+                                        // SizedBox(height: 20),
                                       ],
                                     ),
                                   ),
                                 ),
                               ],
+                            ),
+                          ),
+
+
+                          Container(
+                            height: 180,
+                            width: double.infinity,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 20,
+                              vertical: 10,
+                            ),
+                            margin: const EdgeInsets.only(top: 75),
+                            decoration: const BoxDecoration(
+                              color: Color(0xffd5e2e3),
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(16),
+                                topRight: Radius.circular(16),
+                                bottomLeft: Radius.circular(16),
+                                bottomRight: Radius.circular(16),
+                              ),
+                            ),
+                            child: SingleChildScrollView(
+                              child: Column(
+                                crossAxisAlignment:
+                                CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                      left: 8,
+                                      bottom: 12,
+                                    ),
+                                    child: Column(
+                                      children: [],
+                                    ),
+                                  ),
+
+
+                                  Row(
+                                    children: [
+
+                                      SizedBox(width: 10),
+                                      Text(
+                                        "Kindly fill the forms above \n to upload  "
+                                            "the Category, Product \n Cost and Quantity", style: TextStyle(fontSize: 15),
+                                      ),
+                                      SizedBox(width: 10),
+                                      Icon(Icons.arrow_upward_sharp),
+
+                                    ],
+                                  ),
+                                  // Your existing TextFormField widgets
+                                  SizedBox(height: 10),
+
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          "Kindly tap the correct button to \n submit product ", style: TextStyle(fontSize: 15),
+                                        ),
+                                        SizedBox(width: 10),
+                                        Icon(Icons.done),
+                                      ],
+                                    ),
+                                  ),
+
+
+                                  // Your existing TextFormField widgets
+                                  SizedBox(height: 20),
+                                ],
+                              ),
                             ),
                           ),
                         ],
