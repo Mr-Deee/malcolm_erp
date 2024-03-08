@@ -162,7 +162,7 @@ class _addproductState extends State<addproduct> {
         title: Row(
           children: [
             const Text(
-              "New Product",
+              "Add New Product",
               style: TextStyle(
                 fontFamily: "Nunito",
                 fontSize: 28,
@@ -192,9 +192,7 @@ class _addproductState extends State<addproduct> {
                     message: "Adding New Product,Please wait.....",
                   );
                 });
-            //   String? url = await  uploadImage(selectedImagePath!);
-            //    uploadsFile();
-            //uploadImage(selectedImagePath!);
+
             inventorydb();
             // Occupationdb();
             newProduct.group = group;
@@ -267,11 +265,11 @@ class _addproductState extends State<addproduct> {
                             child: Stack(
                               children: [
                                 Container(
-                                  height: 380,
+                                  height: 360,
                                   width: double.infinity,
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: 20,
-                                    vertical: 50,
+                                    vertical: 30,
                                   ),
                                   margin: const EdgeInsets.only(top: 75),
                                   decoration: const BoxDecoration(
