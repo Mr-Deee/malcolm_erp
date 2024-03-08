@@ -54,7 +54,6 @@ class _AdminpageState extends State<Adminpage> {
     String CompanyName =
         Provider.of<Admin>(context).admininfo?.CompanyName ?? "getting name...";
     return Scaffold(
-
       body: Container(
         height: double.infinity,
         width: double.infinity,
@@ -222,15 +221,12 @@ class _AdminpageState extends State<Adminpage> {
                         ),
                       ),
                     ),
-
                     Padding(
                       padding: const EdgeInsets.all(28.0),
                       child: GestureDetector(
-                        onTap: (){
-                          Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      Soldpage()));
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => Soldpage()));
                         },
                         child: Container(
                           height: 130,
@@ -241,9 +237,11 @@ class _AdminpageState extends State<Adminpage> {
                           child: Column(
                             children: [
                               Padding(
-                                  padding: EdgeInsets.only(top:28.0),
-                                  child: Icon(Icons.monetization_on,color: Colors.white,)),
-
+                                  padding: EdgeInsets.only(top: 28.0),
+                                  child: Icon(
+                                    Icons.monetization_on,
+                                    color: Colors.white,
+                                  )),
                               Text(
                                 "SoldItems",
                                 style: TextStyle(
@@ -257,10 +255,40 @@ class _AdminpageState extends State<Adminpage> {
                     ),
                   ],
                 ),
-
                 Row(
                   children: [
-
+                    Padding(
+                      padding: const EdgeInsets.all(28.0),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => Soldpage()));
+                        },
+                        child: Container(
+                          height: 130,
+                          width: 130,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              color: Colors.black87),
+                          child: Column(
+                            children: [
+                              Padding(
+                                  padding: EdgeInsets.only(top: 28.0),
+                                  child: Icon(
+                                    Icons.history,
+                                    color: Colors.white,
+                                  )),
+                              Text(
+                                "History",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ],

@@ -80,7 +80,34 @@ class _addproductState extends State<addproduct> {
 
   final storage = FirebaseStorage.instance;
   final storageReference = FirebaseStorage.instance.ref();
+  bool _validateForm() {
+    if (newProduct.name!.isEmpty) {
+      ScaffoldMessenger.of(context as BuildContext).showSnackBar(
+        SnackBar(
+          content: Text('Please enter a product name'),
+        ),
+      );
+      return false;
+    } else if (newProduct.cost == null || newProduct.cost! <= 0) {
+      ScaffoldMessenger.of(context as BuildContext).showSnackBar(
+        SnackBar(
+          content: Text('Please enter a valid cost'),
+        ),
+      );
+      return false;
+    } else if (newProduct.quantity == null || newProduct.quantity! <= 0) {
+      ScaffoldMessenger.of(context as BuildContext).showSnackBar(
+        SnackBar(
+          content: Text('Please enter a valid quantity'),
+        ),
+      );
+      return false;
+    }
 
+    // Add validations for other fields if needed...
+
+    return true;
+  }
   @override
   Widget build(BuildContext context) {
     bool _validateForm() {
@@ -110,7 +137,7 @@ class _addproductState extends State<addproduct> {
     //     ?.id!;
     var newprojectname = newProduct.name;
     inventorydb() async {
-      _firestore.collection("Inventory").add({
+      _firestore.collection("History").add({
         'Date': _selectedDate.toString(),
         'Time': _selectedTime.toString(),
         'Category': currentSelectedValue,
@@ -152,6 +179,10 @@ class _addproductState extends State<addproduct> {
         ),
         child: FloatingActionButton(
           onPressed: () async {
+            if (!_validateForm()) {
+              return;
+            }
+
             calculateTotalSum();
             showDialog(
                 context: context,
@@ -165,16 +196,16 @@ class _addproductState extends State<addproduct> {
             //    uploadsFile();
             //uploadImage(selectedImagePath!);
             inventorydb();
-            Occupationdb();
+            // Occupationdb();
             newProduct.group = group;
             _firestore.collection("Product").add({
               'Date': _selectedDate.toString(),
               'Time': _selectedTime.toString(),
               'Category': currentSelectedValue,
               'Product': newProduct.name,
-              'Company': newProduct.company.toString(),
+              // 'Company': newProduct.company.toString(),
               'Cost': newProduct.cost,
-              'location': newProduct.location,
+              // 'location': newProduct.location,
               'quantity': newProduct.quantity,
               'Sum': calculateTotalSum(),
             }).then((value) {
@@ -513,21 +544,21 @@ class _addproductState extends State<addproduct> {
       ),
     );
   }
-
-  Occupationdb() async {
-    Map userDataMap = {
-      'ProductImage': url.toString(),
-      'Name': group,
-      'description': newProduct.description.toString(),
-      'group': newProduct.group.toString(),
-      'Company': newProduct.company.toString(),
-      'Cost': newProduct.cost,
-      'quantity': newProduct.quantity.toString(),
-      'Sum':calculateTotalSum(),
-    };
-
-    Products.child("Product").set(userDataMap);
-  }
+  //
+  // Occupationdb() async {
+  //   Map userDataMap = {
+  //     'ProductImage': url.toString(),
+  //     'Name': group,
+  //     // 'description': newProduct.description.toString(),
+  //     'group': newProduct.group.toString(),
+  //     'Company': newProduct.company.toString(),
+  //     'Cost': newProduct.cost,
+  //     'quantity': newProduct.quantity.toString(),
+  //     'Sum':calculateTotalSum(),
+  //   };
+  //
+  //   Products.child("Product").set(userDataMap);
+  // }
 
   Future<List<String>> fetchDropdownOptions() async {
     DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
