@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:malcolm_erp/pages/AssignStock.dart';
 import 'package:malcolm_erp/pages/Inventory.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -320,7 +321,7 @@ class _homepageState extends State<homepage> {
                               Navigator.of(context).push(
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          Transactionpage()));
+                                          AssignStock()));
                             },
                             child: Container(
                               height: 130,
@@ -331,11 +332,11 @@ class _homepageState extends State<homepage> {
                               child: Column(
                                 children: [
                                   Padding(
-                                    padding: EdgeInsets.only(top:28.0),
-                                    child: Icon(Icons.monetization_on,color: Colors.white,)),
+                                      padding: EdgeInsets.only(top:28.0),
+                                      child: Icon(Icons.share,color: Colors.white,)),
 
                                   Text(
-                                    "Transaction",
+                                    "Assign Stock",
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         color: Colors.white),
@@ -352,8 +353,48 @@ class _homepageState extends State<homepage> {
                 SizedBox(
                   height: 10,
                 ),
+
+
+
                 Row(
                   children: [
+
+                    Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(28.0),
+                          child: GestureDetector(
+                            onTap: (){
+                              Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          Transactionpage()));
+                            },
+                            child: Container(
+                              height: 130,
+                              width: 130,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  color: Colors.black87),
+                              child: Column(
+                                children: [
+                                  Padding(
+                                      padding: EdgeInsets.only(top:28.0),
+                                      child: Icon(Icons.monetization_on,color: Colors.white,)),
+
+                                  Text(
+                                    "Transaction",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                     Padding(
                       padding: const EdgeInsets.all(28.0),
                       child: GestureDetector(

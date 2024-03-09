@@ -16,6 +16,8 @@ class Signup extends StatelessWidget {
   User? currentfirebaseUser;
 
   final emailController = TextEditingController();
+  final firstNameController = TextEditingController();
+  final lastNameController = TextEditingController();
   final companyNameController = TextEditingController();
   final phoneNumberController = TextEditingController();
   final passwordController = TextEditingController();
@@ -85,7 +87,7 @@ class Signup extends StatelessWidget {
                   Center(
                     child: Padding(
                       padding: const EdgeInsets.all(12.0),
-                      child: const Text("Malcom's ERP",
+                      child: const Text("Joolynda ENT.",
                           style: TextStyle(
                               color: Colors.black87,
                               fontSize: 40,
@@ -271,12 +273,11 @@ class Signup extends StatelessWidget {
     User? user = FirebaseAuth.instance.currentUser;
     if (firebaseUser != null) {
       FirebaseFirestore.instance.collection('users').doc(user?.uid).set({
-        // 'MobileNumber': _mobileNumber.toString().trim(),
-        // 'fullName':_firstName! +  _lastname!,
+        'MobileNumber': phoneNumberController.toString().trim(),
+        'FullName':firstNameController.text +  lastNameController.text,
         'Email': emailController.toString().trim(),
         'Password': passwordController.toString().trim(),
         // 'Gender': Gender,
-        // 'Date Of Birth': birthDate,
       });
     } else
       print("shit");

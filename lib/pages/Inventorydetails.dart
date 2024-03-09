@@ -10,6 +10,9 @@ class Inventorydetails extends StatefulWidget {
 }
 
 class _InventorydetailsState extends State<Inventorydetails> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,6 +83,23 @@ class _InventorydetailsState extends State<Inventorydetails> {
                           SizedBox(height: 5),
                         ],
                       ),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            icon: Icon(Icons.edit),
+                            onPressed: () {
+                              _showEditDialog(document);
+                            },
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.delete),
+                            onPressed: () {
+                              _showDeleteDialog(document);
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   );
                 },
@@ -97,6 +117,76 @@ class _InventorydetailsState extends State<Inventorydetails> {
           },
         ),
       ),
+    );
+  }
+
+  void _showEditDialog(DocumentSnapshot document) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Edit Inventory Item'),
+          content: Form(
+            key: _formKey,
+            child: TextFormField(
+              controller: _passwordController,
+              decoration: InputDecoration(labelText: 'Password'),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter your password';
+                }
+                return null;
+              },
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                if (_formKey.currentState!.validate() && _passwordController.text == 'your_predefined_password') {
+                  // Perform edit operation
+                  // Example: Navigator.of(context).pop(); to close the dialog
+                  // Implement your edit logic here
+                }
+              },
+              child: Text('Submit'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showDeleteDialog(DocumentSnapshot document) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Delete Inventory Item'),
+          content: Text('Are you sure you want to delete this item?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                // Perform delete operation
+                // Example: Navigator.of(context).pop(); to close the dialog
+                // Implement your delete logic here
+              },
+              child: Text('Delete'),
+            ),
+          ],
+        );
+      },
     );
   }
 }
