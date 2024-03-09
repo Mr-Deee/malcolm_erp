@@ -32,7 +32,7 @@ void main() async{
 final FirebaseAuth auth = FirebaseAuth.instance;
 final User? user = auth.currentUser;
 final uid = user?.uid;
-DatabaseReference CatClients = FirebaseDatabase.instance.ref().child("Clients");
+DatabaseReference CatClients = FirebaseDatabase.instance.ref().child("users");
 DatabaseReference Products = FirebaseDatabase.instance.ref().child("Products");
 DatabaseReference clientRequestRef = FirebaseDatabase.instance.ref().child("ClientRequest");
 

@@ -165,8 +165,23 @@ class _AssignStockPageState extends State<AssignStockPage> {
                         actions: [
                           ElevatedButton(
                             onPressed: () {
-                              Navigator.of(context).pop();
+
                               // Logic to assign stock
+
+                              FirebaseFirestore.instance.collection('AssignedStock').add({
+                                'quantity': _quantityController.text,
+                                'total': _totalPrice,
+                                'ProductName': _selectedProduct,
+                                'User': _selectedUser,
+                              }).then((value) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text('Data written successfully')),
+                                );
+                              }).catchError((error) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text('Failed to write data: $error')),
+                                ); Navigator.of(context).pop();
+                              });
                             },
                             child: Text('Assign'),
                           ),
