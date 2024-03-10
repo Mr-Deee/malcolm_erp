@@ -25,11 +25,14 @@ class addproduct extends StatefulWidget {
         Farm,
       );
 }
+
 final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
 class _addproductState extends State<addproduct> {
   List<String> dropdownOptions = [];
   late DateTime _selectedDate;
   late TimeOfDay _selectedTime;
+
   @override
   void initState() {
     super.initState();
@@ -50,6 +53,7 @@ class _addproductState extends State<addproduct> {
     this.group,
     this.farm,
   );
+
   Future<void> _selectTime(BuildContext context) async {
     final TimeOfDay? pickedTime = await showTimePicker(
       context: context,
@@ -80,6 +84,7 @@ class _addproductState extends State<addproduct> {
 
   final storage = FirebaseStorage.instance;
   final storageReference = FirebaseStorage.instance.ref();
+
   bool _validateForm() {
     if (newProduct.name!.isEmpty) {
       ScaffoldMessenger.of(context as BuildContext).showSnackBar(
@@ -108,6 +113,7 @@ class _addproductState extends State<addproduct> {
 
     return true;
   }
+
   @override
   Widget build(BuildContext context) {
     bool _validateForm() {
@@ -118,7 +124,8 @@ class _addproductState extends State<addproduct> {
           ),
         );
         return false;
-      }  if (newProduct.name == null || newProduct.name!.isEmpty) {
+      }
+      if (newProduct.name == null || newProduct.name!.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Please enter a product name'),
@@ -131,6 +138,7 @@ class _addproductState extends State<addproduct> {
 
       return true;
     }
+
     // var firstname = Provider
     //     .of<Users>(context)
     //     .userInfo
@@ -194,34 +202,75 @@ class _addproductState extends State<addproduct> {
                 });
 
             inventorydb();
+
+            final QuerySnapshot snapshot = await _firestore
+                .collection("Product")
+                .where("Product", isEqualTo: newProduct.name)
+                .get();
             // Occupationdb();
             newProduct.group = group;
-            _firestore.collection("Product").add({
-              'Date': _selectedDate.toString(),
-              'Time': _selectedTime.toString(),
-              'Category': currentSelectedValue,
-              'Product': newProduct.name,
-              // 'Company': newProduct.company.toString(),
-              'Cost': newProduct.cost,
-              // 'location': newProduct.location,
-              'quantity': newProduct.quantity,
-              'Sum': calculateTotalSum(),
-            }).then((value) {
+            if (snapshot.docs.isNotEmpty) {
+              // Product already exists, update it
+              final DocumentSnapshot firstDoc = snapshot.docs.first;
 
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text('Product added successfully!'),
-                duration: Duration(seconds: 2),
-              ));
+              // Retrieve existing sum and quantity
+              int existingQuantity = firstDoc['quantity'];
+              int existingSum = firstDoc['Sum'];
+              // Add new values to existing sum and quantity
+              int newQuantity = existingQuantity ?? 0;
+              int newSum = existingSum??0 ;
+              // Update the document with new values
 
-              // Navigator.of(context).pop();
-              // Navigator.of(context).pop();
-              // displayToast('Added Sucessfully!'context);
-            }).catchError((e) {
+              newQuantity += newProduct.quantity!;
+              newSum += calculateTotalSum();
 
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              await firstDoc.reference.update({
+                'Date': _selectedDate.toString(),
+                'Time': _selectedTime.toString(),
+                'Category': currentSelectedValue,
+                'Product': newProduct.name,
+                'Cost': newProduct.cost,
+                'quantity': newQuantity,
+                'Sum': newSum,
+              }).then((value) {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text('Product added successfully!'),
+                  duration: Duration(seconds: 2),
+                ));
+
+                // Navigator.of(context).pop();
+                // Navigator.of(context).pop();
+                // displayToast('Added Sucessfully!'context);
+              }).catchError((e) {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   content: Text('Failed to add product. Please try again.'),
-              duration: Duration(seconds: 2),));
-            });
+                  duration: Duration(seconds: 2),
+                ));
+              });
+            } else {
+              // Product doesn't exist, add it
+              _firestore.collection("Product").add({
+                'Date': _selectedDate.toString(),
+                'Time': _selectedTime.toString(),
+                'Category': currentSelectedValue,
+                'Product': newProduct.name,
+                'Cost': newProduct.cost,
+                'quantity': newProduct.quantity,
+                'Sum': calculateTotalSum(),
+              }).then((_) {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text('Product added successfully!'),
+                  duration: Duration(seconds: 2),
+                ));
+                Navigator.of(context).pop();
+                Navigator.of(context).pop();
+              }).catchError((e) {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text('Failed to add product. Please try again.'),
+                  duration: Duration(seconds: 2),
+                ));
+              });
+            }
           },
           splashColor: Colors.blue,
           backgroundColor: Colors.white54,
@@ -308,9 +357,8 @@ class _addproductState extends State<addproduct> {
                                                     Icons.category,
                                                     color: Colors.green,
                                                   ),
-                                                  SizedBox(
-                                                      width:
-                                                          8), // Add some space between icon and text
+                                                  SizedBox(width: 8),
+                                                  // Add some space between icon and text
                                                   Text(value),
                                                 ],
                                               ),
@@ -501,8 +549,6 @@ class _addproductState extends State<addproduct> {
                                           height: 20,
                                         ),
 
-
-
                                         SizedBox(height: 20),
 
                                         SizedBox(height: 10),
@@ -532,77 +578,72 @@ class _addproductState extends State<addproduct> {
                               ],
                             ),
                           ),
-
-
-                          Container(
-                            height: 180,
-                            width: double.infinity,
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 20,
-                              vertical: 10,
-                            ),
-                            margin: const EdgeInsets.only(top: 75),
-                            decoration: const BoxDecoration(
-                              color: Color(0xffd5e2e3),
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(16),
-                                topRight: Radius.circular(16),
-                                bottomLeft: Radius.circular(16),
-                                bottomRight: Radius.circular(16),
-                              ),
-                            ),
-                            child: SingleChildScrollView(
-                              child: Column(
-                                crossAxisAlignment:
-                                CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                      left: 8,
-                                      bottom: 12,
-                                    ),
-                                    child: Column(
-                                      children: [],
-                                    ),
-                                  ),
-
-
-                                  Row(
-                                    children: [
-
-                                      SizedBox(width: 10),
-                                      Text(
-                                        "Kindly fill the forms above \n to upload  "
-                                            "the Category, Product \n Cost and Quantity", style: TextStyle(fontSize: 15),
-                                      ),
-                                      SizedBox(width: 10),
-                                      Icon(Icons.arrow_upward_sharp),
-
-                                    ],
-                                  ),
-                                  // Your existing TextFormField widgets
-                                  SizedBox(height: 10),
-
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(
-                                      children: [
-                                        Text(
-                                          "Kindly tap the correct button to \n submit product ", style: TextStyle(fontSize: 15),
-                                        ),
-                                        SizedBox(width: 10),
-                                        Icon(Icons.done),
-                                      ],
-                                    ),
-                                  ),
-
-
-                                  // Your existing TextFormField widgets
-                                  SizedBox(height: 20),
-                                ],
-                              ),
-                            ),
-                          ),
+                          // Container(
+                          //   height: 180,
+                          //   width: double.infinity,
+                          //   padding: const EdgeInsets.symmetric(
+                          //     horizontal: 20,
+                          //     vertical: 10,
+                          //   ),
+                          //   margin: const EdgeInsets.only(top: 75),
+                          //   decoration: const BoxDecoration(
+                          //     color: Color(0xffd5e2e3),
+                          //     borderRadius: BorderRadius.only(
+                          //       topLeft: Radius.circular(16),
+                          //       topRight: Radius.circular(16),
+                          //       bottomLeft: Radius.circular(16),
+                          //       bottomRight: Radius.circular(16),
+                          //     ),
+                          //   ),
+                          //   child: SingleChildScrollView(
+                          //     child: Column(
+                          //       crossAxisAlignment: CrossAxisAlignment.start,
+                          //       children: [
+                          //         Padding(
+                          //           padding: const EdgeInsets.only(
+                          //             left: 8,
+                          //             bottom: 12,
+                          //           ),
+                          //           child: Column(
+                          //             children: [],
+                          //           ),
+                          //         ),
+                          //         //
+                          //         // Row(
+                          //         //   children: [
+                          //         //     SizedBox(width: 10),
+                          //         //     Text(
+                          //         //       "Kindly fill the forms above \n to upload  "
+                          //         //       "the Category, Product \n Cost and Quantity",
+                          //         //       style: TextStyle(fontSize: 15),
+                          //         //     ),
+                          //         //     SizedBox(width: 10),
+                          //         //     Icon(Icons.arrow_upward_sharp),
+                          //         //   ],
+                          //         // ),
+                          //         // // Your existing TextFormField widgets
+                          //         // SizedBox(height: 10),
+                          //         //
+                          //         // Padding(
+                          //         //   padding: const EdgeInsets.all(8.0),
+                          //         //   child: Row(
+                          //         //     children: [
+                          //         //       Text(
+                          //         //         "Kindly tap the correct button to \n submit product ",
+                          //         //         style: TextStyle(fontSize: 15),
+                          //         //       ),
+                          //         //       SizedBox(width: 10),
+                          //         //       Icon(Icons.done),
+                          //         //     ],
+                          //         //   ),
+                          //         // ),
+                          //
+                          //         // Your existing TextFormField widgets
+                          //         SizedBox(height: 20),
+                          //       ],
+                          //     ),
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),
@@ -615,21 +656,7 @@ class _addproductState extends State<addproduct> {
       ),
     );
   }
-  //
-  // Occupationdb() async {
-  //   Map userDataMap = {
-  //     'ProductImage': url.toString(),
-  //     'Name': group,
-  //     // 'description': newProduct.description.toString(),
-  //     'group': newProduct.group.toString(),
-  //     'Company': newProduct.company.toString(),
-  //     'Cost': newProduct.cost,
-  //     'quantity': newProduct.quantity.toString(),
-  //     'Sum':calculateTotalSum(),
-  //   };
-  //
-  //   Products.child("Product").set(userDataMap);
-  // }
+
 
   Future<List<String>> fetchDropdownOptions() async {
     DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance

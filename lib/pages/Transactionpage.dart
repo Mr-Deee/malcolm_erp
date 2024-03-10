@@ -297,7 +297,9 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
                                 // Update the quantity and total amount
                                 int newQuantity = (snapshot['quantity'] as int) -
                                     soldQuantity;
-                                double newTotal = (snapshot['Sum'] as double) -
+
+                                double? sumFromSnapshot = snapshot['Sum'] as double?;
+                                double newTotal =(sumFromSnapshot??0.0) -
                                     soldPrice;
 
                                 // Check if new quantity is valid

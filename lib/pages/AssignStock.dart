@@ -31,7 +31,7 @@ class _AssignStockState extends State<AssignStock> {
                     width: 121,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10.0),
-                        color: Colors.black),
+                        color: Colors.white),
                     child: Container(
                       height: 130,
                       width: 130,
@@ -102,6 +102,7 @@ class AssignedUserCard extends StatelessWidget {
           title: Text(user['User']),
           // Assuming 'name' is a field in your document
           subtitle: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
 
             children: [
               Text('Total: GHS ${user['total']}'),
