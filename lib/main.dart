@@ -4,7 +4,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:malcolm_erp/pages/Admin.dart';
 import 'package:malcolm_erp/pages/EmployeeTill.dart';
-import 'package:malcolm_erp/pages/Employees.dart';
 import 'package:malcolm_erp/pages/SignUp.dart';
 import 'package:malcolm_erp/pages/homepage.dart';
 import 'package:malcolm_erp/pages/login.dart';
@@ -57,7 +56,7 @@ class MyApp extends StatelessWidget {
         // home: const MyHomePage(title: 'Flutter Demo Home Page'),
 
         initialRoute:
-            FirebaseAuth.instance.currentUser == null ? '/SignUP' : '/Employee',
+            FirebaseAuth.instance.currentUser == null ? '/SignUP' : '/Homepage',
             //'/Homepage',
         routes: {
           "/SignUP": (context) => Signup(),

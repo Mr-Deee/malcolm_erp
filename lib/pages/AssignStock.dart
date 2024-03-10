@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:malcolm_erp/pages/COB.dart';
 import 'AssignStockDetails.dart';
 
 class AssignStock extends StatefulWidget {
@@ -20,41 +21,81 @@ class _AssignStockState extends State<AssignStock> {
         child: Container(
           child: Column(
             children: [
-              GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => AssignStockPage()));
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 38.0),
-                    child: Container(
-                      height: 111,
-                      width: 121,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.0),
-                          color: Colors.white),
-                      child: Container(
-                        height: 130,
-                        width: 130,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            color: Colors.blue),
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 28.0),
-                              child: Icon(Icons.add_circle),
+              Row(
+                children: [
+                  GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => AssignStockPage()));
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 38.0),
+                        child: Container(
+                          height: 111,
+                          width: 121,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.0),
+                              color: Colors.white),
+                          child: Container(
+                            height: 130,
+                            width: 130,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                color: Colors.blue),
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 28.0),
+                                  child: Icon(Icons.add_circle),
+                                ),
+                                Text(
+                                  "Assign User",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                )
+                              ],
                             ),
-                            Text(
-                              "Assign User",
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            )
-                          ],
+                          ),
                         ),
-                      ),
-                    ),
-                  )),
-        
+                      )),
+
+                  GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => COB()));
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 38.0),
+                        child: Container(
+                          height: 111,
+                          width: 121,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.0),
+                              color: Colors.white),
+                          child: Container(
+                            height: 130,
+                            width: 130,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                color: Colors.black54),
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 28.0),
+                                  child: Icon(Icons.add_circle),
+                                ),
+                                Text(
+                                  "Close Of Bussiness",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      )),
+
+                ],
+              ),
+
               SizedBox(height: 29,),
               SingleChildScrollView(
                 scrollDirection: Axis.vertical,

@@ -188,8 +188,10 @@ class _AssignStockPageState extends State<AssignStockPage> {
                                 'User': _selectedUser,
                                 'Email': _selectedUserEmail?.toLowerCase().toString(),
                               }).then((value) {
+                                Navigator.of(context).pop();
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(content: Text('Data written successfully')),
+
                                 );
                               }).catchError((error) {
                                 ScaffoldMessenger.of(context).showSnackBar(

@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:malcolm_erp/Assistant/assistantmethods.dart';
 import 'package:malcolm_erp/pages/EmployeeTill.dart';
-import 'package:malcolm_erp/pages/Employees.dart';
 
 import '../../components/my_button.dart';
 import '../../components/my_textfield.dart';
@@ -206,7 +205,7 @@ class LoginPage extends StatelessWidget {
             message: "Logging you ,Please wait.",
           );
         });
-    // AssistantMethod.getCurrentOnlineUserInfo(context);
+     AssistantMethod.getCurrentOnlineUserInfo(context);
     final User? firebaseUser = (await _firebaseAuth
             .signInWithEmailAndPassword(
       email: emailController.text.toString().trim(),
@@ -228,7 +227,7 @@ class LoginPage extends StatelessWidget {
 
       if (firebaseUser != null) {
         Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => employeetill()),
+            MaterialPageRoute(builder: (context) => homepage()),
             (Route<dynamic> route) => false);
         displayToast("Logged-in ", context);
       } else {
