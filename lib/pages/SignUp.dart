@@ -131,22 +131,9 @@ class Signup extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
-                                  // const Text(
-                                  //     "Look like you don't have an account. Let's create a new account for",
-                                  //     // ignore: prefer_const_constructors
-                                  //     style: TextStyle(
-                                  //         color: Colors.white, fontSize: 20),
-                                  //     textAlign: TextAlign.start),
-                                  // // ignore: prefer_const_constructors
-                                  // const Text(
-                                  //   "jane.doe@gmail.com",
-                                  //   style: TextStyle(
-                                  //       color: Colors.white,
-                                  //       fontSize: 20,
-                                  //       fontWeight: FontWeight.bold),
-                                  //   textAlign: TextAlign.start,
+                              // Align: TextAlign.start,
                                   // ),
-                                  const SizedBox(height: 30),
+                                  const SizedBox(height: 20),
                                   MyTextField(
                                     controller: companyNameController,
                                     hintText: 'CompanyName',
@@ -164,6 +151,7 @@ class Signup extends StatelessWidget {
                                     controller: passwordController,
                                     hintText: 'Password',
                                     obscureText: true,
+
                                   ),
                                   const SizedBox(height: 10),
                                   MyTextField(
@@ -274,9 +262,9 @@ class Signup extends StatelessWidget {
     if (firebaseUser != null) {
       FirebaseFirestore.instance.collection('users').doc(user?.uid).set({
         'MobileNumber': phoneNumberController.toString().trim(),
-        'FullName':firstNameController.text +  lastNameController.text,
-        'Email': emailController.toString().trim(),
-        'Password': passwordController.toString().trim(),
+        'FullName':companyNameController.text.trim(),
+        'Email': emailController.text.trim(),
+        'Password': passwordController.text.trim(),
         // 'Gender': Gender,
       });
     } else

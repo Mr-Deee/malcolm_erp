@@ -3,6 +3,8 @@ import 'dart:ui';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:malcolm_erp/Assistant/assistantmethods.dart';
+import 'package:malcolm_erp/pages/EmployeeTill.dart';
+import 'package:malcolm_erp/pages/Employees.dart';
 
 import '../../components/my_button.dart';
 import '../../components/my_textfield.dart';
@@ -12,6 +14,7 @@ import 'homepage.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
+
   final emailController = TextEditingController();
 
   // text editing controllers
@@ -60,34 +63,22 @@ class LoginPage extends StatelessWidget {
                 // crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: MediaQuery.of(context).size.height * 0.07),
-
-
+                  Text("MALCOLM ERP",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.1),
-                  Padding(
-                    padding: const EdgeInsets.all(18.0),
-                    child: Row(
-                      children: [
-                        const Text("Log in",
-                            style: TextStyle(
-                                color: Colors.black87,
-                                fontSize: 40,
-                                fontWeight: FontWeight.bold)),
-                      ],
-                    ),
-                  ),
+
                   SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                   Center(
                     child: ClipRect(
                       child: BackdropFilter(
                         filter:
-                        ImageFilter.blur(sigmaX: _sigmaX, sigmaY: _sigmaY),
+                            ImageFilter.blur(sigmaX: _sigmaX, sigmaY: _sigmaY),
                         child: Container(
                           padding: const EdgeInsets.symmetric(horizontal: 10.0),
                           decoration: BoxDecoration(
                               color: Color.fromRGBO(0, 0, 0, 1)
                                   .withOpacity(_opacity),
                               borderRadius:
-                              const BorderRadius.all(Radius.circular(30))),
+                                  const BorderRadius.all(Radius.circular(30))),
                           width: MediaQuery.of(context).size.width * 0.9,
                           height: MediaQuery.of(context).size.height * 0.6,
                           child: Form(
@@ -98,55 +89,75 @@ class LoginPage extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
 
-
+                                  Row(
+                                    children: [
+                                      Text("Log in",
+                                          style: TextStyle(
+                                              color: Colors.black87,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold)),
+                                    ],
+                                  ),
+                                  SizedBox(height: 30,),
                                   MyTextField(
                                     controller: emailController,
                                     hintText: 'email',
                                     obscureText: false,
                                   ),
                                   SizedBox(
-                                      height: MediaQuery.of(context).size.height *
-                                          0.03),
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.03),
                                   MyTextField(
                                     controller: passwordController,
                                     hintText: 'Password',
                                     obscureText: true,
                                   ),
                                   SizedBox(
-                                      height: MediaQuery.of(context).size.height *
-                                          0.03),
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.03),
                                   MyButtonAgree(
                                     text: "Continue",
                                     onTap: () {
-
                                       loginAndAuthenticateUser(context);
                                     },
                                   ),
-                                  const SizedBox(height: 30),
+                                  const SizedBox(height: 10),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left:148.0),
+                                    child: Text('Forgot Password?',
+                                        style: TextStyle(
+                                            color: Colors.black54,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15),
+                                        textAlign: TextAlign.start),
+                                  ),
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
+                                          CrossAxisAlignment.stretch,
                                       children: [
+
                                         Row(
                                           mainAxisAlignment:
-                                          MainAxisAlignment.start,
+                                              MainAxisAlignment.center,
                                           // ignore: prefer_const_literals_to_create_immutables
                                           children: [
                                             Text(
                                               'Don\'t have an account?',
                                               style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 20),
+                                                  color: Colors.black54,
+                                                  fontSize: 15),
                                               textAlign: TextAlign.start,
                                             ),
                                             const SizedBox(width: 4),
                                             GestureDetector(
-                                              onTap: (){
-
+                                              onTap: () {
                                                 Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
@@ -156,26 +167,14 @@ class LoginPage extends StatelessWidget {
                                               child: const Text(
                                                 'Sign Up',
                                                 style: TextStyle(
-                                                    color: Color.fromARGB(
-                                                        242, 0, 0, 0),
+                                                    color: Colors.black54,
                                                     fontWeight: FontWeight.bold,
-                                                    fontSize: 20),
+                                                    fontSize: 15),
                                               ),
                                             ),
                                           ],
                                         ),
-                                        SizedBox(
-                                            height: MediaQuery.of(context)
-                                                .size
-                                                .height *
-                                                0.00),
-                                        const Text('Forgot Password?',
-                                            style: TextStyle(
-                                                color: Color.fromARGB(
-                                                    242, 0, 0, 0),
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 20),
-                                            textAlign: TextAlign.start),
+
                                       ],
                                     ),
                                   ),
@@ -195,6 +194,7 @@ class LoginPage extends StatelessWidget {
       ),
     );
   }
+
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   void loginAndAuthenticateUser(BuildContext context) async {
@@ -206,31 +206,30 @@ class LoginPage extends StatelessWidget {
             message: "Logging you ,Please wait.",
           );
         });
-    AssistantMethod.getCurrentOnlineUserInfo(context);
+    // AssistantMethod.getCurrentOnlineUserInfo(context);
     final User? firebaseUser = (await _firebaseAuth
-        .signInWithEmailAndPassword(
+            .signInWithEmailAndPassword(
       email: emailController.text.toString().trim(),
       password: passwordController.text.toString().trim(),
     )
-        .catchError((errMsg) {
+            .catchError((errMsg) {
       Navigator.pop(context);
       displayToast("Error" + errMsg.toString(), context);
     }))
         .user;
     try {
       UserCredential userCredential =
-      await _firebaseAuth.signInWithEmailAndPassword(
-          email: emailController.text,
-          password: passwordController.text);
+          await _firebaseAuth.signInWithEmailAndPassword(
+              email: emailController.text, password: passwordController.text);
       //
       // if (email.text == "merchantdaniel8@gmail.com") {
       //   Navigator.of(context).pushNamed("/admin");
       // } else
 
-        if (firebaseUser != null) {
-          Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (context) => homepage()),
-                  (Route<dynamic> route) => false);
+      if (firebaseUser != null) {
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => employeetill()),
+            (Route<dynamic> route) => false);
         displayToast("Logged-in ", context);
       } else {
         displayToast("Error: Cannot be signed in", context);
@@ -253,10 +252,8 @@ class LoginPage extends StatelessWidget {
       //         context);
       //    // await _firebaseAuth.signOut();
       //   }
-
     } catch (e) {
       // handle error
     }
   }
 }
-

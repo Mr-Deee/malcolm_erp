@@ -9,9 +9,20 @@ class AssignStockPage extends StatefulWidget {
 class _AssignStockPageState extends State<AssignStockPage> {
   String? _selectedUser;
   String? _selectedProduct;
+  // String? Email;
   double _totalPrice = 0.0;
   TextEditingController _quantityController = TextEditingController();
   String? _selectedCategory;
+  String? _selectedUserEmail;
+
+  Future<void> fetchUserEmail(value) async {
+    final querySnapshot = await FirebaseFirestore.instance.collection('users').where('FullName', isEqualTo: value).get();
+    if (querySnapshot.docs.isNotEmpty) {
+      setState(() {
+        _selectedUserEmail = querySnapshot.docs.first['Email'] as String?;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,11 +50,13 @@ class _AssignStockPageState extends State<AssignStockPage> {
                   final users = snapshot.data?.docs
                       .map((doc) => doc['FullName'] as String)
                       .toList();
+
                   return DropdownButton(
                     value: _selectedUser,
                     onChanged: (value) {
                       setState(() {
                         _selectedUser = value;
+                        fetchUserEmail(value!);
                       });
                     },
                     items: users?.map<DropdownMenuItem<String>>((String user) {
@@ -66,10 +79,10 @@ class _AssignStockPageState extends State<AssignStockPage> {
                   final products = snapshot.data?.docs
                       .map((doc) => doc['Product'] as String)
                       .toList();
-                  final productIds = snapshot.data?.docs
-                      .map((doc) => doc.id)
-                      .toList(); // Added
+                  final productIds = snapshot.data?.docs.map((doc) => doc.id).toList(); // Added
                   final productMap = Map.fromIterables(products!, productIds!);
+
+
                   return Column(
                     children: [
                       DropdownButton(
@@ -173,6 +186,7 @@ class _AssignStockPageState extends State<AssignStockPage> {
                                 'total': _totalPrice,
                                 'ProductName': _selectedProduct,
                                 'User': _selectedUser,
+                                'Email': _selectedUserEmail?.toLowerCase().toString(),
                               }).then((value) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(content: Text('Data written successfully')),
@@ -204,4 +218,7 @@ class _AssignStockPageState extends State<AssignStockPage> {
       ),
     );
   }
+
+
+
 }

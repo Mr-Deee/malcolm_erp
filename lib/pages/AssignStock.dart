@@ -16,67 +16,77 @@ class _AssignStockState extends State<AssignStock> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: Container(
-        child: Column(
-          children: [
-            GestureDetector(
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => AssignStockPage()));
-                },
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 38.0),
-                  child: Container(
-                    height: 111,
-                    width: 121,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.0),
-                        color: Colors.white),
+      body: SingleChildScrollView(
+        child: Container(
+          child: Column(
+            children: [
+              GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => AssignStockPage()));
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 38.0),
                     child: Container(
-                      height: 130,
-                      width: 130,
+                      height: 111,
+                      width: 121,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          color: Colors.blue),
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(top: 28.0),
-                            child: Icon(Icons.add_circle),
-                          ),
-                          Text(
-                            "Assign User",
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          )
-                        ],
+                          borderRadius: BorderRadius.circular(10.0),
+                          color: Colors.white),
+                      child: Container(
+                        height: 130,
+                        width: 130,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: Colors.blue),
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top: 28.0),
+                              child: Icon(Icons.add_circle),
+                            ),
+                            Text(
+                              "Assign User",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            )
+                          ],
+                        ),
                       ),
                     ),
+                  )),
+        
+              SizedBox(height: 29,),
+              SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Container(
+                    height:  MediaQuery.of(context).size.height,
+                    child: StreamBuilder(
+                        stream: FirebaseFirestore.instance
+                            .collection('AssignedStock')
+                            .snapshots(),
+                        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return Center(child: CircularProgressIndicator());
+                          }
+                          if (snapshot.hasError) {
+                            return Center(child: Text('Error: ${snapshot.error}'));
+                          }
+                          final users = snapshot.data!.docs;
+                          return ListView.builder(
+                            itemCount: users.length,
+                            itemBuilder: (context, index) {
+                              final user = users[index];
+                              return AssignedUserCard(user: user);
+                            },
+                          );
+                        }),
                   ),
-                )),
-            Container(
-              height: 209,
-              child: StreamBuilder(
-                  stream: FirebaseFirestore.instance
-                      .collection('AssignedStock')
-                      .snapshots(),
-                  builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator());
-                    }
-                    if (snapshot.hasError) {
-                      return Center(child: Text('Error: ${snapshot.error}'));
-                    }
-                    final users = snapshot.data!.docs;
-                    return ListView.builder(
-                      itemCount: users.length,
-                      itemBuilder: (context, index) {
-                        final user = users[index];
-                        return AssignedUserCard(user: user);
-                      },
-                    );
-                  }),
-            )
-          ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
