@@ -11,6 +11,7 @@ class _AssignStockPageState extends State<AssignStockPage> {
   String? _selectedProduct;
   // String? Email;
   double _totalPrice = 0.0;
+  int? _costPrice;
   TextEditingController _quantityController = TextEditingController();
   String? _selectedCategory;
   String? _selectedUserEmail;
@@ -142,6 +143,7 @@ class _AssignStockPageState extends State<AssignStockPage> {
                               int price = doc.data()?['Cost'];
                               setState(() {
                                 _totalPrice = quantity * price;
+                              _costPrice = price ;
                                 print("price" '$quantity');
                                 print("prod: " '$productId');
                                 // print("int"'$price');
@@ -183,6 +185,7 @@ class _AssignStockPageState extends State<AssignStockPage> {
                               final int soldQuantity = int.tryParse(_quantityController.text) ?? 0;
                               FirebaseFirestore.instance.collection('AssignedStock').add({
                                 'quantity':soldQuantity,
+                                'Costper':_costPrice,
                                 'total': _totalPrice,
                                 'ProductName': _selectedProduct,
                                 'User': _selectedUser,

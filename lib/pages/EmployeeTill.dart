@@ -236,33 +236,50 @@ String? data;
                           Column(
                             children: assignedStock!.map((stockItem) {
                               final docid = stockItem['id'];
-                              return Card(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Product Name: ${stockItem['ProductName']}',
-                                        style: TextStyle(fontWeight: FontWeight.bold),
-                                      ),
-                                      SizedBox(height: 4),
-                                      Text('Quantity: ${stockItem['quantity']}'),
-                                      Text(
-                                        'Total: \GHS${(stockItem['total'])}',
-                                        style: TextStyle(fontWeight: FontWeight.bold),
-                                      ),
-                                      SizedBox(height: 8),
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          print(docid);
+                              return SizedBox(
+                                width: 440,
+                                height: 120,
+                                child: Card(
 
-                                          // Example of making sale for 1 quantity, you can adjust it according to your UI
-                                          makeSale(docid, );
-                                        },
-                                        child: Text('Make Sale'),
-                                      ),
-                                    ],
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                          children: [
+                                            Text(
+                                              ' ${stockItem['ProductName']}',
+                                              style: TextStyle(fontWeight: FontWeight.bold),
+                                            ),
+                                            Text('Qty: ${stockItem['quantity']}'),
+                                          ],
+                                        ),
+                                        SizedBox(height: 4),
+
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            Text(
+                                              'GHS${(stockItem['total'])}',
+                                              style: TextStyle(fontWeight: FontWeight.bold),
+                                            ),
+                                            SizedBox(height: 8),
+                                            ElevatedButton(
+                                              onPressed: () {
+                                                print(docid);
+
+                                                // Example of making sale for 1 quantity, you can adjust it according to your UI
+                                                makeSale(docid, );
+                                              },
+                                              child: Text('Make Sale'),
+                                            ),
+                                          ],
+                                        ),
+
+                                      ],
+                                    ),
                                   ),
                                 ),
                               );
