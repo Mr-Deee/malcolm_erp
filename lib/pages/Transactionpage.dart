@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -299,8 +297,7 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
                                     soldQuantity;
 
                                 double? sumFromSnapshot = snapshot['Sum'] as double?;
-                                double newTotal =(sumFromSnapshot??0.0) -
-                                    soldPrice;
+                                double newTotal =(sumFromSnapshot??0.0) - soldPrice;
 
                                 // Check if new quantity is valid
                                 if (newQuantity < 0) {

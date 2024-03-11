@@ -83,7 +83,7 @@ class _homepageState extends State<homepage> {
       scrollDirection: Axis.horizontal,
       children: categoryCostMap.entries.map((entry) {
         String category = entry.key;
-        double totalCost = entry.value ?? 0.0;
+        double totalCost = entry.value;
         return Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [

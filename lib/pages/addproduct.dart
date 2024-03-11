@@ -217,8 +217,8 @@ class _addproductState extends State<addproduct> {
               int existingQuantity = firstDoc['quantity'];
               int existingSum = firstDoc['Sum'];
               // Add new values to existing sum and quantity
-              int newQuantity = existingQuantity ?? 0;
-              int newSum = existingSum??0 ;
+              int newQuantity = existingQuantity;
+              int newSum = existingSum ;
               // Update the document with new values
 
               newQuantity += newProduct.quantity!;

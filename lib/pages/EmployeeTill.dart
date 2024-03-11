@@ -52,7 +52,7 @@ String? data;
     });
   }
 
-  Future<void> makeSale(String productId) async {
+  Future<void> makeSale(String productId,productname) async {
     int? soldQuantity;
 
     await showDialog<int>(
@@ -113,6 +113,7 @@ String? data;
         });
 
         await FirebaseFirestore.instance.collection('SoldQuantity').doc().set({
+          'ProductName':productname,
           'productId': productId,
           'soldQuantity': soldQuantity,
           'totalSales': totalSales,
@@ -236,6 +237,7 @@ String? data;
                           Column(
                             children: assignedStock!.map((stockItem) {
                               final docid = stockItem['id'];
+                              final productname =stockItem['ProductName'];
                               return SizedBox(
                                 width: 440,
                                 height: 120,
@@ -271,7 +273,7 @@ String? data;
                                                 print(docid);
 
                                                 // Example of making sale for 1 quantity, you can adjust it according to your UI
-                                                makeSale(docid, );
+                                                makeSale(docid, productname);
                                               },
                                               child: Text('Make Sale'),
                                             ),

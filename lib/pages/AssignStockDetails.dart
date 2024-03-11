@@ -95,8 +95,7 @@ class _AssignStockPageState extends State<AssignStockPage> {
                           print(
                               "Selected Product ID: ${productMap[value]}"); // Added
                         },
-                        items: products
-                            ?.map<DropdownMenuItem<String>>((String product) {
+                        items: products.map<DropdownMenuItem<String>>((String product) {
                           return DropdownMenuItem<String>(
                             value: product,
                             child: Text(product),

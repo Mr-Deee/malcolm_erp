@@ -305,7 +305,7 @@ Widget _buildTotals() {
     scrollDirection: Axis.horizontal,
     children: _categoryTotals.entries.map((entry) {
       String category = entry.key;
-      int total = entry.value ?? 0;
+      int total = entry.value ;
       return Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
