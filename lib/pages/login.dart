@@ -227,7 +227,7 @@ class LoginPage extends StatelessWidget {
 
       if (firebaseUser != null) {
         Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => homepage()),
+            MaterialPageRoute(builder: (context) => employeetill()),
             (Route<dynamic> route) => false);
         displayToast("Logged-in ", context);
       } else {

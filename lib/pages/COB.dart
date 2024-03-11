@@ -12,11 +12,15 @@ class _COBState extends State<COB> {
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
+      appBar: AppBar(
+        title: Text("Close Of Business"),
+      ),
+      backgroundColor: Colors.black38,
 
       body: Column(
         children: [
 
-          Container()
+          Container(child: Text("",style: TextStyle(fontSize: 30,color: Colors.white),),)
         ],
       ),
     );
