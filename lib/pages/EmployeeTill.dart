@@ -99,6 +99,7 @@ String? data;
         await productDoc.update({
           'quantity': remainingQuantity,
           'RemainingTotal': total - totalSales,
+          "total":total - totalSales,
           // Assuming total remains unchanged
         });
 
