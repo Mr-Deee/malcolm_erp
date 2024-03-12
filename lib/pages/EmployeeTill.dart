@@ -89,12 +89,12 @@ String? data;
 
       final int availableQuantity = currentData['quantity'];
       final String  productid = currentData['ProductID'];
-      final double  costperquantity = currentData['Costper'];
+      final int  costperquantity = currentData['Costper'];
       final double total = currentData['total'];
 
       if (availableQuantity >= soldQuantity!) {
         final int remainingQuantity = availableQuantity - soldQuantity!;
-        final double totalSales = soldQuantity! * costperquantity;
+        final double totalSales = soldQuantity! * costperquantity.toDouble();
 
         await productDoc.update({
           'quantity': remainingQuantity,
