@@ -9,6 +9,7 @@ class AssignStockPage extends StatefulWidget {
 class _AssignStockPageState extends State<AssignStockPage> {
   String? _selectedUser;
   String? _selectedProduct;
+  String? _selectedProductid;
   // String? Email;
   double _totalPrice = 0.0;
   int? _costPrice;
@@ -143,6 +144,8 @@ class _AssignStockPageState extends State<AssignStockPage> {
                               setState(() {
                                 _totalPrice = quantity * price;
                               _costPrice = price ;
+
+                                _selectedProductid=productId;
                                 print("price" '$quantity');
                                 print("prod: " '$productId');
                                 // print("int"'$price');
@@ -187,6 +190,7 @@ class _AssignStockPageState extends State<AssignStockPage> {
                                 'Costper':_costPrice,
                                 'total': _totalPrice,
                                 'ProductName': _selectedProduct,
+                                'ProductID':_selectedProductid,
                                 'User': _selectedUser,
                                 'Email': _selectedUserEmail?.toLowerCase().toString(),
                               }).then((value) {

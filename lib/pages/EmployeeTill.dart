@@ -86,12 +86,15 @@ String? data;
       final productDoc = assignedStockRef.doc(productId);
       final currentData = await productDoc.get();
 
+
       final int availableQuantity = currentData['quantity'];
+      final String  productid = currentData['ProductID'];
+      final double  costperquantity = currentData['Costper'];
       final double total = currentData['total'];
 
       if (availableQuantity >= soldQuantity!) {
         final int remainingQuantity = availableQuantity - soldQuantity!;
-        final double totalSales = soldQuantity! * total;
+        final double totalSales = soldQuantity! * costperquantity;
 
         await productDoc.update({
           'quantity': remainingQuantity,
@@ -105,7 +108,7 @@ String? data;
 
         // Save sold quantity and amount in a separate table or field in the AssignedStock document
     await FirebaseFirestore.instance.collection('AssignedStock').doc(productId).update({
-          'productId': productId,
+          'productId': productid,
           'soldQuantity': soldQuantity,
           'totalSales': totalSales,
           'soldBy': _firebaseAuth.currentUser?.email,
@@ -114,7 +117,7 @@ String? data;
 
         await FirebaseFirestore.instance.collection('SoldQuantity').doc().set({
           'ProductName':productname,
-          'productId': productId,
+          'productId': productid,
           'soldQuantity': soldQuantity,
           'totalSales': totalSales,
           'soldBy': _firebaseAuth.currentUser?.email,

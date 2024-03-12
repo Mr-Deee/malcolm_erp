@@ -84,7 +84,7 @@ class _AssignStockState extends State<AssignStock> {
                                   child: Icon(Icons.add_circle),
                                 ),
                                 Text(
-                                  "Close Of Bussiness",
+                                  "COB",
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 )
                               ],
