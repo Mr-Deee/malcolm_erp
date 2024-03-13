@@ -25,14 +25,18 @@ class _employeetillState extends State<employeetill> {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   Future<void> fetchUserData() async {
-    final userDoc =
-    await FirebaseFirestore.instance.collection('users').doc(_firebaseAuth.currentUser?.uid).get();
+    final userDoc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(_firebaseAuth.currentUser?.uid)
+        .get();
     setState(() {
       userName = userDoc['FullName'];
       userEmail = userDoc['Email'];
     });
   }
-String? data;
+
+  String? data;
+
   Future<void> fetchAssignedStock() async {
     final assignedStockSnapshot = await FirebaseFirestore.instance
         .collection('AssignedStock')
@@ -40,19 +44,20 @@ String? data;
         .get();
 
     setState(() {
-      assignedStock = assignedStockSnapshot.docs.map((doc) => doc.data()).toList();
+      assignedStock =
+          assignedStockSnapshot.docs.map((doc) => doc.data()).toList();
 
       assignedStock = assignedStockSnapshot.docs.map((doc) {
         // Extracting document ID along with other data
         Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-        data['id'] = doc.id;  print(data);
+        data['id'] = doc.id;
+        print(data);
         return data;
-
       }).toList();
     });
   }
 
-  Future<void> makeSale(String productId,productname) async {
+  Future<void> makeSale(String productId, productname) async {
     int? soldQuantity;
 
     await showDialog<int>(
@@ -82,50 +87,51 @@ String? data;
     );
 
     if (soldQuantity != null) {
-      final assignedStockRef = FirebaseFirestore.instance.collection('AssignedStock');
+      final assignedStockRef =
+          FirebaseFirestore.instance.collection('AssignedStock');
       final productDoc = assignedStockRef.doc(productId);
       final currentData = await productDoc.get();
 
-
       final int availableQuantity = currentData['quantity'];
-      final String  productid = currentData['ProductID'];
-      final double  costperquantity = currentData['Costper'];
+      final int availableSoldQuantity = currentData['soldQuantity']??0;
+      final String productid = currentData['ProductID'];
+      final double costperquantity = currentData['Costper'];
       final double total = currentData['total'];
+      final double availabletotal = currentData['totalSales'] as double;
+
 
       if (availableQuantity >= soldQuantity!) {
         final int remainingQuantity = availableQuantity - soldQuantity!;
         final double totalSales = soldQuantity! * costperquantity.toDouble();
 
-        // await productDoc.update({
-        //   'RemainingTotal': total - totalSales,
-        //   "total":total - totalSales,
-        //   // Assuming total remains unchanged
-        // });
-
-
+        final double finaltotal =total-totalSales;
+        final int finalQty = availableSoldQuantity + soldQuantity! ;
+        final double fintotal = availabletotal + totalSales! ;
         // Save sold quantity and amount in a separate table or field in the AssignedStock document
 
-
         // Save sold quantity and amount in a separate table or field in the AssignedStock document
-    await FirebaseFirestore.instance.collection('AssignedStock').doc(productId).update({
+        await FirebaseFirestore.instance
+            .collection('AssignedStock')
+            .doc(productId)
+            .update({
           'productId': productid,
-          'soldQuantity': soldQuantity,
-          'RemainingQuantity': remainingQuantity,
-          'totalSales': totalSales,
+          'soldQuantity': finalQty,
+          'quantity': remainingQuantity,
+          'totalSales': fintotal,
+          'total':finaltotal,
           'soldBy': _firebaseAuth.currentUser?.email,
           'timestamp': FieldValue.serverTimestamp(),
         });
 
         await FirebaseFirestore.instance.collection('SoldQuantity').doc().set({
-          'ProductName':productname,
+          'ProductName': productname,
           'productId': productid,
-          'soldQuantity': soldQuantity,
-          'RemainingQuantity': remainingQuantity,
-          'totalSales': totalSales,
+          'soldQuantity': finalQty,
+          'totalSales': fintotal,
+          'total':finaltotal,
           'soldBy': _firebaseAuth.currentUser?.email,
           'timestamp': FieldValue.serverTimestamp(),
         });
-
 
         // Refresh assigned stock list
         fetchAssignedStock();
@@ -134,7 +140,8 @@ String? data;
           context: context,
           builder: (context) => AlertDialog(
             title: Text('Insufficient Quantity'),
-            content: Text('The available quantity is not enough to fulfill this sale.'),
+            content: Text(
+                'The available quantity is not enough to fulfill this sale.'),
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),
@@ -146,7 +153,6 @@ String? data;
       }
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -184,7 +190,7 @@ String? data;
                             Navigator.pushNamedAndRemoveUntil(
                               context,
                               "/SignIn",
-                                  (route) => false,
+                              (route) => false,
                             );
                           },
                         ),
@@ -234,7 +240,8 @@ String? data;
                       children: [
                         Text(
                           'Assigned Stock:',
-                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
                         ),
                         SizedBox(height: 8),
                         // Display assigned stock in cards
@@ -242,35 +249,39 @@ String? data;
                           Column(
                             children: assignedStock!.map((stockItem) {
                               final docid = stockItem['id'];
-                              final productname =stockItem['ProductName'];
+                              final productname = stockItem['ProductName'];
                               return SizedBox(
                                 width: 440,
                                 height: 120,
                                 child: Card(
-
                                   child: Padding(
                                     padding: const EdgeInsets.all(16.0),
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
                                           children: [
                                             Text(
                                               ' ${stockItem['ProductName']}',
-                                              style: TextStyle(fontWeight: FontWeight.bold),
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold),
                                             ),
-                                            Text('Qty: ${stockItem['quantity']}'),
+                                            Text(
+                                                'Qty: ${stockItem['quantity']}'),
                                           ],
                                         ),
                                         SizedBox(height: 4),
-
                                         Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
                                           children: [
                                             Text(
                                               'GHS${(stockItem['total'])}',
-                                              style: TextStyle(fontWeight: FontWeight.bold),
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold),
                                             ),
                                             SizedBox(height: 8),
                                             ElevatedButton(
@@ -284,7 +295,6 @@ String? data;
                                             ),
                                           ],
                                         ),
-
                                       ],
                                     ),
                                   ),

@@ -186,13 +186,13 @@ class _AssignStockPageState extends State<AssignStockPage> {
 
                               // Logic to assign stock
                               final int soldQuantity = int.tryParse(_quantityController.text) ?? 0;
-
-
                               FirebaseFirestore.instance.collection('AssignedStock').add({
                                 'quantity':soldQuantity,
                                 'Costper':_costPrice,
                                 'total': _totalPrice,
                                 'ProductName': _selectedProduct,
+                                'soldQuantity': 0,
+                                'totalSales': 0.0,
                                 'ProductID':_selectedProductid,
                                 'User': _selectedUser,
                                 'Email': _selectedUserEmail?.toLowerCase().toString(),

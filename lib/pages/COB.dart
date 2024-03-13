@@ -18,6 +18,7 @@ class _COBState extends State<COB> {
     await FirebaseFirestore.instance.collection('AssignedStock').doc(document).delete();
    // var querySnapshot = await FirebaseFirestore.instance.collection('SoldQuantity').where("productId",isEqualTo:document).get();
    //  querySnapshot.docs.forEach((doc) {
+   //
    //    doc.reference.delete();
    //  });
     // Update quantity in product table
@@ -25,16 +26,18 @@ class _COBState extends State<COB> {
     await FirebaseFirestore.instance.collection('Product').doc(document).get();
     int currentQuantity = productSnapshot['quantity'];
     int? soldQuantity = await _getSoldQuantity(document);
+    double? soldQuantitytotal = await _getSoldTotal(document);
     int remainingQuantity = currentQuantity - soldQuantity! ;
 
     // Calculate total cost for remaining quantity
     double pricePerUnit = productSnapshot['Cost'];
     double totalCost = remainingQuantity * pricePerUnit;
-
+    double? remainingtotal =  totalCost - soldQuantitytotal!;
     // Update product with new quantity and total cost
     await FirebaseFirestore.instance.collection('Product').doc(document).update({
       'quantity': remainingQuantity,
       'totalCost': totalCost,
+      'Sum': remainingtotal,
       'status': remainingQuantity > 0 ? 'Available' : 'Out of Stock',
     });
 
@@ -50,15 +53,32 @@ class _COBState extends State<COB> {
         .get();
     int? totalQuantitySold = 0;
     soldSnapshot.docs.forEach((doc) {
+
+
       totalQuantitySold = ((totalQuantitySold ?? 0) + (doc['soldQuantity'] ?? 0)) as int?;    });
+    print(totalQuantitySold);
     return totalQuantitySold;
+  }
+
+  Future<double?> _getSoldTotal(String productId) async {
+    QuerySnapshot soldSnapshot = await FirebaseFirestore.instance
+        .collection('SoldQuantity')
+        .where('productId', isEqualTo: productId)
+        .get();
+    double? totalSold = 0;
+    soldSnapshot.docs.forEach((doc) {
+
+
+      totalSold = ((totalSold ?? 0) + (doc['totalSales'] ?? 0)) as double?;    });
+    print(totalSold);
+    return totalSold;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Close Of Business"),
+        title: Text("Close Of Business",style: TextStyle(color: Colors.black,fontSize: 23,fontWeight: FontWeight.bold),),
       ),
       backgroundColor: Colors.black38,
 
