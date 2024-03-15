@@ -222,7 +222,7 @@ class _addproductState extends State<addproduct> {
               // Update the document with new values
 
               newQuantity += newProduct.quantity!;
-              newSum += calculateTotalSum();
+              newSum += calculateTotalSum() as int;
 
               await firstDoc.reference.update({
                 'Date': _selectedDate.toString(),
@@ -450,7 +450,7 @@ class _addproductState extends State<addproduct> {
                                                               .toString(),
                                                   onChanged: (value) {
                                                     newProduct.cost =
-                                                        int.parse(value);
+                                                        double.parse(value);
                                                   },
                                                   textInputAction:
                                                       TextInputAction.next,
@@ -674,10 +674,10 @@ class _addproductState extends State<addproduct> {
     return options;
   }
 
-  int calculateTotalSum() {
-    int sum = 0;
+  double calculateTotalSum() {
+    double sum = 0;
     int? quantity = int.tryParse(newProduct.quantity.toString());
-    int? cost = int.tryParse(newProduct.cost.toString());
+    double? cost = double.tryParse(newProduct.cost.toString());
     if (quantity != null && cost != null) {
       sum = quantity * cost;
     }

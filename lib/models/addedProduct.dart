@@ -13,7 +13,7 @@ class addedproduct{
 
   String? name;
   String? farmcode;
-  int? cost;
+  double? cost;
   String? group;
   String? location;
   String? company;
@@ -24,7 +24,7 @@ class addedproduct{
   factory addedproduct.fromMap(Map<String, dynamic> json) => addedproduct(
     name: json["ExpenseType"] as String?,
     farmcode: json["FarmCodes"] as String?,
-    cost: json["Cost"] as int?,
+    cost: json["Cost"] as double?,
     group: json["group"] as String?,
     location: json["location"] as String?,
     company: json["Company"] as String?,
