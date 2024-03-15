@@ -12,7 +12,7 @@ class _AssignStockPageState extends State<AssignStockPage> {
   String? _selectedProductid;
   // String? Email;
   double _totalPrice = 0.0;
-  int? _costPrice;
+  double? _costPrice;
   TextEditingController _quantityController = TextEditingController();
   String? _selectedCategory;
   String? _selectedUserEmail;
@@ -140,7 +140,7 @@ class _AssignStockPageState extends State<AssignStockPage> {
                                 .get()
                                 .then((doc) {
                               String? productId = productMap[_selectedProduct];
-                              int price = doc.data()?['Cost'];
+                              double price = doc.data()?['Cost'];
                               setState(() {
                                 _totalPrice = quantity * price;
                               _costPrice = price ;
@@ -175,6 +175,7 @@ class _AssignStockPageState extends State<AssignStockPage> {
                           children: [
                             Text("Selected User: $_selectedUser"),
                             Text("Selected Product: $_selectedProduct"),
+                            Text("Selected CostPerUnit: $_costPrice"),
                             Text("Quantity: ${_quantityController.text}"),
                             Text("Total Price: $_totalPrice"),
                           ],

@@ -16,86 +16,98 @@ class _AssignStockState extends State<AssignStock> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text("Assign Stock"),
+      ),
       body: SingleChildScrollView(
         child: Container(
           child: Column(
             children: [
-              Row(
-                children: [
-                  GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => AssignStockPage()));
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 38.0),
-                        child: Container(
-                          height: 111,
-                          width: 121,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.0),
-                              color: Colors.white),
-                          child: Container(
-                            height: 130,
-                            width: 130,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                color: Colors.blue),
-                            child: Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 28.0),
-                                  child: Icon(Icons.add_circle),
+              Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: SizedBox(
+                  height:168,
+                  child: Card(
+                    elevation: 3.0,
+                    color: Colors.white, // Set background color of the card
+                    child:
+                  Row(
+                    children: [
+                      GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => AssignStockPage()));
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 38.0),
+                            child: Container(
+                              height: 111,
+                              width: 121,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  color: Colors.white),
+                              child: Container(
+                                height: 130,
+                                width: 130,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12),
+                                    color: Colors.black87),
+                                child: Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 28.0),
+                                      child: Icon(Icons.add_circle,color: Colors.white,),
+                                    ),
+                                    Text(
+                                      "Assign User",
+                                      style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),
+                                    )
+                                  ],
                                 ),
-                                Text(
-                                  "Assign User",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                )
-                              ],
+                              ),
                             ),
-                          ),
-                        ),
-                      )),
+                          )),
 
-                  GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => COB()));
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 38.0),
-                        child: Container(
-                          height: 111,
-                          width: 121,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.0),
-                              color: Colors.white),
-                          child: Container(
-                            height: 130,
-                            width: 130,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                color: Colors.black54),
-                            child: Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 28.0),
-                                  child: Icon(Icons.add_circle),
+                      GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => COB()));
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 38.0),
+                            child: Container(
+                              height: 111,
+                              width: 121,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  color: Colors.white),
+                              child: Container(
+                                height: 130,
+                                width: 130,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12),
+                                    color: Colors.black87),
+                                child: Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 28.0),
+                                      child: Icon(Icons.close,color: Colors.white,),
+                                    ),
+                                    Text(
+                                      "COB",
+                                      style: TextStyle( color: Colors.white,fontWeight: FontWeight.bold),
+                                    )
+                                  ],
                                 ),
-                                Text(
-                                  "COB",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                )
-                              ],
+                              ),
                             ),
-                          ),
-                        ),
-                      )),
+                          )),
 
-                ],
+                    ],
+                  ),
+                  ),
+                ),
               ),
-
               SizedBox(height: 29,),
               SingleChildScrollView(
                 scrollDirection: Axis.vertical,
@@ -150,14 +162,49 @@ class AssignedUserCard extends StatelessWidget {
       child: Card(
         margin: EdgeInsets.symmetric(vertical: 8.0),
         child: ListTile(
-          title: Text(user['User']),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+
+
+              Row(
+
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 1.0),
+                    child: Icon(Icons.border_inner,color: Colors.black,),
+                  ),
+                  Text(user['ProductName']),
+                ],
+              ),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 1.0),
+                    child: Icon(Icons.person,color: Colors.black,),
+                  ),
+                  Text(user['User']),
+                ],
+              ),
+
+            ],
+          ),
           // Assuming 'name' is a field in your document
           subtitle: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
 
             children: [
-              Text('Total: GHS ${user['total']}'),
-              Text('QTY: ${user['quantity']}'),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 1.0),
+                    child: Icon(Icons.money_rounded,color: Colors.black,),
+                  ),
+                  Text('Total: GHS ${user['total']}'),
+
+                ],
+              ),
+                   Text('QTY: ${user['quantity']}'),
             ],
           ), // Assuming 'email' is a field in your document
           // Add more fields as needed

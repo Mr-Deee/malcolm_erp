@@ -215,14 +215,14 @@ class _addproductState extends State<addproduct> {
 
               // Retrieve existing sum and quantity
               int existingQuantity = firstDoc['quantity'];
-              int existingSum = firstDoc['Sum'];
+              double existingSum = firstDoc['Sum'];
               // Add new values to existing sum and quantity
               int newQuantity = existingQuantity;
-              int newSum = existingSum ;
+              double newSum = existingSum;
               // Update the document with new values
 
               newQuantity += newProduct.quantity!;
-              newSum += calculateTotalSum() as int;
+              newSum += calculateTotalSum() as double;
 
               await firstDoc.reference.update({
                 'Date': _selectedDate.toString(),
@@ -233,14 +233,17 @@ class _addproductState extends State<addproduct> {
                 'quantity': newQuantity,
                 'Sum': newSum,
               }).then((value) {
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text('Product added successfully!'),
-                  duration: Duration(seconds: 2),
-                ));
+                // ScaffoldMessenger.of(context).showSnackBar(
+                //     SnackBar(
+                //   content: Text('Product added successfully!'),
+                //   duration: Duration(seconds: 2),
+                // )
+                //
+                // );
 
                 // Navigator.of(context).pop();
                 // Navigator.of(context).pop();
-                // displayToast('Added Sucessfully!'context);
+                displayToast('Added Sucessfully!',context);
               }).catchError((e) {
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   content: Text('Failed to add product. Please try again.'),
@@ -265,10 +268,7 @@ class _addproductState extends State<addproduct> {
                 Navigator.of(context).pop();
                 Navigator.of(context).pop();
               }).catchError((e) {
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text('Failed to add product. Please try again.'),
-                  duration: Duration(seconds: 2),
-                ));
+                displayToast('Added Sucessfully!',context);
               });
             }
           },
