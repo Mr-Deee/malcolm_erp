@@ -200,12 +200,12 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
                   ),
                 ],
               ),
-              trailing: IconButton(
-                icon: Icon(Icons.add_shopping_cart, color: Colors.blue),
-                onPressed: () {
-                  _showQuantityDialog(context, product);
-                },
-              ),
+              // trailing: IconButton(
+              //   icon: Icon(Icons.add_shopping_cart, color: Colors.blue),
+              //   onPressed: () {
+              //     _showQuantityDialog(context, product);
+              //   },
+              // ),
             ),
           ),
         );

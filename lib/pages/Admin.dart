@@ -52,7 +52,7 @@ class _AdminpageState extends State<Adminpage> {
   @override
   Widget build(BuildContext context) {
     String CompanyName =
-        Provider.of<Admin>(context).admininfo?.CompanyName ?? "getting name...";
+        Provider.of<Admin>(context).admininfo?.CompanyName ?? "Jolynda";
     return Scaffold(
       body: Container(
         height: double.infinity,

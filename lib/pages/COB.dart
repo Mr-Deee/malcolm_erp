@@ -28,8 +28,8 @@ class _COBState extends State<COB> {
     int remainingQuantity = currentQuantity - soldQuantity!;
 
     // Calculate total cost for remaining quantity
-    int pricePerUnit = productSnapshot['Cost'];
-    int totalCost = remainingQuantity * pricePerUnit;
+    double pricePerUnit = productSnapshot['Cost'];
+    double totalCost = remainingQuantity * pricePerUnit;
 
     // Update product with new quantity and total cost
     await FirebaseFirestore.instance.collection('Product').doc(document).update({
@@ -45,12 +45,12 @@ class _COBState extends State<COB> {
 
   Future<int?> _getSoldQuantity(String productId) async {
     QuerySnapshot soldSnapshot = await FirebaseFirestore.instance
-        .collection('sales')
+        .collection('SoldQuantity')
         .where('productId', isEqualTo: productId)
         .get();
     int? totalQuantitySold = 0;
     soldSnapshot.docs.forEach((doc) {
-      totalQuantitySold = ((totalQuantitySold ?? 0) + (doc['quantity'] ?? 0)) as int?;    });
+      totalQuantitySold = ((totalQuantitySold ?? 0) + (doc['soldQuantity'] ?? 0)) as int?;    });
     return totalQuantitySold;
   }
 

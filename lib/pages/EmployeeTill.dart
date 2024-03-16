@@ -89,7 +89,7 @@ String? data;
 
       final int availableQuantity = currentData['quantity'];
       final String  productid = currentData['ProductID'];
-      final int  costperquantity = currentData['Costper'];
+      final double  costperquantity = currentData['Costper'];
       final double total = currentData['total'];
 
       if (availableQuantity >= soldQuantity!) {
