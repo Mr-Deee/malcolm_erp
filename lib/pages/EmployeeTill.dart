@@ -96,12 +96,11 @@ String? data;
         final int remainingQuantity = availableQuantity - soldQuantity!;
         final double totalSales = soldQuantity! * costperquantity.toDouble();
 
-        await productDoc.update({
-          'quantity': remainingQuantity,
-          'RemainingTotal': total - totalSales,
-          "total":total - totalSales,
-          // Assuming total remains unchanged
-        });
+        // await productDoc.update({
+        //   'RemainingTotal': total - totalSales,
+        //   "total":total - totalSales,
+        //   // Assuming total remains unchanged
+        // });
 
 
         // Save sold quantity and amount in a separate table or field in the AssignedStock document
@@ -111,6 +110,7 @@ String? data;
     await FirebaseFirestore.instance.collection('AssignedStock').doc(productId).update({
           'productId': productid,
           'soldQuantity': soldQuantity,
+          'RemainingQuantity': remainingQuantity,
           'totalSales': totalSales,
           'soldBy': _firebaseAuth.currentUser?.email,
           'timestamp': FieldValue.serverTimestamp(),
@@ -120,6 +120,7 @@ String? data;
           'ProductName':productname,
           'productId': productid,
           'soldQuantity': soldQuantity,
+          'RemainingQuantity': remainingQuantity,
           'totalSales': totalSales,
           'soldBy': _firebaseAuth.currentUser?.email,
           'timestamp': FieldValue.serverTimestamp(),
