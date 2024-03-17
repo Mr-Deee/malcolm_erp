@@ -10,7 +10,7 @@ import '../models/Admin.dart';
 import 'Inventory.dart';
 
 class Adminpage extends StatefulWidget {
-  const Adminpage({super.key});
+  const Adminpage({Key? key});
 
   @override
   State<Adminpage> createState() => _AdminpageState();
@@ -21,7 +21,6 @@ Map<String, int> _categoryTotals = {};
 class _AdminpageState extends State<Adminpage> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     AssistantMethod.getAminInfo(context);
     _fetchProductCategories();
@@ -30,7 +29,7 @@ class _AdminpageState extends State<Adminpage> {
   Future<void> _fetchProductCategories() async {
     try {
       QuerySnapshot snapshot =
-          await FirebaseFirestore.instance.collection('Product').get();
+      await FirebaseFirestore.instance.collection('Product').get();
 
       Map<String, int> categoryTotals = {};
 
@@ -57,235 +56,180 @@ class _AdminpageState extends State<Adminpage> {
       body: Container(
         height: double.infinity,
         width: double.infinity,
-        decoration: BoxDecoration(
-            // image: DecorationImage(
-            //   image: AssetImage(
-            //       'assets/images/backdrop.png'), // Replace with your image path
-            //   fit: BoxFit.cover,
-            // ),
-            ),
+        decoration: BoxDecoration(),
         child: SafeArea(
-          child: Container(
-            height: double.infinity,
-            width: double.infinity,
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
-                  height: 45,
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(18.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white54,
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Text(
-                            CompanyName,
-                            style: TextStyle(
-                              fontFamily: "Nunito",
-                              fontWeight: FontWeight.bold,
-                              fontSize: 28,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 10),
-                          child: IconButton(
-                            onPressed: () {
-                              showDialog<void>(
-                                context: context,
-                                barrierDismissible:
-                                    false, // user must tap button!
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: Text('Sign Out'),
-                                    backgroundColor: Colors.white,
-                                    content: SingleChildScrollView(
-                                      child: Column(
-                                        children: <Widget>[
-                                          Text(
-                                              'Are you certain you want to Sign Out?'),
-                                        ],
-                                      ),
-                                    ),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        child: Text(
-                                          'Yes',
-                                          style: TextStyle(color: Colors.black),
-                                        ),
-                                        onPressed: () {
-                                          print('yes');
-                                          FirebaseAuth.instance.signOut();
-                                          Navigator.pushNamedAndRemoveUntil(
-                                              context,
-                                              "/SignIn",
-                                              (route) => false);
-                                          // Navigator.of(context).pop();
-                                        },
-                                      ),
-                                      TextButton(
-                                        child: Text(
-                                          'Cancel',
-                                          style: TextStyle(color: Colors.red),
-                                        ),
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                            },
-                            icon: const Icon(
-                              Icons.logout,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: Container(
-                    height: 130,
-                    width: 340,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        color: Colors.white),
-                    child: Column(
-                      children: [
-                        Text(
-                          "DashBoard",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 20),
-                        ),
-                        Expanded(
-                          child: _categoryTotals.isNotEmpty
-                              ? _buildTotals()
-                              : CircularProgressIndicator(),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.all(28.0),
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => Inventory()));
-                        },
-                        child: Container(
-                          height: 130,
-                          width: 130,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              color: Colors.black87),
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(top: 18.0),
-                                child: IconButton(
-                                    onPressed: () {
-                                      //(Route<dynamic> route) => false);
-                                    },
-                                    icon: Icon(
-                                      Icons.inventory,
-                                      color: Colors.white,
-                                    )),
-                              ),
-                              Text(
-                                "Inventory",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white),
-                              )
-                            ],
-                          ),
-                        ),
+                    Text(
+                      CompanyName,
+                      style: TextStyle(
+                        fontFamily: "Nunito",
+                        fontWeight: FontWeight.bold,
+                        fontSize: 28,
+                        color: Colors.black,
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(28.0),
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => Soldpage()));
-                        },
-                        child: Container(
-                          height: 130,
-                          width: 130,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              color: Colors.black87),
-                          child: Column(
-                            children: [
-                              Padding(
-                                  padding: EdgeInsets.only(top: 28.0),
-                                  child: Icon(
-                                    Icons.monetization_on,
-                                    color: Colors.white,
-                                  )),
-                              Text(
-                                "SoldItems",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white),
-                              )
-                            ],
-                          ),
-                        ),
+                    IconButton(
+                      onPressed: () {
+                        showDialog<void>(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text('Sign Out'),
+                              backgroundColor: Colors.white,
+                              content: SingleChildScrollView(
+                                child: Column(
+                                  children: <Widget>[
+                                    Text(
+                                        'Are you certain you want to Sign Out?'),
+                                  ],
+                                ),
+                              ),
+                              actions: <Widget>[
+                                TextButton(
+                                  child: Text(
+                                    'Yes',
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                  onPressed: () {
+                                    FirebaseAuth.instance.signOut();
+                                    Navigator.pushNamedAndRemoveUntil(
+                                        context, "/SignIn", (route) => false);
+                                  },
+                                ),
+                                TextButton(
+                                  child: Text(
+                                    'Cancel',
+                                    style: TextStyle(color: Colors.red),
+                                  ),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      icon: const Icon(
+                        Icons.logout,
+                        color: Colors.black,
                       ),
                     ),
                   ],
                 ),
+                SizedBox(height: 20),
+                Text(
+                  "Dashboard",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                ),
+                SizedBox(height: 10),
+                Expanded(
+                  child: _categoryTotals.isNotEmpty
+                      ? _buildTotals()
+                      : Center(child: CircularProgressIndicator()),
+                ),
+                SizedBox(height: 20),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.all(28.0),
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => Soldpage()));
-                        },
-                        child: Container(
-                          height: 130,
-                          width: 130,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              color: Colors.black87),
-                          child: Column(
-                            children: [
-                              Padding(
-                                  padding: EdgeInsets.only(top: 28.0),
-                                  child: Icon(
-                                    Icons.history,
-                                    color: Colors.white,
-                                  )),
-                              Text(
-                                "History",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white),
-                              )
-                            ],
-                          ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) => Inventory()));
+                      },
+                      child: Container(
+                        height: 130,
+                        width: 130,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          color: Colors.black87,
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.inventory,
+                              color: Colors.white,
+                              size: 40,
+                            ),
+                            SizedBox(height: 10),
+                            Text(
+                              "Inventory",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => Soldpage()));
+                      },
+                      child: Container(
+                        height: 130,
+                        width: 130,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          color: Colors.black87,
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.monetization_on,
+                              color: Colors.white,
+                              size: 40,
+                            ),
+                            SizedBox(height: 10),
+                            Text(
+                              "Sold Items",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => Soldpage()));
+                      },
+                      child: Container(
+                        height: 130,
+                        width: 130,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          color: Colors.black87,
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.history,
+                              color: Colors.white,
+                              size: 40,
+                            ),
+                            SizedBox(height: 10),
+                            Text(
+                              "History",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            )
+                          ],
                         ),
                       ),
                     ),
@@ -305,27 +249,27 @@ Widget _buildTotals() {
     scrollDirection: Axis.horizontal,
     children: _categoryTotals.entries.map((entry) {
       String category = entry.key;
-      int total = entry.value ;
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text(
-            category,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
+      int total = entry.value;
+      return Container(
+        margin: EdgeInsets.symmetric(horizontal: 10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              category,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
-          SizedBox(height: 5),
-          Padding(
-            padding: const EdgeInsets.all(18.0),
-            child: Text(
+            SizedBox(height: 5),
+            Text(
               'GHC: $total',
               style: TextStyle(
                 fontStyle: FontStyle.italic,
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       );
     }).toList(),
   );
