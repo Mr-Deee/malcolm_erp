@@ -106,7 +106,7 @@ class _employeetillState extends State<employeetill> {
 
         final double finaltotal =total-totalSales;
         final int finalQty = availableSoldQuantity + soldQuantity! ;
-        final double fintotal = availabletotal + totalSales! ;
+        final double fintotal = availabletotal + totalSales ;
         // Save sold quantity and amount in a separate table or field in the AssignedStock document
 
         // Save sold quantity and amount in a separate table or field in the AssignedStock document
