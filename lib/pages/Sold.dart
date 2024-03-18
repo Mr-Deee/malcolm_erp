@@ -19,7 +19,7 @@ class _SoldpageState extends State<Soldpage> {
       body: Container(
         padding: EdgeInsets.all(8.0),
         child: StreamBuilder(
-          stream: FirebaseFirestore.instance.collection('Sold').snapshots(),
+          stream: FirebaseFirestore.instance.collection('SoldQuantity').snapshots(),
           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (!snapshot.hasData) {
               return Center(
@@ -31,7 +31,7 @@ class _SoldpageState extends State<Soldpage> {
               itemCount: snapshot.data?.docs.length,
               itemBuilder: (context, index) {
                 var doc = snapshot.data?.docs[index];
-                var productName = doc?['productName'];
+                var productName = doc?['ProductName'];
                 var quantitySold = doc?['quantity'];
 
                 return Card(
