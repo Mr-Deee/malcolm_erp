@@ -394,6 +394,7 @@ class _addproductState extends State<addproduct> {
                                           child: TextFormField(
                                             initialValue: newProduct.name ?? '',
                                             onChanged: (value) {
+
                                               newProduct.name = value;
                                             },
                                             textInputAction:
@@ -550,6 +551,7 @@ class _addproductState extends State<addproduct> {
                                         ),
 
                                         SizedBox(height: 20),
+
 
                                         SizedBox(height: 10),
                                         Row(

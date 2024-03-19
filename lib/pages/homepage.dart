@@ -143,6 +143,95 @@ class _homepageState extends State<homepage> {
     double _width = 350;
     double _height = 300;
     return Scaffold(
+      appBar: AppBar(
+        title: Padding(
+          padding:  EdgeInsets.all(10.0),
+          child: Text(
+            CompanyName,
+            style: TextStyle(
+              fontFamily: "Nunito",
+              fontWeight: FontWeight.bold,
+              fontSize: 28,
+              color: Colors.black,
+            ),
+          ),
+
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(18.0),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white54,
+                borderRadius: BorderRadius.circular(30),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+
+                  Padding(
+                    padding: const EdgeInsets.only(right: 10),
+                    child: IconButton(
+                      onPressed: () {
+                        showDialog<void>(
+                          context: context,
+                          barrierDismissible:
+                          false, // user must tap button!
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text('Sign Out'),
+                              backgroundColor: Colors.white,
+                              content: SingleChildScrollView(
+                                child: Column(
+                                  children: <Widget>[
+                                    Text(
+                                        'Are you certain you want to Sign Out?'),
+                                  ],
+                                ),
+                              ),
+                              actions: <Widget>[
+                                TextButton(
+                                  child: Text(
+                                    'Yes',
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                  onPressed: () {
+                                    print('yes');
+                                    FirebaseAuth.instance.signOut();
+                                    Navigator.pushNamedAndRemoveUntil(
+                                        context,
+                                        "/SignIn",
+                                            (route) => false);
+                                    // Navigator.of(context).pop();
+                                  },
+                                ),
+                                TextButton(
+                                  child: Text(
+                                    'Cancel',
+                                    style: TextStyle(color: Colors.red),
+                                  ),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      icon: const Icon(
+                        Icons.logout,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+        ],
+      ),
       body: Container(
         height: double.infinity,
         width: double.infinity,
@@ -159,94 +248,7 @@ class _homepageState extends State<homepage> {
             width: double.infinity,
             child: Column(
               children: [
-                SizedBox(
-                  height: 45,
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(18.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white54,
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Text(
-                            CompanyName,
-                            style: TextStyle(
-                              fontFamily: "Nunito",
-                              fontWeight: FontWeight.bold,
-                              fontSize: 28,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 10),
-                          child: IconButton(
-                            onPressed: () {
-                              showDialog<void>(
-                                context: context,
-                                barrierDismissible:
-                                    false, // user must tap button!
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: Text('Sign Out'),
-                                    backgroundColor: Colors.white,
-                                    content: SingleChildScrollView(
-                                      child: Column(
-                                        children: <Widget>[
-                                          Text(
-                                              'Are you certain you want to Sign Out?'),
-                                        ],
-                                      ),
-                                    ),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        child: Text(
-                                          'Yes',
-                                          style: TextStyle(color: Colors.black),
-                                        ),
-                                        onPressed: () {
-                                          print('yes');
-                                          FirebaseAuth.instance.signOut();
-                                          Navigator.pushNamedAndRemoveUntil(
-                                              context,
-                                              "/SignIn",
-                                              (route) => false);
-                                          // Navigator.of(context).pop();
-                                        },
-                                      ),
-                                      TextButton(
-                                        child: Text(
-                                          'Cancel',
-                                          style: TextStyle(color: Colors.red),
-                                        ),
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                            },
-                            icon: const Icon(
-                              Icons.logout,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 15,
-                ),
+
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0),
                   child: Container(
