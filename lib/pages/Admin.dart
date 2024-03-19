@@ -55,13 +55,16 @@ class _AdminpageState extends State<Adminpage> {
         Provider.of<Admin>(context).admininfo?.CompanyName ?? "Jolynda";
     return Scaffold(
       appBar: AppBar(
-        title:  Text(
-          CompanyName,
-          style: TextStyle(
-            fontFamily: "Nunito",
-            fontWeight: FontWeight.bold,
-            fontSize: 28,
-            color: Colors.black,
+        title:  Padding(
+          padding: const EdgeInsets.all(18.0),
+          child: Text(
+            CompanyName,
+            style: TextStyle(
+              fontFamily: "Nunito",
+              fontWeight: FontWeight.bold,
+              fontSize: 28,
+              color: Colors.black,
+            ),
           ),
         ),
         actions: [ IconButton(
@@ -125,7 +128,7 @@ class _AdminpageState extends State<Adminpage> {
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                 ),
               ),
-
+              Text("Sold Products",style: TextStyle(fontWeight: FontWeight.bold),),
               SizedBox(
                 height: 55,
                 child: Container(

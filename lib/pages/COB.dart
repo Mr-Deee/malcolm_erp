@@ -14,11 +14,11 @@ class _COBState extends State<COB> {
   Future<void> _handleDelete(document) async {
     // Delete from AssignedStock table
     await FirebaseFirestore.instance.collection('AssignedStock').doc(document).delete();
-   // var querySnapshot = await FirebaseFirestore.instance.collection('SoldQuantity').where("productId",isEqualTo:document).get();
-   //  querySnapshot.docs.forEach((doc) {
-   //
-   //    doc.reference.delete();
-   //  });
+   var querySnapshot = await FirebaseFirestore.instance.collection('SoldQuantity').where("productId",isEqualTo:document).get();
+    querySnapshot.docs.forEach((doc) {
+
+      doc.reference.delete();
+    });
     // Update quantity in product table
     DocumentSnapshot productSnapshot =
     await FirebaseFirestore.instance.collection('Product').doc(document).get();
