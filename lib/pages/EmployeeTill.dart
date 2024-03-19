@@ -125,6 +125,7 @@ class _employeetillState extends State<employeetill> {
 
         await FirebaseFirestore.instance.collection('SoldQuantity').doc().set({
           'ProductName': productname,
+          'perUnit': costperquantity,
           'productId': productid,
           'soldQuantity': finalQty,
           'totalSales': fintotal,

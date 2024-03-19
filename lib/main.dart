@@ -56,7 +56,7 @@ class MyApp extends StatelessWidget {
         // home: const MyHomePage(title: 'Flutter Demo Home Page'),
 
         initialRoute:
-            FirebaseAuth.instance.currentUser == null ? '/Admin' : '/Admin',
+            FirebaseAuth.instance.currentUser == null ? '/Employee' : '/Employee',
             //'/Homepage',
         routes: {
           "/SignUP": (context) => Signup(),

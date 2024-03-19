@@ -32,15 +32,28 @@ class _SoldpageState extends State<Soldpage> {
               itemBuilder: (context, index) {
                 var doc = snapshot.data?.docs[index];
                 var productName = doc?['ProductName'];
-                var quantitySold = doc?['quantity'];
+                var quantitySold = doc?['soldQuantity'];
+                var amountSold = doc?['totalSales'];
+                var perUnit = doc?['perUnit'];
 
                 return Card(
                   elevation: 4,
                   margin: EdgeInsets.symmetric(vertical: 8.0),
                   child: ListTile(
                     leading: Icon(Icons.shopping_cart),
-                    title: Text(productName),
-                    subtitle: Text('Quantity Sold: $quantitySold'),
+                    title: Row(
+                      children: [
+                        Text(productName),
+                        Text('Per Unit: $perUnit'),
+                      ],
+                    ),
+                    subtitle: Row(
+                      mainAxisAlignment:MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Text('Quantity Sold: $quantitySold'),
+                        Text('Total: $amountSold'),
+                      ],
+                    ),
                     trailing: Icon(Icons.arrow_forward),
                     onTap: () {
                       // Add functionality for tapping on the item if needed
