@@ -124,13 +124,13 @@ class _AdminpageState extends State<Adminpage> {
               Padding(
                 padding: const EdgeInsets.all(18.0),
                 child: Text(
-                  "Dashboard",
+                  "Admin",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                 ),
               ),
               Text("Sold Products",style: TextStyle(fontWeight: FontWeight.bold),),
               SizedBox(
-                height: 55,
+                height: 63,
                 child: Container(
 
 
@@ -260,7 +260,7 @@ Widget _buildTotals() {
       String category = entry.key;
       double total = entry.value;
       return Container(
-        margin: EdgeInsets.symmetric(horizontal: 10),
+        margin: EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -268,13 +268,15 @@ Widget _buildTotals() {
               category,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
+                  fontSize: 20
               ),
             ),
-            SizedBox(height: 5),
+            SizedBox(height: 2),
             Text(
               'GHC: $total',
               style: TextStyle(
                 fontStyle: FontStyle.italic,
+                fontSize: 20
               ),
             ),
           ],
