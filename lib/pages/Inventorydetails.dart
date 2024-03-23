@@ -59,12 +59,16 @@ class _InventorydetailsState extends State<Inventorydetails> {
                             ),
                           ),
 
-                          Text(
-                            'QTY: ${document['quantity']}',
-                            style: TextStyle(
-                              fontSize: 16,
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              'GHS: ${document['Sum']}',
+                              style: TextStyle(
+                                fontSize: 16,
+                              ),
                             ),
                           ),
+
                         ],
                       ),
                       subtitle: Column(
@@ -73,6 +77,12 @@ class _InventorydetailsState extends State<Inventorydetails> {
                           SizedBox(height: 5),
 
                           SizedBox(height: 5),
+                          Text(
+                            'QTY: ${document['quantity']}',
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
+                          ),
                           Text(
                             'Date: ${document['Date']}',
                             style: TextStyle(

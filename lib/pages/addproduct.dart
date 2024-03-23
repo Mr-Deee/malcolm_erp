@@ -48,7 +48,7 @@ class _addproductState extends State<addproduct> {
   String? _selectedImage;
   String? group;
   String? farm;
-
+double ? sumone;
   _addproductState(
     this.group,
     this.farm,
@@ -155,7 +155,7 @@ class _addproductState extends State<addproduct> {
         'Sum': calculateTotalSum(),
       }).then((value) {
         Navigator.of(context).pop();
-        Navigator.of(context).pop();
+
       }).catchError((e) {
         // displayToast('Failed!'context);
       });
@@ -550,7 +550,19 @@ class _addproductState extends State<addproduct> {
                                           height: 20,
                                         ),
 
-                                        SizedBox(height: 20),
+
+
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                          children: [
+
+                                            ElevatedButton(onPressed: (){
+                                              calculateSum();
+
+                                            }, child: Text("Calculate")),
+                                            Text("$sumone"),
+                                          ],
+                                        ),
 
 
                                         SizedBox(height: 10),
@@ -580,72 +592,7 @@ class _addproductState extends State<addproduct> {
                               ],
                             ),
                           ),
-                          // Container(
-                          //   height: 180,
-                          //   width: double.infinity,
-                          //   padding: const EdgeInsets.symmetric(
-                          //     horizontal: 20,
-                          //     vertical: 10,
-                          //   ),
-                          //   margin: const EdgeInsets.only(top: 75),
-                          //   decoration: const BoxDecoration(
-                          //     color: Color(0xffd5e2e3),
-                          //     borderRadius: BorderRadius.only(
-                          //       topLeft: Radius.circular(16),
-                          //       topRight: Radius.circular(16),
-                          //       bottomLeft: Radius.circular(16),
-                          //       bottomRight: Radius.circular(16),
-                          //     ),
-                          //   ),
-                          //   child: SingleChildScrollView(
-                          //     child: Column(
-                          //       crossAxisAlignment: CrossAxisAlignment.start,
-                          //       children: [
-                          //         Padding(
-                          //           padding: const EdgeInsets.only(
-                          //             left: 8,
-                          //             bottom: 12,
-                          //           ),
-                          //           child: Column(
-                          //             children: [],
-                          //           ),
-                          //         ),
-                          //         //
-                          //         // Row(
-                          //         //   children: [
-                          //         //     SizedBox(width: 10),
-                          //         //     Text(
-                          //         //       "Kindly fill the forms above \n to upload  "
-                          //         //       "the Category, Product \n Cost and Quantity",
-                          //         //       style: TextStyle(fontSize: 15),
-                          //         //     ),
-                          //         //     SizedBox(width: 10),
-                          //         //     Icon(Icons.arrow_upward_sharp),
-                          //         //   ],
-                          //         // ),
-                          //         // // Your existing TextFormField widgets
-                          //         // SizedBox(height: 10),
-                          //         //
-                          //         // Padding(
-                          //         //   padding: const EdgeInsets.all(8.0),
-                          //         //   child: Row(
-                          //         //     children: [
-                          //         //       Text(
-                          //         //         "Kindly tap the correct button to \n submit product ",
-                          //         //         style: TextStyle(fontSize: 15),
-                          //         //       ),
-                          //         //       SizedBox(width: 10),
-                          //         //       Icon(Icons.done),
-                          //         //     ],
-                          //         //   ),
-                          //         // ),
-                          //
-                          //         // Your existing TextFormField widgets
-                          //         SizedBox(height: 20),
-                          //       ],
-                          //     ),
-                          //   ),
-                          // ),
+
                         ],
                       ),
                     ),
@@ -675,7 +622,19 @@ class _addproductState extends State<addproduct> {
     }
     return options;
   }
+   calculateSum() {
 
+    int? quantity = int.tryParse(newProduct.quantity.toString());
+    double? cost = double.tryParse(newProduct.cost.toString());
+    if (quantity != null && cost != null) {
+      sumone = quantity * cost;
+    }
+
+    setState(() {
+      sumone = (quantity! * cost!);
+    });
+
+  }
   double calculateTotalSum() {
     double sum = 0;
     int? quantity = int.tryParse(newProduct.quantity.toString());
@@ -686,3 +645,5 @@ class _addproductState extends State<addproduct> {
     return sum;
   }
 }
+
+
