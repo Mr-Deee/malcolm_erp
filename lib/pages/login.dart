@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:malcolm_erp/Assistant/assistantmethods.dart';
+import 'package:malcolm_erp/pages/Admin.dart';
 import 'package:malcolm_erp/pages/EmployeeTill.dart';
 
 import '../../components/my_button.dart';
@@ -220,14 +221,14 @@ class LoginPage extends StatelessWidget {
       UserCredential userCredential =
           await _firebaseAuth.signInWithEmailAndPassword(
               email: emailController.text, password: passwordController.text);
-      //
-      // if (email.text == "merchantdaniel8@gmail.com") {
-      //   Navigator.of(context).pushNamed("/admin");
-      // } else
+
+      if (emailController.text == "john@gmail.com") {
+        Navigator.of(context).pushNamed("/Admin");
+      } else
 
       if (firebaseUser != null) {
         Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) =>homepage()),
+            MaterialPageRoute(builder: (context) =>Adminpage()),
             (Route<dynamic> route) => false);
         displayToast("Logged-in ", context);
       } else {
