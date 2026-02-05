@@ -80,7 +80,7 @@ class AssistantMethod{
 
 
   }
-  static void getAminInfo(BuildContext context) async {
+  static  getAminInfo(BuildContext context) async {
     print('assistant methods step 3:: get current online user info');
     firebaseUser = FirebaseAuth.instance.currentUser; // CALL FIREBASE AUTH INSTANCE
     print('assistant methods step 4:: call firebase auth instance');
