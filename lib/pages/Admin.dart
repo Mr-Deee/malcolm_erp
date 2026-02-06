@@ -9,6 +9,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:malcolm_erp/pages/Sold.dart';
 import '../Assistant/assistantmethods.dart';
 import '../models/Admin.dart';
+import 'AssignStock.dart';
 import 'Inventory.dart';
 import 'addproduct.dart';
 
@@ -786,6 +787,18 @@ class _AdminpageState extends State<Adminpage> {
             color: Colors.green[800]!,
             onTap: () => Navigator.of(context).push(
               MaterialPageRoute(builder: (context) => const Soldpage()),
+            ),
+
+          ),
+          const SizedBox(width: 16),
+
+
+          _buildActionButton(
+            icon: Icons.monetization_on,
+            label: "Assign Stock",
+            color: Colors.green[800]!,
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => const AssignStock()),
             ),
           ),
           const SizedBox(width: 16),
