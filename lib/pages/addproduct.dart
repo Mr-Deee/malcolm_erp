@@ -265,7 +265,6 @@ class _addproductState extends State<addproduct> {
                   duration: Duration(seconds: 2),
                 ));
                 Navigator.of(context).pop();
-                Navigator.of(context).pop();
               }).catchError((e) {
                 displayToast('Added Successfully!',context);
               });

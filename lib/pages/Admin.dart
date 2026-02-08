@@ -772,6 +772,17 @@ class _AdminpageState extends State<Adminpage> {
             ),
           ),
           const SizedBox(width: 16),
+
+
+          _buildActionButton(
+            icon: Icons.share,
+            label: "Assign Stock",
+            color: Colors.green[800]!,
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => const AssignStock()),
+            ),
+          ),
+          const SizedBox(width: 16),
           _buildActionButton(
             icon: Icons.inventory,
             label: "Inventory",
@@ -781,6 +792,7 @@ class _AdminpageState extends State<Adminpage> {
             ),
           ),
           const SizedBox(width: 16),
+
           _buildActionButton(
             icon: Icons.monetization_on,
             label: "Sold Items",
@@ -793,14 +805,6 @@ class _AdminpageState extends State<Adminpage> {
           const SizedBox(width: 16),
 
 
-          _buildActionButton(
-            icon: Icons.monetization_on,
-            label: "Assign Stock",
-            color: Colors.green[800]!,
-            onTap: () => Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => const AssignStock()),
-            ),
-          ),
           const SizedBox(width: 16),
           _buildActionButton(
             icon: Icons.history,
