@@ -188,29 +188,33 @@ class _AssignStockState extends State<AssignStock> {
               color: Colors.black87,
             ),
           ),
-          StreamBuilder<QuerySnapshot>(
-            stream: FirebaseFirestore.instance
-                .collection('AssignedStock')
-                .snapshots(),
-            builder: (context, snapshot) {
-              final count = snapshot.data?.docs.length ?? 0;
-              return Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                decoration: BoxDecoration(
-                  color: Colors.blue[50],
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Text(
-                  "$count items",
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.blue[700],
-                  ),
-                ),
-              );
-            },
-          ),
+      // StreamBuilder<QuerySnapshot>(
+      //   stream: FirebaseFirestore.instance
+      //       .collection('AssignedStock')
+      //       .where('COB', isEqualTo: false)
+      //       .snapshots(),
+      //   builder: (context, snapshot) {
+      //     if (!snapshot.hasData) {
+      //       return const SizedBox();
+      //     }
+      //
+      //     final docs = snapshot.data!.docs;
+      //
+      //     if (docs.isEmpty) {
+      //       return const Center(child: Text("No recent assignments"));
+      //     }
+      //
+      //     return ListView.builder(
+      //       itemCount: docs.length,
+      //       itemBuilder: (context, index) {
+      //         final doc = docs[index];
+      //         return ListTile(
+      //           title: Text(doc['ProductName']),
+      //         );
+      //       },
+      //     );
+      //   },
+      // )
         ],
       ),
     );
@@ -236,6 +240,7 @@ class _AssignStockState extends State<AssignStock> {
         child: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
               .collection('AssignedStock')
+              .where('COB', isEqualTo: false)
               .snapshots(),
           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {

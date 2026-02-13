@@ -9,12 +9,58 @@ class COB extends StatefulWidget {
 }
 
 class _COBState extends State<COB> {
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  bool loading = false;
 
-  /// CLOSE OF BUSINESS LOGIC
-  Future<void> _closeBusiness(String productId) async {
-    final firestore = FirebaseFirestore.instance;
+  /* ---------------- CONFIRM DIALOG ---------------- */
 
-    /// 1️⃣ GET SOLD DATA FIRST
+  Future<bool> _confirmCOB(BuildContext context, String message) async {
+    return await showDialog<bool>(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: const Text(
+          "Confirm Close Of Business",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text("Cancel"),
+          ),
+          ElevatedButton(
+            style:
+            ElevatedButton.styleFrom(backgroundColor: Colors.red),
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text("Yes, Close"),
+          ),
+        ],
+      ),
+    ) ??
+        false;
+  }
+
+  /* ---------------- CORE COB LOGIC ---------------- */
+
+  Future<void> _closeBusiness(DocumentSnapshot assignedDoc) async {
+    final batch = firestore.batch();
+    final now = FieldValue.serverTimestamp();
+    final businessDate =
+    DateTime.now().toIso8601String().substring(0, 10);
+
+    final assignedRef = assignedDoc.reference;
+    final assigned =
+    assignedDoc.data() as Map<String, dynamic>;
+
+    final String productId = assigned['ProductID'];
+
+    final int openingStock = assigned['quantity'] ?? 0;
+    final double costPer =
+    (assigned['Costper'] ?? 0).toDouble();
+    final double openingValue = openingStock * costPer;
+
+    /* -------- GET SOLD DATA -------- */
+
     final soldSnapshot = await firestore
         .collection('SoldQuantity')
         .where('productId', isEqualTo: productId)
@@ -28,35 +74,79 @@ class _COBState extends State<COB> {
       soldTotal += (doc['totalSales'] ?? 0).toDouble();
     }
 
-    /// 2️⃣ GET PRODUCT
-    final productRef = firestore.collection('Product').doc(productId);
-    final productSnap = await productRef.get();
+    /* -------- CALCULATE CLOSING -------- */
 
-    if (!productSnap.exists) return;
+    final int closingStock =
+    (openingStock - soldQty).clamp(0, openingStock);
 
-    final int currentQty = productSnap['quantity'];
-    final double cost = productSnap['Cost'];
+    final double closingValue = closingStock * costPer;
 
-    final int remainingQty = currentQty - soldQty;
-    final double newTotalCost = remainingQty * cost;
-    final double remainingSum = newTotalCost - soldTotal;
+    /* -------- MOVE TO SALES HISTORY -------- */
 
-    /// 3️⃣ UPDATE PRODUCT INVENTORY
-    await productRef.update({
-      'quantity': remainingQty,
-      'totalCost': newTotalCost,
-      'Sum': remainingSum,
-      'status': remainingQty > 0 ? 'Available' : 'Out of Stock',
+    final salesRef =
+    firestore.collection('Sales').doc();
+
+    batch.set(salesRef, {
+      'productId': productId,
+      'productName': assigned['ProductName'],
+      'user': assigned['User'],
+      'email': assigned['Email'],
+
+      'openingStock': openingStock,
+      'openingValue': openingValue,
+
+      'soldQuantity': soldQty,
+      'totalSales': soldTotal,
+
+      'closingStock': closingStock,
+      'closingValue': closingValue,
+
+      'costPer': costPer,
+      'businessDate': businessDate,
+      'cobAt': now,
+      'createdAt': now,
     });
 
-    /// 4️⃣ DELETE SOLD RECORDS
+    /* -------- UPDATE MASTER PRODUCT -------- */
+
+    final productRef =
+    firestore.collection('Product').doc(productId);
+
+    batch.update(productRef, {
+      'quantity': closingStock,
+      'totalCost': closingValue,
+      'status':
+      closingStock > 0 ? 'Available' : 'Out of Stock',
+      'lastCOB': now,
+    });
+
+    /* -------- DELETE SOLD RECORDS -------- */
+
     for (var doc in soldSnapshot.docs) {
-      await doc.reference.delete();
+      batch.delete(doc.reference);
     }
 
-    /// 5️⃣ REMOVE FROM ASSIGNED STOCK
-    await firestore.collection('AssignedStock').doc(productId).delete();
+    /* -------- DELETE ASSIGNED STOCK -------- */
+
+    batch.delete(assignedRef);
+
+    await batch.commit();
   }
+
+  /* ---------------- CLOSE ALL ---------------- */
+
+  Future<void> _closeAllBusiness() async {
+    final snapshot = await firestore
+        .collection('AssignedStock')
+        .where('COB', isEqualTo: true)
+        .get();
+
+    for (var doc in snapshot.docs) {
+      await _closeBusiness(doc);
+    }
+  }
+
+  /* ---------------- UI ---------------- */
 
   @override
   Widget build(BuildContext context) {
@@ -66,32 +156,104 @@ class _COBState extends State<COB> {
           "Close Of Business",
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.done_all),
+            tooltip: "Approve All",
+            onPressed: () async {
+              final confirm = await _confirmCOB(
+                context,
+                "Are you sure you want to close business for ALL products?",
+              );
+              if (confirm) {
+                setState(() => loading = true);
+                await _closeAllBusiness();
+                setState(() => loading = false);
+
+                if (mounted) {
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(
+                    const SnackBar(
+                        content: Text(
+                            "All products closed successfully")),
+                  );
+                }
+              }
+            },
+          ),
+        ],
       ),
-      body: StreamBuilder<QuerySnapshot>(
-        /// ✅ SHOW ONLY ASSIGNED STOCK WHERE COB == TRUE
-        stream: FirebaseFirestore.instance
+      body: loading
+          ? const Center(child: CircularProgressIndicator())
+          : StreamBuilder<QuerySnapshot>(
+        stream: firestore
             .collection('AssignedStock')
             .where('COB', isEqualTo: true)
             .snapshots(),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
+          if (snapshot.connectionState ==
+              ConnectionState.waiting) {
+            return const Center(
+                child: CircularProgressIndicator());
           }
 
-          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return const Center(child: Text("No items for COB"));
+          if (!snapshot.hasData ||
+              snapshot.data!.docs.isEmpty) {
+            return const Center(
+              child: Text(
+                  "No items pending Close Of Business"),
+            );
           }
 
           return ListView(
+            padding:
+            const EdgeInsets.symmetric(vertical: 8),
             children: snapshot.data!.docs.map((doc) {
+              final data =
+              doc.data() as Map<String, dynamic>;
+
               return Card(
+                margin: const EdgeInsets.symmetric(
+                    horizontal: 12, vertical: 6),
                 child: ListTile(
-                  title: Text(doc['ProductName']),
-                  subtitle: Text("Product ID: ${doc['ProductID']}"),
+                  title: Text(
+                    data['ProductName'] ?? '',
+                    style: const TextStyle(
+                        fontWeight:
+                        FontWeight.w600),
+                  ),
+                  subtitle: Text(
+                      "Product ID: ${data['ProductID']}"),
                   trailing: IconButton(
-                    icon: const Icon(Icons.close, color: Colors.red),
-                    onPressed: () {
-                      _closeBusiness(doc['ProductID']);
+                    icon: const Icon(
+                      Icons.check_circle,
+                      color: Colors.green,
+                    ),
+                    tooltip: "Approve",
+                    onPressed: () async {
+                      final confirm =
+                      await _confirmCOB(
+                        context,
+                        "Close business for ${data['ProductName']}?",
+                      );
+
+                      if (confirm) {
+                        setState(
+                                () => loading = true);
+                        await _closeBusiness(doc);
+                        setState(
+                                () => loading = false);
+
+                        if (mounted) {
+                          ScaffoldMessenger.of(
+                              context)
+                              .showSnackBar(
+                            const SnackBar(
+                                content: Text(
+                                    "Business closed successfully")),
+                          );
+                        }
+                      }
                     },
                   ),
                 ),

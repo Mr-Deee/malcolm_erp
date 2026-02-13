@@ -222,13 +222,13 @@ class LoginPage extends StatelessWidget {
           await _firebaseAuth.signInWithEmailAndPassword(
               email: emailController.text, password: passwordController.text);
 
-      if (emailController.text == "john@gmail.com") {
+      if (emailController.text == "jo@gmail.com") {
         Navigator.of(context).pushNamed("/Admin");
       } else
 
       if (firebaseUser != null) {
         Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) =>Adminpage()),
+            MaterialPageRoute(builder: (context) =>EmployeeTill()),
             (Route<dynamic> route) => false);
         displayToast("Logged-in ", context);
       } else {

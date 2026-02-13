@@ -62,7 +62,7 @@ class MyApp extends StatelessWidget {
           "/SignUP": (context) => Signup(),
           "/Admin": (context) => Adminpage(),
           "/SignIn": (context) => LoginPage(),
-          "/Employee": (context) => employeetill(),
+          "/Employee": (context) => EmployeeTill(),
           "/Homepage": (context) => homepage(),
           //    "/addproduct":(context)=>addproduct()
         }
